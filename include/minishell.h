@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/08/28 19:16:12 by likong           ###   ########.fr       */
+/*   Updated: 2024/08/29 14:27:43 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
-# include <signal.h>
 
 # include "libft.h"
 # include "ft_printf/ft_printf.h"
@@ -89,7 +88,10 @@ int	str_len(char *str, char *sep);
 //Shell interface
 void	start_shell(void);
 
-//signal
-void singal_default(void);
+//Parser part
+void	start_parse(void);
+
+//Exit function
+void	ft_exit(char **strs);
 
 #endif

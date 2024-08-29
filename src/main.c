@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:46:00 by likong            #+#    #+#             */
-/*   Updated: 2024/08/28 19:08:19 by likong           ###   ########.fr       */
+/*   Updated: 2024/08/29 14:27:29 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void	init_ms(char **envp)
 	res = get_env("PATH");
 	ms()->path = ft_split(res, ':');
 	ms()->envp = envp;
+	free(res);
 }
 
 //Could be consider allow '-c command' later
@@ -66,7 +67,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	(void)argv;
 	init_ms(envp);
-	singal_default();
 	start_shell();
 	return (0);
 }
