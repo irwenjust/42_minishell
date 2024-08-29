@@ -94,4 +94,7 @@ void	start_parse(void);
 //Exit function
 void	ft_exit(char **strs);
 
+//signal
+void singal_default(void);
+
 #endif
