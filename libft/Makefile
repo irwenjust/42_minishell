@@ -9,7 +9,7 @@ ft_strrchr.c ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c \
 ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c ft_lstclear_bonus.c \
 ft_lstdelone_bonus.c ft_lstiter_bonus.c ft_lstlast_bonus.c ft_lstmap_bonus.c \
 ft_lstnew_bonus.c ft_lstsize_bonus.c ft_free_matrix.c ft_check_white.c \
-ft_split_plus.c ft_strcmp.c
+ft_split_plus.c ft_strcmp.c ft_isnum.c
 
 OUT = ft_atoi.o ft_bzero.o ft_calloc.o ft_isalnum.o ft_isalpha.o ft_isascii.o \
 ft_isdigit.o ft_isprint.o ft_itoa.o ft_memchr.o ft_memcmp.o ft_memcpy.o \
@@ -20,7 +20,7 @@ ft_strrchr.o ft_strtrim.o ft_substr.o ft_tolower.o ft_toupper.o \
 ft_lstadd_back_bonus.o ft_lstadd_front_bonus.o ft_lstclear_bonus.o \
 ft_lstdelone_bonus.o ft_lstiter_bonus.o ft_lstlast_bonus.o ft_lstmap_bonus.o \
 ft_lstnew_bonus.o ft_lstsize_bonus.o ft_free_matrix.o ft_check_white.o \
-ft_split_plus.o ft_strcmp.o
+ft_split_plus.o ft_strcmp.o ft_isnum.o
 
 G_DIR = get_next_line
 
