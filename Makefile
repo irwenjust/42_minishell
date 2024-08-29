@@ -1,21 +1,25 @@
 NAME = minishell
 CFLAGS = -Wextra -Wall -Werror
+
 LIBFT = -L./libft -lft
 
-SRCS =	src/main.c \
-		src/interface.c \
-		src/tools/for_ms.c \
-		src/tools/env.c \
-		src/tools/clean.c \
-		src/tools/matrix.c \
-		src/tools/utils.c 
+HEADERS = -I ./libft -I ./include
 
-OBJS = $(SRCS:.c=.o)
+SRCS_DIR = src
+SRCS =	main.c \
+		interface.c \
+		tools/for_ms.c \
+		tools/env.c \
+		tools/clean.c \
+		tools/matrix.c \
+		tools/utils.c \
+		signal.c
+OBJS = $(addprefix $(SRCS_DIR)/, $(SRCS:.c=.o))
 
 all: $(NAME)
 
 %.o: %.c
-	@cc $(CFLAGS) -o $@ -c $< && printf "Compiling: $(notdir $<)\n"
+	@cc $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(OBJS)
 	@$(MAKE) -C ./libft

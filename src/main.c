@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 static void	add_node(t_list **list, char *str)
 {
@@ -66,6 +66,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	(void)argv;
 	init_ms(envp);
+	singal_default();
 	start_shell();
 	return (0);
 }
