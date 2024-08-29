@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:23:23 by likong            #+#    #+#             */
-/*   Updated: 2024/08/29 14:27:39 by likong           ###   ########.fr       */
+/*   Updated: 2024/08/29 18:02:50 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	start_parse(void)
 		return ;
 	if (!ft_strcmp(cmds[0], "exit"))
 		ft_exit(cmds);
-	if (!ft_strcmp(cmds[0], "pwd") && matrix_size(cmds) == 1)
+	else if (!ft_strcmp(cmds[0], "pwd") && matrix_size(cmds) == 1)
 		printf("%s\n", ms()->cwd);
+	else if (!ft_strcmp(cmds[0], "env") && matrix_size(cmds) == 1)
+		print_env();
 	delete_matrix(cmds);
 }

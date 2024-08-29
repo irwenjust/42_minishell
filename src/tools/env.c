@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:21:36 by likong            #+#    #+#             */
-/*   Updated: 2024/08/29 14:27:36 by likong           ###   ########.fr       */
+/*   Updated: 2024/08/29 19:27:20 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,21 @@ char	*get_env(char *key)
 	return (ft_strdup(""));
 }
 
-void	update_env(void)
-{
-	char	*res;
+// void	update_env(void)
+// {
+// 	char	*res;
 
-	delete_matrix(ms()->path);
-	delete_matrix(ms()->envp);
-	res = get_env("PATH");
+// 	delete_matrix(ms()->path);
+// 	delete_matrix(ms()->envp);
+// 	res = get_env("PATH");
 	
+// }
+
+void	print_env(void)
+{
+	int	i;
+
+	i = -1;
+	while (ms()->envp[++i])
+		printf("%s\n", ms()->envp[i]);
 }

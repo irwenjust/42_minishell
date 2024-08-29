@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/08/29 14:27:43 by likong           ###   ########.fr       */
+/*   Updated: 2024/08/29 18:53:48 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
+# include <signal.h>
 
 # include "libft.h"
 # include "ft_printf/ft_printf.h"
@@ -69,9 +70,10 @@ typedef struct	s_ms
 t_ms	*ms(void);
 
 //For environment
-void	update_env(void);
+// void	update_env(void);
 t_env	*new_env(char *key, char *value);
 char	*get_env(char *key);
+void	print_env(void);
 
 //Delete and clean function
 void	delete_matrix(void *matrix);
@@ -81,6 +83,11 @@ void	clean_all(bool status);
 
 //Matrix function
 size_t	matrix_size(char **strs);
+
+//Link list function
+char	**list_to_arr(t_list *list);
+t_list	*init_list(char **strs);
+void	add_node(t_list **list, char *str);
 
 //Utils function
 int	str_len(char *str, char *sep);
@@ -93,5 +100,8 @@ void	start_parse(void);
 
 //Exit function
 void	ft_exit(char **strs);
+
+//signal
+void singal_default(void);
 
 #endif
