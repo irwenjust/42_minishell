@@ -35,9 +35,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
+# include <signal.h>
 
-# include "../libft/libft.h"
-# include "../libft/ft_printf/ft_printf.h"
+# include "libft.h"
+# include "ft_printf/ft_printf.h"
 
 typedef struct	s_env
 {
@@ -87,5 +88,8 @@ int	str_len(char *str, char *sep);
 
 //Shell interface
 void	start_shell(void);
+
+//signal
+void singal_default(void);
 
 #endif
