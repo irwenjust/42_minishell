@@ -7,6 +7,7 @@ HEADERS = -I ./libft -I ./include
 SRCS_DIR = src
 SRCS =	main.c \
 		interface.c \
+		signal.c \
 		tools/for_ms.c \
 		tools/env.c \
 		tools/clean.c \
