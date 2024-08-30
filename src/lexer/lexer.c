@@ -32,13 +32,16 @@ bool check_mergeable(char *need_match, char *input, int end)
 {
     if (!input[end])
         return (false);
-    if (ft_strchr("\"\'", need_match[0]) && !ft_strchr("<>| ", input[end + 1])) //????????
+	//if need match is special symbol, the end is quote, for quote match quote is ok, for <>|space, why find the quote end???
+	if (!ft_strcmp("<>\'\"| ", need_match) && ft_strchr("\"\'", input[end]))
         return (true);
-    if (!ft_strcmp("<>\'\"| ", need_match) && ft_strchr("\"\'", input[end]))
+	//when start match is quote, the end+1 is not <>|space, why????????
+    if (ft_strchr("\"\'", need_match[0]) && !ft_strchr("<>| ", input[end + 1]))
         return (true);
     return (false);
 }
 
+//find the end when meet quote or ?normal string?
 int find_match(char *need_match, char *input)
 {
     int end;
@@ -55,12 +58,11 @@ int find_match(char *need_match, char *input)
     else if (need_match[0] == '\'')
         add_token(tk_input, TK_SINGLE_QT, mergeable);
     else
-        add_token(tk_input, TK_TERM, mergeable);
+        add_token(tk_input, TK_TERM, mergeable); //?????
     return (end);
 }
 
-//check_merge
-
+//lexer function
 void lexer(void)
 {
     int i;
@@ -95,7 +97,8 @@ int	lexical_analysis(void)
     if (!check_quote())
         return (1);
     lexer();
-    
+
+	//test
     // t_list *cur;
     // cur = ms()->lexer_tk;
     // while (cur)
