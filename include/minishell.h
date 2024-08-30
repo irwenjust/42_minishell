@@ -22,12 +22,14 @@
 # define FAIL_EXEC 126
 # define FAIL_FCMD 127
 
-//stdio: printf()
-//unistd: getcwd()
-//stdlib: perror()
-//errno: errno
-//readline: readline
-//stdbool: bool function
+/*
+stdio: printf()
+unistd: getcwd()
+stdlib: perror()
+errno: errno
+readline: readline
+stdbool: bool function
+*/
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -46,13 +48,15 @@ typedef struct	s_env
 	char	*value;
 }	t_env;
 
-//in_fd: fd for input
-//out_fd: fd for output
-//exit: exit status when leave program, like 0, 1, 126, 127
-//cwd: current working directory. similar than pwd(print working directory)
-//path: save path environment variable
-//envp: whole environment variable
-//env_list: save environment to link list
+/*
+in_fd: fd for input
+out_fd: fd for output
+exit: exit status when leave program, like 0, 1, 126, 127
+cwd: current working directory. similar than pwd(print working directory)
+path: save path environment variable
+envp: whole environment variable
+env_list: save environment to link list
+*/
 typedef struct	s_ms
 {
 	int		in_fd;
@@ -64,7 +68,37 @@ typedef struct	s_ms
 	char	**path;
 	char	**envp;
 	t_list	*env_list;
+	t_list	*lexer_tk;
 }	t_ms;
+
+/*
+token type for lexer
+TK_PIPE: pipes |
+TK_IN_RE/TK_OUT_RE: redirection </>
+TK_HEREDOC: <<
+TK_APPEND: >>
+TK_SINGLE_QT/TK_DOUBLE_QT: single quote''/double quote ""
+TK_END: end of command
+*/
+typedef enum e_token_type
+{
+	TK_PIPE,
+	TK_IN_RE,
+	TK_OUT_RE,
+	TK_HEREDOC,
+	TK_APPEND,
+	TK_SINGLE_QT,
+	TK_DOUBLE_QT,
+	TK_TERM, //?????
+
+}	t_token_type;
+
+typedef struct s_token
+{
+	char *input;
+	t_token_type type;
+	bool merge;
+}	t_token;
 
 //Create ms struct
 t_ms	*ms(void);
@@ -94,6 +128,13 @@ int	str_len(char *str, char *sep);
 
 //Shell interface
 void	start_shell(void);
+
+//lexer part
+int	lexical_analysis(void);
+
+//token
+int add_token(char *str, t_token_type type, bool merge);
+
 
 //Parser part
 void	start_parse(void);
