@@ -28,6 +28,7 @@ bool check_quote(void)
     return (true);
 }
 
+//还没有写道merge token的地方，所以不太理解这个merge的原理，可能回头写到那里能懂啥意思
 bool check_mergeable(char *need_match, char *input, int end)
 {
     if (!input[end])
