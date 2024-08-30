@@ -14,6 +14,8 @@ SRCS =	main.c \
 		tools/matrix.c \
 		tools/utils.c \
 		tools/link_list.c \
+		lexer/lexer.c \
+		lexer/token.c \
 		parser/parser.c \
 		builtins/exit.c 
 OBJS = $(addprefix $(SRCS_DIR)/, $(SRCS:.c=.o))

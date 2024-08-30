@@ -30,6 +30,16 @@ static char	*set_prompt(void)
 	return (res2);
 }
 
+/*int start_parsing(void)
+{
+	//expansion
+	//syntac check
+	//pipe
+	//redirection
+	//command parse
+	
+}*/
+
 void	start_shell(void)
 {
 	while (1)
@@ -42,7 +52,12 @@ void	start_shell(void)
 			clean_all(true);
 		}
 		add_history(ms()->input);
+		
+		lexical_analysis();
 		start_parse();
+		//start_parsing();
+		//exexution();
+
 		clean_all(false);
 	}
 	rl_clear_history();
