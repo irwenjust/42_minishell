@@ -33,8 +33,8 @@ bool check_mergeable(char *need_match, char *input, int end)
 {
     if (!input[end])
         return (false);
-	//if need match is special symbol, the end is quote, for quote match quote is ok, for <>|space, why find the quote end???
-	if (!ft_strcmp("<>\'\"| ", need_match) && ft_strchr("\"\'", input[end]))
+    //if need match is special symbol, the end is quote, for quote match quote is ok, for <>|space, why find the quote end???
+    if (!ft_strcmp("<>\'\"| ", need_match) && ft_strchr("\"\'", input[end]))
         return (true);
 	//when start match is quote, the end+1 is not <>|space, why????????
     if (ft_strchr("\"\'", need_match[0]) && !ft_strchr("<>| ", input[end + 1]))
@@ -92,20 +92,3 @@ void lexer(void)
     }
 }
 
-int	lexical_analysis(void)
-{
-	//check "" and ' closed
-    if (!check_quote())
-        return (1);
-    lexer();
-
-	//test
-    // t_list *cur;
-    // cur = ms()->lexer_tk;
-    // while (cur)
-    // {
-    //     printf("%s\n", ((t_token *)(cur->content))->input);
-    //     cur = cur->next;
-    // }
-    return  (0);
-}

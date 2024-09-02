@@ -130,11 +130,12 @@ int	str_len(char *str, char *sep);
 void	start_shell(void);
 
 //lexer part
-int	lexical_analysis(void);
+bool check_quote(void);
+void lexer(void);
 
 //token
 int add_token(char *str, t_token_type type, bool merge);
-
+void delete_token(t_token *token);
 
 //Parser part
 void	start_parse(void);

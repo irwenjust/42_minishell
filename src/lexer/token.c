@@ -25,3 +25,11 @@ int add_token(char *input, t_token_type type, bool merge)
     ft_lstadd_back(&ms()->lexer_tk, ft_lstnew(token));
     return(ft_strlen(input));
 }
+
+void delete_token(t_token *token)
+{
+    if (!token)
+        return ;
+    ft_free(token->input);
+    ft_free(token);
+}

@@ -30,6 +30,29 @@ static char	*set_prompt(void)
 	return (res2);
 }
 
+void	pre_handle(void)
+{
+//lexer
+    if (!check_quote())
+        return ;
+    lexer();
+//lexer test
+    // t_list *cur;
+    // cur = ms()->lexer_tk;
+    // while (cur)
+    // {
+    //     printf("%s\n", ((t_token *)(cur->content))->input);
+    //     cur = cur->next;
+    // }
+	
+//parse
+	if (!check_syntax())
+		return ;
+
+
+    return ;
+}
+
 /*int start_parsing(void)
 {
 	//expansion
@@ -52,10 +75,11 @@ void	start_shell(void)
 			clean_all(true);
 		}
 		add_history(ms()->input);
+		//lexer and parse
+		pre_handle();
 		
-		lexical_analysis();
 		start_parse();
-		//start_parsing();
+
 		//exexution();
 
 		clean_all(false);
