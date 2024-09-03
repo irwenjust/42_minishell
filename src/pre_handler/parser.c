@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/28 16:20:14 by likong            #+#    #+#             */
-/*   Updated: 2024/08/29 14:27:32 by likong           ###   ########.fr       */
+/*   Created: 2024/08/29 10:23:23 by likong            #+#    #+#             */
+/*   Updated: 2024/08/29 18:02:50 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	str_len(char *str, char *sep)
+void	start_parse(void)
 {
-	int	i;
+	char	**cmds;
 
-	i = 0;
-	while (str[i] && !ft_strchr(sep, str[i]))
-		i++;
-	return (i);
+	cmds = split_plus(ms()->input, ' ');
+	if (!cmds)
+		return ;
+	if (!ft_strcmp(cmds[0], "exit"))
+		ft_exit(cmds);
+	else if (!ft_strcmp(cmds[0], "pwd") && matrix_size(cmds) == 1)
+		printf("%s\n", ms()->cwd);
+	else if (!ft_strcmp(cmds[0], "env") && matrix_size(cmds) == 1)
+		print_env();
+	delete_matrix(cmds);
 }
 
-int error_info(char *info)
-{
-	if (info)
-		printf("%s\n", info);
-	return (0);
-}
+
+
+

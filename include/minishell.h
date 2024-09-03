@@ -89,9 +89,16 @@ typedef enum e_token_type
 	TK_APPEND,
 	TK_SINGLE_QT,
 	TK_DOUBLE_QT,
-	TK_TERM, //?????
-
+	TK_KEYWORD, //?????
 }	t_token_type;
+
+typedef enum e_token_manager
+{
+	RESET,
+	CURRENT,
+	NEXT,
+	PREVIEW,
+} t_manager;
 
 typedef struct s_token
 {
@@ -100,8 +107,35 @@ typedef struct s_token
 	bool merge;
 }	t_token;
 
+
+
 //Create ms struct
 t_ms	*ms(void);
+
+//Shell interface
+void	start_shell(void);
+
+//Pre Handling
+//Lexer
+bool check_quote(void);
+void lexer(void);
+bool check_syntax(void);
+
+//token manager
+int add_token(char *str, t_token_type type, bool merge);
+void delete_token(t_token *token);
+t_token *token_manager(t_manager mg);
+
+//Expander
+void expander(void);
+
+//Parser
+void	start_parse(void);
+
+//handler utils
+bool is_redir_or_pipe(t_token *token);
+bool is_redirection(t_token *token);
+
 
 //For environment
 // void	update_env(void);
@@ -125,20 +159,15 @@ void	add_node(t_list **list, char *str);
 
 //Utils function
 int	str_len(char *str, char *sep);
+int error_info(char *info);
 
-//Shell interface
-void	start_shell(void);
 
-//lexer part
-bool check_quote(void);
-void lexer(void);
 
-//token
-int add_token(char *str, t_token_type type, bool merge);
-void delete_token(t_token *token);
 
-//Parser part
-void	start_parse(void);
+
+
+
+
 
 //Exit function
 void	ft_exit(char **strs);

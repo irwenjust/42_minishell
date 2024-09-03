@@ -36,6 +36,8 @@ void	pre_handle(void)
     if (!check_quote())
         return ;
     lexer();
+	if (!check_syntax())
+		return ;
 //lexer test
     // t_list *cur;
     // cur = ms()->lexer_tk;
@@ -46,22 +48,12 @@ void	pre_handle(void)
     // }
 	
 //parse
-	if (!check_syntax())
-		return ;
-
+	
+	// expander();
+	//parser();
 
     return ;
 }
-
-/*int start_parsing(void)
-{
-	//expansion
-	//syntac check
-	//pipe
-	//redirection
-	//command parse
-	
-}*/
 
 void	start_shell(void)
 {
@@ -77,10 +69,9 @@ void	start_shell(void)
 		add_history(ms()->input);
 		//lexer and parse
 		pre_handle();
-		
-		start_parse();
 
 		//exexution();
+		start_parse();
 
 		clean_all(false);
 	}
