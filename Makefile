@@ -2,7 +2,7 @@ NAME = minishell
 CFLAGS = -Wextra -Wall -Werror
 LIBFT = -L./libft -lft
 
-HEADERS = -I ./libft -I ./include
+HEADERS = -I./libft -I./include
 
 SRCS_DIR = src
 SRCS =	main.c \
