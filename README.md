@@ -6,28 +6,28 @@
 
 transfer input string to token(some manageable pieces, like keywords, operators, identifiers), need to do:
 
-    -keyword, operators(| > <), literals, like strings number.
-    	
-    -handling quotes, ensure tokens include space and quotes can be handle
-    	
-    -check special characters, |, > <, ;
+    -check quotes, closed is valid (follow subject)
 
+    -get token: 
+        
+        keyword, operators(| > <), literals, like strings number.
+    	
+    -check special characters, |, > <, ;(no need), " '
 
 **2-Parsing (Parser): Builds an abstract syntax tree from the tokens.**
 
 analyze tokens to create an abstract syntax tree(AST), need to do:
 
-    -command parse, include parameter and redirection
-    
-    -parse pipe
-    
-    -parse redirection to AST
-    
-    -check syntax and command structure
+    -check syntax: first is not special character, after redirection not be redir or pipes
 
-also need to do during parsing:
-
-    **Expansion: Expands variables and command substitutions.**
+    -Expansion: Expands variables and command substitutions.
+    
+    -parse token to AST:
+        command parse, include parameter and redirection
+    
+        parse pipe
+    
+        parse redirection to AST
 
 **3-Execution: Executes the commands as represented by the AST.**
 
