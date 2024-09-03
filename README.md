@@ -1,5 +1,11 @@
 # 42_minishell
 
+```sudo apt search readline``` 搜索readline安装包
+
+```sudo apt-get install lib32readline8``` 安装readline
+
+```sudo apt-get install libreadline-dev``` 安装readline可调用的文件夹，没有的话无法调用 include<readline/readline.>
+
 # Unix shell’s working process
 
 **1-Lexical Analysis (Lexer): Tokenizes the input.**
