@@ -38,19 +38,29 @@ void	pre_handle(void)
     lexer();
 	if (!check_syntax())
 		return ;
-//lexer test
-    // t_list *cur;
-    // cur = ms()->lexer_tk;
-    // while (cur)
-    // {
-    //     printf("%s\n", ((t_token *)(cur->content))->input);
-    //     cur = cur->next;
-    // }
+	//lexer test
+    t_list *cur;
+    cur = ms()->lexer_tk;
+    while (cur)
+    {
+        printf("input: %s\n", ((t_token *)(cur->content))->input);
+		printf("can merge: %i\n", ((t_token *)(cur->content))->mergeable);
+        cur = cur->next;
+    }
 	
-//parse
-	
-	// expander();
-	//parser();
+//expander
+	expander();
+	//test expander
+	t_list *exp;
+    exp = ms()->lexer_tk;
+    while (exp)
+    {
+        printf("after expander\n")
+		printf("input: %s\n", ((t_token *)(exp->content))->input);
+        exp = exp->next;
+    }
+
+//parser
 
     return ;
 }

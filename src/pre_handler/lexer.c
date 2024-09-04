@@ -58,15 +58,26 @@ bool check_quote(void)
 }
 
 //还没有写道merge token的地方，所以不太理解这个merge的原理，可能回头写到那里能懂啥意思
+/*
+根据gpt, echo "hello" "world"3个token应该被合并成 echo "hello world"2个
+但并没有，而是 echo "hello""world"可以被合并为2个token，即token中间没有space的情况下可以。
+这似乎不太全面???还不太清楚哪些需要合并
+如果去掉symbols和special里的space之后，就可以合并echo "hello" "world"了
+看有的代码，并没有merge check这一项，盲猜可能不用这一条，在parse AST的时候再处理亦可。
+*/
 bool check_mergeable(char *need_match, char *input, int end)
 {
+    char *symbols = "<>\'\"| ";
+    char *quote = "\'\"";
+    char *special = "<>| ";
+
     if (!input[end])
         return (false);
     //if need match is special symbol, the end is quote, for quote match quote is ok, for <>|space, why find the quote end???
-    if (!ft_strcmp("<>\'\"| ", need_match) && ft_strchr("\"\'", input[end]))
+    if (!ft_strcmp(symbols, need_match) && ft_strchr(quote, input[end]))
         return (true);
 	//when start match is quote, the end+1 is not <>|space, why????????
-    if (ft_strchr("\"\'", need_match[0]) && !ft_strchr("<>| ", input[end + 1]))
+    if (ft_strchr(quote, need_match[0]) && !ft_strchr(special, input[end + 1]))
         return (true);
     return (false);
 }
@@ -88,7 +99,7 @@ int find_match(char *need_match, char *input)
     else if (need_match[0] == '\'')
         add_token(tk_input, TK_SINGLE_QT, mergeable);
     else
-        add_token(tk_input, TK_KEYWORD, mergeable); //?????
+        add_token(tk_input, TK_KEYWORD, mergeable);
     return (end);
 }
 
@@ -103,7 +114,7 @@ void lexer(void)
         if (ms()->input[i] == ' ')
             i++;
         else if (ms()->input[i] == '|')
-            i += add_token(ft_strdup("|"), TK_PIPE, false); //????ft_strdup, can just "|" ">>"?
+            i += add_token(ft_strdup("|"), TK_PIPE, false); //????must use ft_strdup? can just "|" ">>"?
         else if (!ft_strncmp(&(ms()->input[i]), "<<", 2))
             i += add_token(ft_strdup("<<"), TK_HEREDOC, false);
         else if (!ft_strncmp(&(ms()->input[i]), ">>", 2))
@@ -117,7 +128,7 @@ void lexer(void)
         else if (ms()->input[i] == '\'')
             i += find_match("\'", &ms()->input[i + 1]) + 2;
         else
-            i += find_match("<>\'\"| ", &ms()->input[i]); //to find the end of cmd?
+            i += find_match("<>\'\"| ", &ms()->input[i]); //to find the end of a cmd?
     }
 }
 
