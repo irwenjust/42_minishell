@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_token *new_token(char *input, t_token_type type, bool merge)
+t_token *new_token(char *input, t_token_type type, bool mergeable)
 {
     t_token *token;
 
@@ -11,15 +11,15 @@ t_token *new_token(char *input, t_token_type type, bool merge)
     //init token
     token->input = input;
     token->type = type;
-    token->merge = merge;
+    token->mergeable = mergeable;
     return (token);
 }
 
-int add_token(char *input, t_token_type type, bool merge)
+int add_token(char *input, t_token_type type, bool mergeable)
 {
     t_token *token;
 
-    token = new_token(input, type, merge);
+    token = new_token(input, type, mergeable);
     if (!token || !input)
         return (0);
     ft_lstadd_back(&ms()->lexer_tk, ft_lstnew(token));

@@ -24,18 +24,19 @@ t_env	*new_env(char *key, char *value)
 	return (res);
 }
 
-//didn't consider doller sidn still. $
 char	*get_env(char *key)
 {
-	t_env	*res;
+	t_env	*tmp;
 	t_list	*curr;
 
+	if (key[0] == '$')
+		key++;
 	curr = ms()->env_list;
 	while (curr)
 	{
-		res = (t_env *)curr->content;
-		if (!ft_strcmp(res->key, key))
-			return (ft_strdup(res->value));
+		tmp = (t_env *)curr->content;
+		if (!ft_strcmp(tmp->key, key))
+			return (ft_strdup(tmp->value));
 		curr = curr->next;
 	}
 	return (ft_strdup(""));

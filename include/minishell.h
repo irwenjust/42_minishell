@@ -104,7 +104,7 @@ typedef struct s_token
 {
 	char *input;
 	t_token_type type;
-	bool merge;
+	bool mergeable;
 }	t_token;
 
 
