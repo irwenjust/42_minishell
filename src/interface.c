@@ -55,7 +55,7 @@ void	pre_handle(void)
     exp = ms()->lexer_tk;
     while (exp)
     {
-        printf("after expander\n")
+        printf("after expander\n");
 		printf("input: %s\n", ((t_token *)(exp->content))->input);
         exp = exp->next;
     }
