@@ -21,3 +21,10 @@ int	str_len(char *str, char *sep)
 		i++;
 	return (i);
 }
+
+int error_info(char *info)
+{
+	if (info)
+		printf("%s\n", info);
+	return (0);
+}

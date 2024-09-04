@@ -1,5 +1,34 @@
 #include "minishell.h"
 
+bool check_syntax(void)
+{
+	t_token *next;
+	int pipe_nb;
+	int cmd_nb;
+
+	pipe_nb = 0;
+	cmd_nb = 1;
+	token_manager(RESET);
+	if (is_redir_or_pipe(token_manager(CURRENT)))
+		return (error_info("Wrong syntax: first token is redirection or pipe."));
+	while (token_manager(CURRENT))
+	{
+		next = token_manager(PREVIEW);
+		if (is_redirection(token_manager(CURRENT)) && (!next || is_redir_or_pipe(next)))
+			return (error_info("Wrong syntax: no dir after redirection."));
+		if (token_manager(CURRENT)->type == TK_PIPE)
+		{
+			pipe_nb++;
+			if (next && !is_redir_or_pipe(next))
+				cmd_nb++;
+		}
+		token_manager(NEXT);
+	}
+	if (pipe_nb >= cmd_nb)
+		return (error_info("Wrong syntax: too much pipes without cmds."));
+	return (true);
+}
+
 bool check_quote(void)
 {
     int i;
@@ -59,7 +88,7 @@ int find_match(char *need_match, char *input)
     else if (need_match[0] == '\'')
         add_token(tk_input, TK_SINGLE_QT, mergeable);
     else
-        add_token(tk_input, TK_TERM, mergeable); //?????
+        add_token(tk_input, TK_KEYWORD, mergeable); //?????
     return (end);
 }
 

@@ -2,21 +2,23 @@ NAME = minishell
 CFLAGS = -Wextra -Wall -Werror
 LIBFT = -L./libft -lft
 
-HEADERS = -I ./libft -I ./include
+HEADERS = -I./libft -I./include
 
 SRCS_DIR = src
 SRCS =	main.c \
 		interface.c \
 		signal.c \
+		pre_handler/lexer.c \
+		pre_handler/token.c \
+		pre_handler/expander.c \
+		pre_handler/parser.c \
+		pre_handler/handler_utils.c \
 		tools/for_ms.c \
 		tools/env.c \
 		tools/clean.c \
 		tools/matrix.c \
 		tools/utils.c \
 		tools/link_list.c \
-		lexer/lexer.c \
-		lexer/token.c \
-		parser/parser.c \
 		builtins/exit.c 
 OBJS = $(addprefix $(SRCS_DIR)/, $(SRCS:.c=.o))
 

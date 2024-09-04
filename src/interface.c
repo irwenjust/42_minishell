@@ -30,15 +30,30 @@ static char	*set_prompt(void)
 	return (res2);
 }
 
-/*int start_parsing(void)
+void	pre_handle(void)
 {
-	//expansion
-	//syntac check
-	//pipe
-	//redirection
-	//command parse
+//lexer
+    if (!check_quote())
+        return ;
+    lexer();
+	if (!check_syntax())
+		return ;
+//lexer test
+    // t_list *cur;
+    // cur = ms()->lexer_tk;
+    // while (cur)
+    // {
+    //     printf("%s\n", ((t_token *)(cur->content))->input);
+    //     cur = cur->next;
+    // }
 	
-}*/
+//parse
+	
+	// expander();
+	//parser();
+
+    return ;
+}
 
 void	start_shell(void)
 {
@@ -52,11 +67,11 @@ void	start_shell(void)
 			clean_all(true);
 		}
 		add_history(ms()->input);
-		
-		lexical_analysis();
-		start_parse();
-		//start_parsing();
+		//lexer and parse
+		pre_handle();
+
 		//exexution();
+		start_parse();
 
 		clean_all(false);
 	}

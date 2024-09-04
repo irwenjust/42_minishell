@@ -44,6 +44,7 @@ void	clean_all(bool status)
 {
 	ft_free(ms()->prompt);
 	ft_free(ms()->input);
+	ft_lstclear(&ms()->lexer_tk, (void (*)(void *))delete_token);
 	if (status)
 	{
 		ft_free(ms()->cwd);
