@@ -15,7 +15,7 @@
 static int	check_status(char *str)
 {
 	int	sig;
-	
+
 	sig = 0;
 	if (!ft_isnum(str))
 		return (1);
@@ -53,6 +53,6 @@ void	ft_exit(char **strs)
 		ft_putstr_fd("exit\n", 1);
 		ms()->exit = ft_atoi(strs[1]) % 256;
 	}
-	delete_matrix(strs);
-	clean_all(true);
+	matrix_delete(strs);
+	restart(true);
 }

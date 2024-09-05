@@ -49,7 +49,6 @@ char	*get_env(char *key)
 // 	delete_matrix(ms()->path);
 // 	delete_matrix(ms()->envp);
 // 	res = get_env("PATH");
-	
 // }
 
 void	print_env(void)
