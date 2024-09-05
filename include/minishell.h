@@ -42,35 +42,6 @@ stdbool: bool function
 # include "libft.h"
 # include "ft_printf/ft_printf.h"
 
-typedef struct	s_env
-{
-	char	*key;
-	char	*value;
-}	t_env;
-
-/*
-in_fd: fd for input
-out_fd: fd for output
-exit: exit status when leave program, like 0, 1, 126, 127
-cwd: current working directory. similar than pwd(print working directory)
-path: save path environment variable
-envp: whole environment variable
-env_list: save environment to link list
-*/
-typedef struct	s_ms
-{
-	int		in_fd;
-	int		out_fd;
-	int		exit;
-	char	*cwd;
-	char	*prompt;
-	char	*input;
-	char	**path;
-	char	**envp;
-	t_list	*env_list;
-	t_list	*lexer_tk;
-}	t_ms;
-
 /*
 token type for lexer
 TK_PIPE: pipes |
@@ -92,20 +63,78 @@ typedef enum e_token_type
 	TK_KEYWORD, //?????
 }	t_token_type;
 
+/*
+token list manager
+RESET: reset to the first one
+CURRENT: current token
+NEXT: move to next token
+PREVIEW: get the content of next token without move to it.
+*/
 typedef enum e_token_manager
 {
 	RESET,
-	CURRENT,
+	CUR,
 	NEXT,
 	PREVIEW,
 } t_manager;
 
+/*
+token struct
+input: input from cmdline
+type: token type(pipe, redirection or other)
+mergeabel: can be merged with next token or not*/
 typedef struct s_token
 {
-	char *input;
+	char *tk;
 	t_token_type type;
 	bool mergeable;
 }	t_token;
+
+/*
+abstract syntax tree
+*/
+typedef struct s_ast
+{
+	t_token *token;
+	char **arg;
+	int index;
+	struct s_ast *left;
+	struct s_ast *right;
+} t_ast;
+
+typedef struct	s_env
+{
+	char	*key;
+	char	*value;
+}	t_env;
+
+/*
+in_fd: fd for input
+out_fd: fd for output
+exit: exit status when leave program, like 0, 1, 126, 127
+cwd: current working directory. similar than pwd(print working directory)
+path: save path environment variable
+envp: whole environment variable
+env_list: save environment to link list
+lexer_tk: token get from lexer process
+ast: abstract syntax tess from parse process
+*/
+typedef struct	s_ms
+{
+	int		in_fd;
+	int		out_fd;
+	int		exit;
+	int		cmd_nb;
+	char	*cwd;
+	char	*prompt;
+	char	*input;
+	char	**path;
+	char	**envp;
+	t_list	*env_list;
+	t_list	*lexer_tk;
+	t_ast *ast;
+}	t_ms;
+
 
 
 
@@ -122,19 +151,27 @@ void lexer(void);
 bool check_syntax(void);
 
 //token manager
-int add_token(char *str, t_token_type type, bool merge);
-void delete_token(t_token *token);
+t_token *token_new(char *input, t_token_type type, bool mergeable);
+int token_add(char *str, t_token_type type, bool merge);
+t_token *token_copy(t_token *token);
+void token_delete(t_token *token);
 t_token *token_manager(t_manager mg);
 
 //Expander
 void expander(void);
 
 //Parser
-void	start_parse(void);
+void	parser(void);
+
+//ast
+t_ast *ast_new(t_token *token);
+void ast_insert(t_ast **ast, t_ast *node, bool left);
+void ast_delone(t_ast *ast);
+void ast_clear(t_ast *ast, void (*del)(t_ast *));
 
 //handler utils
 bool is_redir_or_pipe(t_token *token);
-bool is_redirection(t_token *token);
+bool is_redir(t_token *token);
 
 
 //For environment
@@ -144,13 +181,14 @@ char	*get_env(char *key);
 void	print_env(void);
 
 //Delete and clean function
-void	delete_matrix(void *matrix);
 void	ft_free(void *p);
 void	delete_env(t_env *env);
-void	clean_all(bool status);
+void	restart(bool status);
 
 //Matrix function
-size_t	matrix_size(char **strs);
+size_t	matrix_size(char **matrix);
+char **matrix_add(char **matrix, char *str);
+void	matrix_delete(void *matrix);
 
 //Link list function
 char	**list_to_arr(t_list *list);

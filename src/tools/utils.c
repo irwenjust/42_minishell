@@ -22,7 +22,7 @@ int	str_len(char *str, char *sep)
 	return (i);
 }
 
-int error_info(char *info)
+int	error_info(char *info)
 {
 	if (info)
 		printf("%s\n", info);

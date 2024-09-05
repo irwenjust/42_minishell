@@ -1,50 +1,72 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yzhan <yzhan@student.hive.fi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/05 13:48:13 by yzhan             #+#    #+#             */
+/*   Updated: 2024/09/05 13:51:51 by yzhan            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-t_token *new_token(char *input, t_token_type type, bool mergeable)
+t_token	*token_new(char *input, t_token_type type, bool mergeable)
 {
-    t_token *token;
+	t_token	*token;
 
-    //malloc token
-    token = ft_calloc(1, sizeof(t_token));
-    if (!token)
-        return (NULL);
-    //init token
-    token->input = input;
-    token->type = type;
-    token->mergeable = mergeable;
-    return (token);
+	token = ft_calloc(1, sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->tk = input;
+	token->type = type;
+	token->mergeable = mergeable;
+	return (token);
 }
 
-int add_token(char *input, t_token_type type, bool mergeable)
+int	token_add(char *input, t_token_type type, bool mergeable)
 {
-    t_token *token;
+	t_token	*token;
 
-    token = new_token(input, type, mergeable);
-    if (!token || !input)
-        return (0);
-    ft_lstadd_back(&ms()->lexer_tk, ft_lstnew(token));
-    return(ft_strlen(input));
+	token = token_new(input, type, mergeable);
+	if (!token || !input)
+		return (0);
+	ft_lstadd_back(&ms()->lexer_tk, ft_lstnew(token));
+	return (ft_strlen(input));
 }
 
-void delete_token(t_token *token)
+t_token	*token_copy(t_token *token)
 {
-    if (!token)
-        return ;
-    ft_free(token->input);
-    ft_free(token);
+	t_token	*copy;
+
+	if (!token)
+		return (NULL);
+	copy = token_new(ft_strdup(token->tk), token->type, token->mergeable);
+	if (!copy)
+		return (NULL);
+	return (copy);
 }
 
-t_token *token_manager(t_manager mg)
+void	token_delete(t_token *token)
 {
-    static t_list *current = NULL;
+	if (!token)
+		return ;
+	ft_free(token->tk);
+	ft_free(token);
+}
 
-    if (mg == RESET)
-        current = ms()->lexer_tk;
-    else if (mg == CURRENT && current)
-        return (current->content);
-    else if (mg == NEXT)
-        current = current->next;
-    else if (mg == PREVIEW && current->next)
-        return (current->next->content);
-    return (NULL);
+t_token	*token_manager(t_manager mg)
+{
+	static t_list	*current = NULL;
+
+	if (mg == RESET)
+		current = ms()->lexer_tk;
+	else if (mg == CUR && current)
+		return (current->content);
+	else if (mg == NEXT)
+		current = current->next;
+	else if (mg == PREVIEW && current->next)
+		return (current->next->content);
+	return (NULL);
 }
