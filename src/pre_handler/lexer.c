@@ -34,7 +34,7 @@ bool	check_quote(void)
 	}
 	if (start_quote)
 	{
-		ft_putstr_fd("minishell: unclosed quotes.\n", 2);
+		error_info("minishell: unclosed quotes.\n");
 		return (false);
 	}
 	return (true);
@@ -128,12 +128,12 @@ bool	check_syntax(void)
 	cmd_nb = 1;
 	token_manager(RESET);
 	if (is_pipe(token_manager(CUR)))
-		return (error_info("Wrong syntax: first token cannot be a pipe."));
+		return (error_info("Wrong syntax: first token cannot be a pipe.\n"));
 	while (token_manager(CUR))
 	{
 		next = token_manager(PREVIEW);
 		if (is_redir(token_manager(CUR)) && (!next || is_redir_or_pipe(next)))
-			return (error_info("Wrong syntax: no dir after redirection."));
+			return (error_info("Wrong syntax: no dir after redirection.\n"));
 		if (token_manager(CUR)->type == TK_PIPE)
 		{
 			pipe_nb++;
@@ -143,6 +143,6 @@ bool	check_syntax(void)
 		token_manager(NEXT);
 	}
 	if (pipe_nb >= cmd_nb)
-		return (error_info("Wrong syntax: too much pipes without cmds."));
+		return (error_info("Wrong syntax: too much pipes without cmds.\n"));
 	return (true);
 }

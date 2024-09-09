@@ -29,22 +29,31 @@ static char	*set_prompt(void)
 	ft_free(res1);
 	return (res2);
 }
+/*
+ void print_ast_arg(t_ast *node)
+ {
+	static int i = 0;
+     if (node == NULL)
+         return ;
+     int j = 0;
+     if (node->token)
+     {
+		printf("%i token: %s\n", i++, node->token->tk);
+		if (node->arg[j] == NULL)
+			printf("%i arg: %s\n", j++, "null");
+		while (node->arg && node->arg[j])
+		{
+			if (node->arg[j])
+        		printf("%i arg: %s\n", j, node->arg[j]);
+        	j++;
+		}
+     }
+	 
+     print_ast_arg(node->left);
+     print_ast_arg(node->right);
+ }
 
-// void print_ast_arg(t_ast *node)
-// {
-//     if (node == NULL)
-//         return;
-//     int j = 0;
-//     while (node->arg && node->arg[j])
-//     {
-//         printf("parser: %s\n", node->arg[j]);
-//         j++;
-//     }
-//     print_ast_arg(node->left);
-//     print_ast_arg(node->right);
-// }
-
-/*void	pre_handle(void)
+void	pre_handle(void)
 {
 //lexer
     if (!check_quote())
@@ -57,7 +66,7 @@ static char	*set_prompt(void)
     // cur = ms()->lexer_tk;
     // while (cur)
     // {
-    //     printf("input: %s\n", ((t_token *)(cur->content))->input);
+    //     printf("input: %s\n", ((t_token *)(cur->content))->tk);
 	// 	printf("can merge: %i\n", ((t_token *)(cur->content))->mergeable);
     //     cur = cur->next;
     // }
@@ -76,11 +85,12 @@ static char	*set_prompt(void)
 //parser
 	parser();
 	//test parse
-	// t_ast *ast = ms()->ast;
-    // print_ast_arg(ast);
+	 t_ast *ast = ms()->ast;
+     print_ast_arg(ast);
 
     return ;
-}*/
+}
+*/
 
 void	pre_handle(void)
 {

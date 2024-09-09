@@ -25,6 +25,6 @@ int	str_len(char *str, char *sep)
 int	error_info(char *info)
 {
 	if (info)
-		printf("%s\n", info);
+		ft_putstr_fd(info, 2);
 	return (0);
 }
