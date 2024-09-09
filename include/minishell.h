@@ -172,7 +172,7 @@ void ast_clear(t_ast *ast, void (*del)(t_ast *));
 //handler utils
 bool is_redir_or_pipe(t_token *token);
 bool is_redir(t_token *token);
-
+bool	is_pipe(t_token *token);
 
 //For environment
 // void	update_env(void);

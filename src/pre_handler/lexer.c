@@ -127,8 +127,8 @@ bool	check_syntax(void)
 	pipe_nb = 0;
 	cmd_nb = 1;
 	token_manager(RESET);
-	if (is_redir_or_pipe(token_manager(CUR)))
-		return (error_info("Wrong syntax: first token is redir or pipe."));
+	if (is_pipe(token_manager(CUR)))
+		return (error_info("Wrong syntax: first token cannot be a pipe."));
 	while (token_manager(CUR))
 	{
 		next = token_manager(PREVIEW);

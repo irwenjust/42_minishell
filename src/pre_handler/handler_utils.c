@@ -29,3 +29,12 @@ bool	is_redir(t_token *token)
 		return (true);
 	return (false);
 }
+
+bool	is_pipe(t_token *token)
+{
+	if (!token)
+		return (false);
+	if (token->type == TK_PIPE)
+		return (true);
+	return (false);
+}

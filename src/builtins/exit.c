@@ -33,26 +33,26 @@ static int	check_status(char *str)
 		return (ft_strcmp(str, "9223372036854775807") > 0);
 }
 
-void	ft_exit(char **strs)
+void	ft_exit(char **token)
 {
-	if (matrix_size(strs) > 2)
+	if (matrix_size(token) > 2)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		ms()->exit = 1;
 		return ;
 	}
-	if (matrix_size(strs) == 2 && check_status(strs[1]))
+	if (matrix_size(token) == 2 && check_status(token[1]))
 	{
 		ft_putstr_fd("exit\nminishell: exit: ", 2);
-		ft_putstr_fd(strs[1], 2);
+		ft_putstr_fd(token[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		ms()->exit = 2;
 	}
-	else if (matrix_size(strs) == 2)
+	else if (matrix_size(token) == 2)
 	{
 		ft_putstr_fd("exit\n", 1);
-		ms()->exit = ft_atoi(strs[1]) % 256;
+		ms()->exit = ft_atoi(token[1]) % 256;
 	}
-	matrix_delete(strs);
+	matrix_delete(token);
 	restart(true);
 }
