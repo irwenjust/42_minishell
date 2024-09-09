@@ -34,10 +34,11 @@ stdbool: bool function
 # include <unistd.h>
 # include <stdlib.h>
 // # include <errno.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <stdbool.h>
 # include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/stat.h>
 
 # include "libft.h"
 # include "ft_printf/ft_printf.h"
