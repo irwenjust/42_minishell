@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/08/29 18:53:48 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/09 16:10:58 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # define FAIL_EXEC 126
 # define FAIL_FCMD 127
 
+# define READ 0
+# define WRITE 1
+
 /*
 stdio: printf()
 unistd: getcwd()
@@ -29,6 +32,7 @@ stdlib: perror()
 errno: errno
 readline: readline
 stdbool: bool function
+sys/types: pid
 */
 # include <stdio.h>
 # include <unistd.h>
@@ -39,6 +43,7 @@ stdbool: bool function
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/stat.h>
+# include <sys/types.h>
 
 # include "libft.h"
 # include "ft_printf/ft_printf.h"
@@ -119,6 +124,7 @@ envp: whole environment variable
 env_list: save environment to link list
 lexer_tk: token get from lexer process
 ast: abstract syntax tess from parse process
+fds: save fds for pipe
 */
 typedef struct	s_ms
 {
@@ -126,6 +132,7 @@ typedef struct	s_ms
 	int		out_fd;
 	int		exit;
 	int		cmd_nb;
+	int		**fds;
 	char	*cwd;
 	char	*prompt;
 	char	*input;
@@ -213,5 +220,14 @@ void	ft_exit(char **strs);
 
 //signal
 void singal_default(void);
+
+//exercute part
+void	execute(t_ast *ast);
+void	create_pipe(void);
+void	redirect(t_token_type type, char *f_name);
+
+//exercute tools
+bool	is_unfork(char *cmd, char *arg);
+bool	is_builtin(char *cmd);
 
 #endif

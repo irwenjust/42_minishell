@@ -1,7 +1,14 @@
 {
     "files.associations": {
         "minishell.h": "c",
+<<<<<<< HEAD
         "history.h": "c",
         "stat.h": "c"
+=======
+        "unistd.h": "c",
+        "history.h": "c",
+        "types.h": "c",
+        "stdbool.h": "c"
+>>>>>>> 9bf2903 (backup)
     }
 }

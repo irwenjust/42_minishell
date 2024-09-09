@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:37:11 by likong            #+#    #+#             */
-/*   Updated: 2024/09/05 12:57:08 by yzhan            ###   ########.fr       */
+/*   Updated: 2024/09/09 15:16:51 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	start_shell(void)
 		add_history(ms()->input);
 		pre_handle();
 	//check assignment, execute, update_env
-		//execute();
+		execute(ms()->ast);
 		restart(false);
 	}
 	rl_clear_history();

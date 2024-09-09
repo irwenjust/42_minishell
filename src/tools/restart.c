@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:23:09 by likong            #+#    #+#             */
-/*   Updated: 2024/09/05 13:54:40 by yzhan            ###   ########.fr       */
+/*   Updated: 2024/09/09 15:59:00 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	restart(bool status)
 	{
 		ft_free(ms()->cwd);
 		matrix_delete(ms()->path);
-		matrix_delete(ms()->envp);           //??????????????????
+		matrix_delete(ms()->envp);
 		ft_lstclear(&ms()->env_list, (void (*)(void *))delete_env);
 		exit(ms()->exit);
 	}

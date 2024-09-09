@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:45:27 by likong            #+#    #+#             */
-/*   Updated: 2024/08/30 10:44:45 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/09 15:22:56 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ void	ft_exit(char **token)
 		ft_putstr_fd("exit\n", 1);
 		ms()->exit = ft_atoi(token[1]) % 256;
 	}
-	matrix_delete(token);
+	// matrix_delete(token);
 	restart(true);
 }
