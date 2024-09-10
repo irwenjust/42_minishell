@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 13:59:03 by likong            #+#    #+#             */
-/*   Updated: 2024/09/10 09:26:33 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/10 10:35:26 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ bool	is_unfork(char *cmd, char *arg)
 	return (!ft_strcmp(cmd, "cd")
 			|| !ft_strcmp(cmd, "exit")
 			|| (!ft_strcmp(cmd, "export") && arg)
-			|| !ft_strcmp(cmd, "unset"));
+			|| !ft_strcmp(cmd, "unset")
+			|| !ft_strcmp(cmd, "pwd"));
 }

@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:23:09 by likong            #+#    #+#             */
-/*   Updated: 2024/09/09 15:59:00 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/10 10:20:53 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	restart(bool status)
 	ft_free(ms()->input);
 	ft_lstclear(&ms()->lexer_tk, (void (*)(void *))token_delete);
 	ast_clear(ms()->ast, ast_delone);
+	matrix_delete(ms()->fds);
 	(ms()->prompt) = NULL; //must need this??????????????????? why no input=NULL???????
 	(ms()->ast) = NULL;
 	(ms()->lexer_tk) = NULL;
