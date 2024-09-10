@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/09 16:10:58 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/10 09:44:33 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ errno: errno
 readline: readline
 stdbool: bool function
 sys/types: pid
+sys/wait: waitpid
 */
 # include <stdio.h>
 # include <unistd.h>
@@ -44,6 +45,7 @@ sys/types: pid
 # include <readline/history.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 
 # include "libft.h"
 # include "ft_printf/ft_printf.h"
@@ -220,6 +222,7 @@ void	ft_exit(char **strs);
 
 //signal
 void singal_default(void);
+void	signals_child(void);
 
 //exercute part
 void	execute(t_ast *ast);
