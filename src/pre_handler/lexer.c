@@ -137,7 +137,7 @@ bool	check_syntax(void)
 		if (token_manager(CUR)->type == TK_PIPE)
 		{
 			pipe_nb++;
-			if (next && !is_redir_or_pipe(next))
+			if (next && !is_pipe(next))
 				cmd_nb++;
 		}
 		token_manager(NEXT);

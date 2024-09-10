@@ -44,7 +44,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	(void)argv;
 	init_ms(envp);
-	singal_default();
+	signal_default();
 	start_shell();
 	return (0);
 }

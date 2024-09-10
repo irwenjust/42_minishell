@@ -30,10 +30,11 @@ void	restart(bool status)
 {
 	ft_free(ms()->prompt);
 	ft_free(ms()->input);
-	ft_lstclear(&ms()->lexer_tk, (void (*)(void *))token_delete);
-	ast_clear(ms()->ast, ast_delone);
 	matrix_delete(ms()->fds);
-	(ms()->prompt) = NULL; //must need this??????????????????? why no input=NULL???????
+	ast_clear(ms()->ast, ast_delone);
+	ft_lstclear(&ms()->lexer_tk, (void (*)(void *))token_delete);
+
+	(ms()->fds) = NULL;
 	(ms()->ast) = NULL;
 	(ms()->lexer_tk) = NULL;
 	(ms()->cmd_nb) = 0;
