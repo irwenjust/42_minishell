@@ -127,7 +127,7 @@ static pid_t	handle_child(t_ast *node)
 {
 	pid_t	pid;
 
-	signals_child();
+	signal_child();
 	pid = fork();
 	if (pid < 0)
 	{
@@ -191,5 +191,5 @@ void	execute(t_ast *ast)
 		continue ;
 	if (WIFEXITED(status))
 		ms()->exit = WEXITSTATUS(status);
-	singal_default();
+	signal_default();
 }

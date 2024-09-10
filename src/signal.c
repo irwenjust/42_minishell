@@ -34,23 +34,23 @@ void	handle_sigint(int signal)
 	}
 }
 
-void	singal_default(void)
+void	signal_default(void)
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-static void	handler_child(int signum)
+static void	handle_child(int signal)
 {
-	if (signum == SIGINT)
+	if (signal == SIGINT)
 		ft_putstr_fd("\n", STDERR_FILENO);
-	else if (signum == SIGQUIT)
+	else if (signal == SIGQUIT)
 		ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
-	(ms()->exit) = 128 + signum;
+	(ms()->exit) = 128 + signal;
 }
 
-void	signals_child(void)
+void	signal_child(void)
 {
-	signal(SIGINT, handler_child);
-	signal(SIGQUIT, handler_child);
+	signal(SIGINT, handle_child);
+	signal(SIGQUIT, handle_child);
 }

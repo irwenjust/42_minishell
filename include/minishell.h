@@ -221,8 +221,8 @@ int error_info(char *info);
 void	ft_exit(char **strs);
 
 //signal
-void singal_default(void);
-void	signals_child(void);
+void	signal_default(void);
+void	signal_child(void);
 
 //exercute part
 void	execute(t_ast *ast);
