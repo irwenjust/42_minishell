@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/10 10:58:07 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/10 12:27:03 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,6 @@ static pid_t	handle_child(t_ast *node)
 		//didn't check in_fd and out_fd here
 		if (ms()->in_fd == -1 || ms()->out_fd == -1)
 			restart(true);
-		if (ms()->cmd_nb < 2)
-			ft_putstr_fd("Here\n", 2);
 		if (ms()->in_fd == STD_IN)
 			if (node->index != 0)
 				ms()->in_fd = ms()->fds[node->index - 1][READ];
@@ -167,7 +165,7 @@ static pid_t	fill_pipe(t_ast *node)
 	pid = fill_pipe(node->right);
 	if (!is_redir_or_pipe(node->token))
 	{
-		if (is_unfork(node->arg[0], node->arg[1]))
+		if (is_unfork(node->arg[0], node->arg[1]) || ms()->cmd_nb < 2)
 			handle_command(node->arg);
 		else
 			pid = handle_child(node);
