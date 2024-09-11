@@ -1,9 +1,0 @@
-{
-	"files.associations": {
-		"minishell.h": "c",
-		"fcntl.h": "c",
-		"readline.h": "c",
-		"stdlib.h": "c",
-		"unistd.h": "c"
-	}
-}

@@ -36,7 +36,7 @@ static char	*replace_keyword(char *str, char *old, char *new)
 	return (res);
 }
 
-static char	*find_keyword(char *str)
+char	*find_keyword(char *str)
 {
 	char	*tmp;
 	char	*keyword;

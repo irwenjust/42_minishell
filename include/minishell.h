@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/11 12:07:51 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/11 14:27:18 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,7 @@ t_token *token_manager(t_manager mg);
 
 //Expander
 void expander(void);
+char	*find_keyword(char *str);
 
 //Parser
 void	parser(void);
@@ -254,6 +255,7 @@ void	redirect(t_token_type type, char *f_name);
 bool	is_unfork(char *cmd, char *arg);
 bool	is_builtin(char *cmd);
 void	dup_fd(void);
+void	apply_fd(int index);
 void	close_fd(int command_index);
 
 //Handle path

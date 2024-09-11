@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:20:14 by likong            #+#    #+#             */
-/*   Updated: 2024/09/11 12:08:55 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/11 16:00:04 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,5 @@ void	show_error(char *message, t_error error, int err_fd)
 {
 	show_message(message, error);
 	ms()->exit = err_fd;
-	restart(true);
+	// restart(true);
 }

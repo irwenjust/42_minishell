@@ -6,15 +6,80 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:13:39 by likong            #+#    #+#             */
-/*   Updated: 2024/09/11 12:31:37 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/11 15:59:15 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static char	*expand_line(char *line)
+// void	handler_heredoc(int signum)
 // {
-// 	char	*
+// 	if (signum != SIGINT)
+// 		return ;
+// 	printf("\n");
+// 	restart(true);
+// 	(ms()->exit) = 130;
+// }
+
+// void	signals_heredoc(void)
+// {
+// 	signal(SIGINT, handler_heredoc);
+// 	signal(SIGQUIT, SIG_IGN);
+// }
+
+// void	signals_ignore(void)
+// {
+// 	signal(SIGINT, SIG_IGN);
+// 	signal(SIGQUIT, SIG_IGN);
+// }
+
+// char	*ft_strreplace(char *str, char *old, char *new)
+// {
+// 	char	*ret;
+// 	char	*tmp;
+// 	char	*ptr;
+// 	int		len;
+
+// 	if (!str || !old || !new)
+// 		return (NULL);
+// 	len = ft_strlen(str) + ft_strlen(new) - ft_strlen(old);
+// 	ret = ft_calloc(len + 1, sizeof(char));
+// 	if (!ret)
+// 		return (NULL);
+// 	ptr = ft_strnstr(str, old, ft_strlen(str));
+// 	if (!ptr)
+// 		return (NULL);
+// 	tmp = ft_substr(str, 0, ptr - str);
+// 	ft_strlcat(ret, tmp, len + 1);
+// 	ft_strlcat(ret, new, len + 1);
+// 	ft_strlcat(ret, ptr + ft_strlen(old), len + 1);
+// 	ft_free(tmp);
+// 	return (ret);
+// }
+
+// char	*expand_line(char *input)
+// {
+// 	char	*expanded;
+// 	char	*value;
+// 	char	*key;
+// 	char	*tmp;
+
+// 	expanded = ft_strdup(input);
+// 	while (ft_strnstr(expanded, "$", ft_strlen(expanded)))
+// 	{
+// 		key = find_keyword(expanded);
+// 		if (!ft_strcmp(key, "$?"))
+// 			value = ft_itoa(ms()->exit);
+// 		else
+// 			value = get_env(key);
+// 		tmp = expanded;
+// 		expanded = ft_strreplace(expanded, key, value);
+// 		ft_free(tmp);
+// 		ft_free(value);
+// 		ft_free(key);
+// 	}
+// 	ft_free(input);
+// 	return (expanded);
 // }
 
 //Use get_next_line to replace readline, 
@@ -29,21 +94,23 @@ static void	read_heredoc(char *end_of_file)
 		show_error(NULL, HERE_DOC, FAIL_STD);
 	while (1)
 	{
-		write(1, "> ", 2);
-		line = get_next_line(STD_IN);
+		line = readline("> ");
 		if (!line)
 		{
-			close(fd);
+			write(1, "\n", 1);
 			show_error(NULL, NEXT_LINE, FAIL_STD);
+			break ;
 		}
 		if (!ft_strcmp(line, end_of_file))
+		{
+			ft_free(line);
 			break ;
+		}
 		// line = expand_line(line);
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}
 	close(fd);
-	ft_free(line);
 	restart(true);
 }
 
@@ -51,7 +118,8 @@ static void	read_heredoc(char *end_of_file)
 static int	start_heredoc(char *f_name)
 {
 	pid_t	pid;
-	
+
+	// signals_heredoc();
 	if (ms()->in_fd > STD_IN)
 		close(ms()->in_fd);
 	pid = fork();
@@ -59,7 +127,9 @@ static int	start_heredoc(char *f_name)
 		show_error(NULL, FORK, FAIL_STD);
 	else if (pid == 0)
 		read_heredoc(f_name);
+	// signals_ignore();
 	waitpid(0, NULL, 0);
+	// signal_default();
 	//The permission maybe need to adjust
 	return (open("here_doc", O_RDONLY, 0444));
 }

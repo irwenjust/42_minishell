@@ -6,13 +6,13 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/11 12:47:49 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/11 16:04:34 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// May need change later
+// Might need change later
 static void	exec_others(char **cmds)
 {
 	char		*path;
@@ -23,16 +23,16 @@ static void	exec_others(char **cmds)
 	if (path)
 	{
 		if (S_ISDIR(path_stat.st_mode))
-			ft_putstr_fd("error 1\n", 2);
+			show_error(path, DIRECTORY, FAIL_EXEC);
 		else if (S_ISREG(path_stat.st_mode))
 		{
 			execve(path, cmds, ms()->envp);
-			ft_putstr_fd("error 2\n", 2);
+			show_error(path, PERMISSION, FAIL_EXEC);
 		}
 		ft_free(path);
 	}
 	else
-		ft_putstr_fd("error 3\n", 2);
+		show_error(path, COMMAND, FAIL_FCMD);
 	return ;
 }
 
@@ -61,12 +61,7 @@ static pid_t	handle_child(t_ast *node)
 	{
 		if (ms()->in_fd == -1 || ms()->out_fd == -1)
 			restart(true);
-		if (ms()->in_fd == STD_IN)
-			if (node->index != 0)
-				ms()->in_fd = ms()->fds[node->index - 1][READ];
-		if (ms()->out_fd == STD_OUT)
-			if (node->index < ms()->cmd_nb - 1)
-				ms()->out_fd = ms()->fds[node->index][WRITE];
+		apply_fd(node->index);
 		dup_fd();
 		handle_command(node->arg);
 		restart(true);
@@ -84,14 +79,15 @@ static pid_t	fill_pipe(t_ast *node)
 		return (pid);
 	pid = fill_pipe(node->left);
 	pid = fill_pipe(node->right);
+	// printf("index: %d\n", node->index);
 	if (!is_redir_or_pipe(node->token))
 	{
-		if (is_unfork(node->arg[0], node->arg[1]) || ms()->cmd_nb < 2)
+		if (is_unfork(node->arg[0], node->arg[1]))
 			handle_command(node->arg);
 		else
 			pid = handle_child(node);
 	}
-	else if (is_redir(node->token) && node->arg)
+	else if (is_redir(node->token) && node->arg[0])
 		redirect(node->token->type, node->arg[0]);
 	return (pid);
 }
