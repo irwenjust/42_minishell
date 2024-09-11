@@ -6,11 +6,33 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 13:59:03 by likong            #+#    #+#             */
-/*   Updated: 2024/09/10 10:35:26 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/11 10:29:02 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	dup_fd(void)
+{
+	if (ms()->in_fd >= STD_IN)
+		dup2(ms()->in_fd, STD_IN);
+	if (ms()->out_fd >= STD_OUT)
+		dup2(ms()->out_fd, STD_OUT);
+}
+
+void	close_fd(int command_index)
+{
+	if (ms()->in_fd > STD_IN)
+		close(ms()->in_fd);
+	if (ms()->out_fd > STD_OUT)
+		close(ms()->out_fd);
+	if (command_index > 0)
+		close(ms()->fds[command_index - 1][READ]);
+	if (command_index < ms()->cmd_nb - 1)
+		close(ms()->fds[command_index][WRITE]);
+	ms()->in_fd = STD_IN;
+	ms()->out_fd = STD_OUT;
+}
 
 bool	is_builtin(char *cmd)
 {

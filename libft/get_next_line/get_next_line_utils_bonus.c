@@ -6,13 +6,13 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:09:17 by likong            #+#    #+#             */
-/*   Updated: 2024/07/25 08:29:53 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/11 12:25:32 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*ft_free(char **str)
+char	*f_free(char **str)
 {
 	free(*str);
 	*str = NULL;
@@ -49,10 +49,10 @@ char	*str_join(char *s1, char const *s2)
 			return (NULL);
 		s1[0] = 0;
 	}
-	size = str_len(s1, '\0') + str_len(s2, '\0');
+	size = str_leng(s1, '\0') + str_leng(s2, '\0');
 	str = (char *)malloc(sizeof(char) * (size + 1));
 	if (!str)
-		return (ft_free(&s1));
+		return (f_free(&s1));
 	i = -1;
 	while (s1[++i])
 		str[i] = s1[i];
@@ -64,7 +64,7 @@ char	*str_join(char *s1, char const *s2)
 	return (str);
 }
 
-size_t	str_len(char const *s, char c)
+size_t	str_leng(char const *s, char c)
 {
 	size_t	i;
 
@@ -84,7 +84,7 @@ char	*substr(const char *s, size_t start, size_t len)
 	i = 0;
 	if (!s)
 		return (0);
-	if (start > str_len(s, '\0'))
+	if (start > str_leng(s, '\0'))
 	{
 		res = malloc(sizeof(char) * (1));
 		if (!res)
@@ -92,12 +92,12 @@ char	*substr(const char *s, size_t start, size_t len)
 		res[0] = '\0';
 		return (res);
 	}
-	if (str_len(s, '\0') - start < len)
-		len = str_len(s, '\0') - start;
+	if (str_leng(s, '\0') - start < len)
+		len = str_leng(s, '\0') - start;
 	res = malloc(sizeof(char) * (len + 1));
 	if (!res)
 		return (NULL);
-	while (start < str_len(s, '\0') && i < len && s[start])
+	while (start < str_leng(s, '\0') && i < len && s[start])
 		res[i++] = s[start++];
 	res[i] = '\0';
 	return (res);

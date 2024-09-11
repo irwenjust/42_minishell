@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:42:57 by likong            #+#    #+#             */
-/*   Updated: 2024/07/25 08:29:59 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/11 12:25:11 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 char	*get_next_line(int fd);
 char	*str_chr(const char *s, int c);
 char	*str_join(char *s1, char const *s2);
-size_t	str_len(char const *s, char c);
+size_t	str_leng(char const *s, char c);
 char	*substr(const char *s1, size_t start, size_t len);
-char	*ft_free(char **str);
+char	*f_free(char **str);
 
 #endif

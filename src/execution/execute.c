@@ -6,93 +6,19 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/10 12:27:03 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/11 12:47:49 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_absolute_path(char *exe)
-{
-	char	*tmp;
-	char	*path;
-	int		i;
-
-	i = -1;
-	if (exe[0] == '\0')
-		return (NULL);
-	if (access(exe, F_OK) == 0)
-	{
-		path = ft_strjoin("", exe);
-		return (path);
-	}
-	while (ms()->path[++i])
-	{
-		tmp = ft_strjoin(ms()->path[i], "/");
-		path = ft_strjoin(tmp, exe);
-		free(tmp);
-		if (access(path, F_OK) == 0)
-			return (path);
-		free(path);
-	}
-	return (NULL);
-}
-
-char	*get_relative_path(char *exe)
-{
-	char	*tmp;
-	char	*path;
-
-	tmp = ft_strjoin(ms()->cwd, "/");
-	path = ft_strjoin(tmp, exe + 2);
-	free(tmp);
-	if (access(path, F_OK) == 0)
-		return (path);
-	free(path);
-	if (access(exe, F_OK) == 0)
-		return (ft_strdup(exe));
-	return (NULL);
-}
-
-char	*get_executable_path(char *exe)
-{
-	char	*path;
-
-	if (exe[0] == '.')
-		path = get_relative_path(exe);
-	else
-		path = get_absolute_path(exe);
-	return (path);
-}
-
-void	dup_fd(void)
-{
-	if (ms()->in_fd >= STD_IN)
-		dup2(ms()->in_fd, STD_IN);
-	if (ms()->out_fd >= STD_OUT)
-		dup2(ms()->out_fd, STD_OUT);
-}
-
-void	close_fd(int command_index)
-{
-	if (ms()->in_fd > STD_IN)
-		close(ms()->in_fd);
-	if (ms()->out_fd > STD_OUT)
-		close(ms()->out_fd);
-	if (command_index > 0)
-		close(ms()->fds[command_index - 1][READ]);
-	if (command_index < ms()->cmd_nb - 1)
-		close(ms()->fds[command_index][WRITE]);
-	ms()->in_fd = STD_IN;
-	ms()->out_fd = STD_OUT;
-}
-
+// May need change later
 static void	exec_others(char **cmds)
 {
 	char		*path;
 	struct stat	path_stat;
 
-	path = get_executable_path(cmds[0]);
+	path = get_path(cmds[0]);
 	stat(path, &path_stat);
 	if (path)
 	{
@@ -130,20 +56,15 @@ static pid_t	handle_child(t_ast *node)
 	signal_child();
 	pid = fork();
 	if (pid < 0)
-	{
-		ft_putstr_fd("Some mistake happend when fork process.\n", 2);
-		restart(true);
-	}
+		show_error(NULL, FORK, FAIL_STD);
 	else if (pid == 0)
 	{
-		//didn't check in_fd and out_fd here
 		if (ms()->in_fd == -1 || ms()->out_fd == -1)
 			restart(true);
 		if (ms()->in_fd == STD_IN)
 			if (node->index != 0)
 				ms()->in_fd = ms()->fds[node->index - 1][READ];
 		if (ms()->out_fd == STD_OUT)
-			// Doubts about cmd_nb and index
 			if (node->index < ms()->cmd_nb - 1)
 				ms()->out_fd = ms()->fds[node->index][WRITE];
 		dup_fd();
@@ -170,8 +91,8 @@ static pid_t	fill_pipe(t_ast *node)
 		else
 			pid = handle_child(node);
 	}
-	// else if (is_redir(node->token))
-	// 	redirect(node->token->type, node->arg[0]);
+	else if (is_redir(node->token) && node->arg)
+		redirect(node->token->type, node->arg[0]);
 	return (pid);
 }
 

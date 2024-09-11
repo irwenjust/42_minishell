@@ -11,7 +11,7 @@ SRCS =	main.c interface.c signal.c \
 		lexer.c token.c expander.c parser.c ast.c handler_utils.c \
 		envlist.c for_ms.c link_list.c matrix.c restart.c utils.c \
 		exit.c \
-		execute.c pipe.c exec_tools.c redirection.c
+		execute.c pipe.c exec_tools.c redirection.c path.c \
 
 OBJS_DIR = objs
 OBJS = $(SRCS:.c=.o)

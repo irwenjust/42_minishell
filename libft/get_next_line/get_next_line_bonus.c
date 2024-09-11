@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:27:54 by likong            #+#    #+#             */
-/*   Updated: 2024/07/25 08:33:02 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/11 12:25:42 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ char	*jump_to_newline(char *content)
 	if (!res)
 	{
 		new_content = NULL;
-		return (ft_free(&content));
+		return (f_free(&content));
 	}
 	else
 		len = (res - content) + 1;
 	if (!content[len])
-		return (ft_free(&content));
-	new_content = substr(content, len, str_len(content, '\0') - len);
-	ft_free(&content);
+		return (f_free(&content));
+	new_content = substr(content, len, str_leng(content, '\0') - len);
+	f_free(&content);
 	if (!new_content)
 		return (NULL);
 	return (new_content);
@@ -41,7 +41,7 @@ char	*check_line(char *content)
 	char	*line;
 	size_t	len;
 
-	len = str_len(content, '\n');
+	len = str_leng(content, '\n');
 	if (content[len] == '\n')
 		len++;
 	line = substr(content, 0, len);
@@ -59,14 +59,14 @@ char	*get_content(int fd, char *content)
 	bytes = 1;
 	content_buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!content_buf)
-		return (ft_free(&content));
+		return (f_free(&content));
 	while ((content && bytes > 0 && !str_chr(content, '\n')) || !content)
 	{
 		bytes = read(fd, content_buf, BUFFER_SIZE);
 		if (bytes < 0)
 		{
 			free(content_buf);
-			return (ft_free(&content));
+			return (f_free(&content));
 		}
 		if (bytes == 0)
 			break ;
@@ -74,7 +74,7 @@ char	*get_content(int fd, char *content)
 		content = str_join(content, content_buf);
 	}
 	free(content_buf);
-	if (str_len(content, '\0') > 0)
+	if (str_leng(content, '\0') > 0)
 		return (content);
 	return (NULL);
 }
@@ -91,7 +91,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = check_line(content[fd]);
 	if (!line)
-		return (ft_free(&content[fd]));
+		return (f_free(&content[fd]));
 	content[fd] = jump_to_newline(content[fd]);
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/10 09:44:33 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/11 12:07:51 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ readline: readline
 stdbool: bool function
 sys/types: pid
 sys/wait: waitpid
+fcntl: O_WRONLY, O_RDONLY etc.
 */
 # include <stdio.h>
 # include <unistd.h>
@@ -46,9 +47,11 @@ sys/wait: waitpid
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 
 # include "libft.h"
 # include "ft_printf/ft_printf.h"
+# include "get_next_line/get_next_line.h"
 
 /*
 token type for lexer
@@ -85,6 +88,21 @@ typedef enum e_token_manager
 	NEXT,
 	PREVIEW,
 } t_manager;
+
+typedef enum s_error
+{
+	FORK,
+	ENVP,
+	MALLOC,
+	PIPE,
+	PERMISSION,
+	FILE_NAME,
+	DUP2,
+	DIRECTORY,
+	COMMAND,
+	HERE_DOC,
+	NEXT_LINE
+}	t_error;
 
 /*
 token struct
@@ -208,6 +226,7 @@ void	add_node(t_list **list, char *str);
 //Utils function
 int	str_len(char *str, char *sep);
 int error_info(char *info);
+void	show_error(char *message, t_error error, int err_fd);
 
 
 
@@ -220,17 +239,24 @@ int error_info(char *info);
 //Exit function
 void	ft_exit(char **strs);
 
-//signal
+//Signal
 void	signal_default(void);
 void	signal_child(void);
 
-//exercute part
+//Exercute part
 void	execute(t_ast *ast);
 void	create_pipe(void);
+
+//Redirect part
 void	redirect(t_token_type type, char *f_name);
 
-//exercute tools
+//Exercute tools
 bool	is_unfork(char *cmd, char *arg);
 bool	is_builtin(char *cmd);
+void	dup_fd(void);
+void	close_fd(int command_index);
+
+//Handle path
+char	*get_path(char *exe);
 
 #endif
