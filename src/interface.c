@@ -30,37 +30,108 @@ static char	*set_prompt(void)
 	return (res2);
 }
 
- void print_ast_arg(t_ast *node)
- {
-	static int i = 0;
-     if (node == NULL)
-         return ;
-     int j = 0;
+/*
+void print_ast_arg(t_ast *node, int depth, int is_left) 
+{
+    if (node == NULL)
+        return;
+
+    // Print indentation
+    for (int i = 0; i < depth; i++)
+        printf("    ");
+    
+    // Print the node
+    if (depth > 0) {
+        if (is_left)
+            printf("├── ");
+        else
+            printf("└── ");
+    }
+    printf("Index: %d, Token: %s", node->index, node->token ? node->token->tk : "NULL");
+	int j = 0;
      if (node->token)
      {
-		printf("%i token: %s\n", i++, node->token->tk);
+		printf(", arg: ");
 		if (node->arg[j] == NULL)
-			printf("%i arg: %s\n", j++, "null");
+		{
+			printf("%s", "null");
+			j++;
+		}
 		while (node->arg && node->arg[j])
 		{
 			if (node->arg[j])
-        		printf("%i arg: %s\n", j, node->arg[j]);
+        		printf("%s, ", node->arg[j]);
         	j++;
 		}
      }
-	 
-     print_ast_arg(node->left);
-     print_ast_arg(node->right);
- }
-/*
-void	pre_handle(void)
+	 printf("\n");
+    // Recursively print the left and right subtrees
+    print_ast_arg(node->left, depth + 1, 1);
+    print_ast_arg(node->right, depth + 1, 0);
+}
+
+void print_ast_arg(t_ast *node) 
+{
+
+	t_ast *left_node = NULL;
+	t_ast *right_node = NULL;
+	t_ast *cur;
+	int j;
+	
+	if (node == NULL)
+        return;
+	
+	cur = node->left->right;
+	while (cur)
+	{
+		
+		printf("Index: %d, Token:%s", cur->index, cur->token ? cur->token->tk : "NULL");
+		j = 0;
+		if (cur->token)
+     	{
+			printf(", arg: ");
+			if (cur->arg[j] == NULL)
+			{
+				printf("%s", "null");
+				j++;
+			}
+			while (cur->arg && cur->arg[j])
+			{
+				if (cur->arg[j])
+        			printf("%s, ", cur->arg[j]);
+        		j++;
+			}
+     	}
+		//if(cur->right)
+		//	printf("right\n");
+		//if(cur->left)
+		//	printf("left\n");
+		cur = cur->right;
+	}
+
+	left_node = node->left;
+	printf("\n");
+	printf("Index: %d, Token:%s", left_node->index, left_node->token ? left_node->token->tk : "NULL");
+	printf("\n");
+	right_node = left_node->right;
+	printf("Index: %d, Token:%s", right_node->index, right_node->token ? right_node->token->tk : "NULL");
+	printf("\n");
+	printf("Index: %d, Token:%s", node->index, node->token ? node->token->tk : "NULL");
+	
+	printf("\n");
+	right_node = node->right;
+	printf("Index: %d, Token:%s", right_node->index, right_node->token ? right_node->token->tk : "NULL");
+	printf("\n");
+}
+
+bool	pre_handle(void)
 {
 //lexer
     if (!check_quote())
-        return ;
+        return (false);
     lexer();
 	if (!check_syntax())
-		return ;
+		return (false);
 	//lexer test
     // t_list *cur;
     // cur = ms()->lexer_tk;
@@ -78,7 +149,7 @@ void	pre_handle(void)
     // exp = ms()->lexer_tk;
     // while (exp)
     // {
-	// 	printf("expander: %s\n", ((t_token *)(exp->content))->input);
+	// 	printf("expander: %s\n", ((t_token *)(exp->content))->tk);
     //     exp = exp->next;
     // }
 
@@ -86,9 +157,10 @@ void	pre_handle(void)
 	parser();
 	//test parse
 	 t_ast *ast = ms()->ast;
-     print_ast_arg(ast);
+     print_ast_arg(ast, 0, 0);
+	 //print_ast_arg(ast);
 
-    return ;
+    return (true);
 }
 */
 
@@ -118,6 +190,7 @@ void	start_shell(void)
 		}
 		add_history(ms()->input);
 		if (pre_handle() == true)
+			printf("\n");
 			execute(ms()->ast);
 		unlink("here_doc");
 		restart(false);

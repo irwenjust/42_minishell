@@ -74,25 +74,39 @@ static t_ast	*parse_cmd(void)
 	return (cmd);
 }
 
+t_ast *change_fist_token(t_ast *cmd)
+{
+	ft_free(cmd->token->tk);
+	cmd->token->tk = ft_strdup(cmd->arg[0]);
+	cmd->token->type = TK_KEYWORD;
+	return (cmd);
+}
+
 /*patrse func to creat ast*/
 void	parser(void)
 {
 	t_ast	*cmd;
+	int need_chage;
 
-	token_manager(RESET);
 	cmd = NULL;
-	//get first cmd, token will be move to next one inside parse_cmd func
+	need_chage = 0;
+	token_manager(RESET);
+	if (token_manager(CUR)->type >= TK_IN_RE && token_manager(CUR)->type <= TK_APPEND)
+			need_chage = 1;
 	(ms()->ast) = parse_cmd();
 	if (!(ms()->ast))
 		return ;
-	//so if only one pipe, token(CUR) is NULL now, and would not go into this while loop
-	//if there is more than one pipes, go into loop to parse each one by one
+	if (need_chage == 1)
+		(ms()->ast) = change_fist_token((ms()->ast));
 	while (token_manager(CUR) && token_manager(CUR)->type == TK_PIPE)
 	{
-		//CUR token is '|', need to be move to next token
+		need_chage = 0;
 		token_manager(NEXT);
+		if (token_manager(CUR)->type >= TK_IN_RE && token_manager(CUR)->type <= TK_APPEND)
+			need_chage = 1;
 		cmd = parse_cmd();
-		//after parsing cmd, manage pipe, why after?????????
+		if (need_chage == 1)
+			cmd = change_fist_token(cmd);
 		(ms()->ast) = parse_pipe(ms()->ast, cmd);
 	}
 }
