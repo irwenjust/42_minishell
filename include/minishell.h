@@ -165,14 +165,28 @@ typedef struct	s_ms
 
 
 
-
+/*MAIN*/
 //Create ms struct
 t_ms	*ms(void);
 
 //Shell interface
 void	start_shell(void);
 
-//Pre Handling
+
+/*SIGNAL*/
+//Signal
+void	signal_default(void);
+void	signal_child(void);
+void signal_heredoc(void);
+void signal_ignore(void);
+
+//signal handler
+void	handle_sigint(int signal);
+void	handle_child(int signal);
+void	handle_heredoc(int signal);
+
+
+/*PRE HANDLING*/
 //Lexer
 bool check_quote(void);
 void lexer(void);
@@ -198,11 +212,25 @@ void ast_insert(t_ast **ast, t_ast *node, bool left);
 void ast_delone(t_ast *ast);
 void ast_clear(t_ast *ast, void (*del)(t_ast *));
 
-//handler utils
-bool is_redir_or_pipe(t_token *token);
-bool is_redir(t_token *token);
-bool	is_pipe(t_token *token);
+/*EXECUTION*/
+//Exercute part
+void	execute(t_ast *ast);
+void	create_pipe(void);
 
+//Redirect part
+void	redirect(t_token_type type, char *f_name);
+
+//Exercute tools
+bool	is_unfork(char *cmd, char *arg);
+bool	is_builtin(char *cmd);
+void	dup_fd(void);
+void	apply_fd(int index);
+void	close_fd(int command_index);
+//Handle path
+char	*get_path(char *exe);
+
+
+/*TOOLS*/
 //For environment
 // void	update_env(void);
 t_env	*new_env(char *key, char *value);
@@ -226,39 +254,17 @@ void	add_node(t_list **list, char *str);
 
 //Utils function
 int	str_len(char *str, char *sep);
-int error_info(char *info);
-void	show_error(char *message, t_error error, int err_fd);
+bool is_redir_or_pipe(t_token *token);
+bool is_redir(t_token *token);
+bool	is_pipe(t_token *token);
+
+//error
+int	show_error(char *message, t_error error, int err_fd);
+int syntax_error(t_token *next);
 
 
-
-
-
-
-
-
-
-//Exit function
+/*BUILTINS*/
 void	ft_exit(char **strs);
 
-//Signal
-void	signal_default(void);
-void	signal_child(void);
-
-//Exercute part
-void	execute(t_ast *ast);
-void	create_pipe(void);
-
-//Redirect part
-void	redirect(t_token_type type, char *f_name);
-
-//Exercute tools
-bool	is_unfork(char *cmd, char *arg);
-bool	is_builtin(char *cmd);
-void	dup_fd(void);
-void	apply_fd(int index);
-void	close_fd(int command_index);
-
-//Handle path
-char	*get_path(char *exe);
 
 #endif

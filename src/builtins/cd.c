@@ -17,7 +17,7 @@ void	change_dir(char *path)
 	char *newpwd;
 
 	if (!ft_strcmp(path, "")) //why not just !path????
-		error_info("error cd no home.\n");
+		show_error_info("error cd no home.", -1, 2);
 	newpwd = "OLDPWD=";
 	newpwd = ft_strjoin(newpwd, ms()->cwd);
 	//update old pwd which is current one
@@ -47,7 +47,7 @@ void ft_cd(char **token)
 
 	if (matrix_size(token) > 1)
 	{
-		error_info("too many args\n");
+		show_error("too many args", -1, 2);
 		return ;
 	}
 	//if no arg or arg[0] is ~, cd to HOME dir
@@ -63,5 +63,5 @@ void ft_cd(char **token)
 	if (S_ISDIR(cur_stat.st_mode))
 		change_dir(ft_strdup(token[0]));
 	else
-		error_info("127\n");
+		show_error("127", -1, 2);
 }

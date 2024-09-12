@@ -5,11 +5,12 @@ LIBFT = -L./libft -lft
 HEADERS = -I./libft -I./include
 
 SRCS_DIR = src
-SRCS_SUBDIR = builtins execution pre_handler tools
+SRCS_SUBDIR = builtins execution pre_handler tools signal
 VPATH = $(SRCS_DIR) $(addprefix $(SRCS_DIR)/, $(SRCS_SUBDIR))
-SRCS =	main.c interface.c signal.c \
-		lexer.c token.c expander.c parser.c ast.c handler_utils.c \
-		envlist.c for_ms.c link_list.c matrix.c restart.c utils.c \
+SRCS =	main.c interface.c \
+		signal.c signal_handler.c \
+		lexer.c token.c expander.c parser.c ast.c \
+		envlist.c error.c for_ms.c link_list.c matrix.c restart.c utils.c \
 		exit.c \
 		execute.c pipe.c exec_tools.c redirection.c path.c \
 
