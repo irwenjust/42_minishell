@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/11 14:27:18 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/12 12:20:26 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,7 @@ int	str_len(char *str, char *sep);
 bool is_redir_or_pipe(t_token *token);
 bool is_redir(t_token *token);
 bool	is_pipe(t_token *token);
+bool	is_local_variable(t_token *token);
 
 //error
 int	show_error(char *message, t_error error, int err_fd);

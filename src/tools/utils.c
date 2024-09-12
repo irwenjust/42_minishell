@@ -48,3 +48,20 @@ bool	is_pipe(t_token *token)
 		return (true);
 	return (false);
 }
+
+bool	is_local_variable(t_token *token)
+{
+	int	i;
+
+	i = -1;
+	if (token->tk[0])
+	{
+		if (token->tk[0] == '=')
+		{
+			show_error(token->tk, COMMAND, FAIL_FCMD);
+			return (false);
+		}
+		else if (token->tk[ft_strlen(token->tk) - 1] == '=')
+		
+	}
+}
