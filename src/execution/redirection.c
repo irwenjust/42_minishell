@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:13:39 by likong            #+#    #+#             */
-/*   Updated: 2024/09/11 15:59:15 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/12 11:21:09 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,54 +33,54 @@
 // 	signal(SIGQUIT, SIG_IGN);
 // }
 
-// char	*ft_strreplace(char *str, char *old, char *new)
-// {
-// 	char	*ret;
-// 	char	*tmp;
-// 	char	*ptr;
-// 	int		len;
+char	*ft_strreplace(char *str, char *old, char *new)
+{
+	char	*ret;
+	char	*tmp;
+	char	*ptr;
+	int		len;
 
-// 	if (!str || !old || !new)
-// 		return (NULL);
-// 	len = ft_strlen(str) + ft_strlen(new) - ft_strlen(old);
-// 	ret = ft_calloc(len + 1, sizeof(char));
-// 	if (!ret)
-// 		return (NULL);
-// 	ptr = ft_strnstr(str, old, ft_strlen(str));
-// 	if (!ptr)
-// 		return (NULL);
-// 	tmp = ft_substr(str, 0, ptr - str);
-// 	ft_strlcat(ret, tmp, len + 1);
-// 	ft_strlcat(ret, new, len + 1);
-// 	ft_strlcat(ret, ptr + ft_strlen(old), len + 1);
-// 	ft_free(tmp);
-// 	return (ret);
-// }
+	if (!str || !old || !new)
+		return (NULL);
+	len = ft_strlen(str) + ft_strlen(new) - ft_strlen(old);
+	ret = ft_calloc(len + 1, sizeof(char));
+	if (!ret)
+		return (NULL);
+	ptr = ft_strnstr(str, old, ft_strlen(str));
+	if (!ptr)
+		return (NULL);
+	tmp = ft_substr(str, 0, ptr - str);
+	ft_strlcat(ret, tmp, len + 1);
+	ft_strlcat(ret, new, len + 1);
+	ft_strlcat(ret, ptr + ft_strlen(old), len + 1);
+	ft_free(tmp);
+	return (ret);
+}
 
-// char	*expand_line(char *input)
-// {
-// 	char	*expanded;
-// 	char	*value;
-// 	char	*key;
-// 	char	*tmp;
+char	*expand_line(char *input)
+{
+	char	*expanded;
+	char	*value;
+	char	*key;
+	char	*tmp;
 
-// 	expanded = ft_strdup(input);
-// 	while (ft_strnstr(expanded, "$", ft_strlen(expanded)))
-// 	{
-// 		key = find_keyword(expanded);
-// 		if (!ft_strcmp(key, "$?"))
-// 			value = ft_itoa(ms()->exit);
-// 		else
-// 			value = get_env(key);
-// 		tmp = expanded;
-// 		expanded = ft_strreplace(expanded, key, value);
-// 		ft_free(tmp);
-// 		ft_free(value);
-// 		ft_free(key);
-// 	}
-// 	ft_free(input);
-// 	return (expanded);
-// }
+	expanded = ft_strdup(input);
+	while (ft_strnstr(expanded, "$", ft_strlen(expanded)))
+	{
+		key = find_keyword(expanded);
+		if (!ft_strcmp(key, "$?"))
+			value = ft_itoa(ms()->exit);
+		else
+			value = get_env(key);
+		tmp = expanded;
+		expanded = ft_strreplace(expanded, key, value);
+		ft_free(tmp);
+		ft_free(value);
+		ft_free(key);
+	}
+	ft_free(input);
+	return (expanded);
+}
 
 //Use get_next_line to replace readline, 
 //not sure work or not, check it later
@@ -106,8 +106,8 @@ static void	read_heredoc(char *end_of_file)
 			ft_free(line);
 			break ;
 		}
-		// line = expand_line(line);
-		write(fd, line, ft_strlen(line));
+		line = expand_line(line);
+		ft_putendl_fd(line, fd);
 		free(line);
 	}
 	close(fd);

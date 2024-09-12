@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/11 16:04:34 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/12 11:06:57 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	handle_command(char **cmds)
 }
 
 //missed signal function
-static pid_t	handle_child(t_ast *node)
+static pid_t	handle_child_process(t_ast *node)
 {
 	pid_t	pid;
 
@@ -85,7 +85,7 @@ static pid_t	fill_pipe(t_ast *node)
 		if (is_unfork(node->arg[0], node->arg[1]))
 			handle_command(node->arg);
 		else
-			pid = handle_child(node);
+			pid = handle_child_process(node);
 	}
 	else if (is_redir(node->token) && node->arg[0])
 		redirect(node->token->type, node->arg[0]);

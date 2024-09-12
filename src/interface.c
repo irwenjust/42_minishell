@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:37:11 by likong            #+#    #+#             */
-/*   Updated: 2024/09/11 15:37:49 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/12 11:26:13 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*set_prompt(void)
 	ft_free(res1);
 	return (res2);
 }
-/*
+
  void print_ast_arg(t_ast *node)
  {
 	static int i = 0;
@@ -38,7 +38,7 @@ static char	*set_prompt(void)
      int j = 0;
      if (node->token)
      {
-		// printf("%i token: %s\n", i++, node->token->tk);
+		printf("%i token: %s\n", i++, node->token->tk);
 		if (node->arg[j] == NULL)
 			printf("%i arg: %s\n", j++, "null");
 		while (node->arg && node->arg[j])
@@ -52,7 +52,7 @@ static char	*set_prompt(void)
      print_ast_arg(node->left);
      print_ast_arg(node->right);
  }
-
+/*
 void	pre_handle(void)
 {
 //lexer
@@ -101,7 +101,7 @@ static bool	pre_handle(void)
 		return (false);
 	expander();
 	parser();
-	// print_ast_arg(ms()->ast);
+	print_ast_arg(ms()->ast);
 	return (true);
 }
 
