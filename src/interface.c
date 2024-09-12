@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:37:11 by likong            #+#    #+#             */
-/*   Updated: 2024/09/12 14:03:58 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/12 16:27:32 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ static bool	pre_handle(void)
 		return (false);
 	expander();
 	parser();
-	print_ast_arg(ms()->ast);
+	// print_ast_arg(ms()->ast);
 	return (true);
 }
 
@@ -190,8 +190,10 @@ void	start_shell(void)
 		}
 		add_history(ms()->input);
 		if (pre_handle() == true)
-			printf("\n");
+		{
+			// printf("\n");
 			execute(ms()->ast);
+		}
 		unlink("here_doc");
 		restart(false);
 	}

@@ -6,13 +6,13 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 17:37:16 by likong            #+#    #+#             */
-/*   Updated: 2024/08/29 19:34:34 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/12 20:24:22 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	add_node(t_list **list, char *str)
+static void	add_node(t_list **list, char *str)
 {
 	int		i;
 	char	*key;
@@ -22,6 +22,27 @@ void	add_node(t_list **list, char *str)
 	key = ft_substr(str, 0, i);
 	value = ft_strdup(str + i + 1);
 	ft_lstadd_front(list, ft_lstnew(new_env(key, value)));
+}
+
+void	add_node_for_local(t_list **list,  char *str)
+{
+	int		i;
+	char	*name;
+	char	*value;
+	t_env	*env;
+
+	i = str_len(str, "=");
+	name = ft_substr(str, 0, i);
+	value = ft_strdup(str + i + 1);
+	env = find_env(*list, name);
+	if (env)
+	{
+		free(name);
+		free(env->value);
+		env->value = value;
+	}
+	else
+		ft_lstadd_front(list, ft_lstnew(new_env(name, value)));
 }
 
 t_list	*init_list(char **strs)

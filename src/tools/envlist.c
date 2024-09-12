@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   envlist.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:21:36 by likong            #+#    #+#             */
-/*   Updated: 2024/08/29 19:27:20 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/12 19:00:52 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,24 @@ char	*get_env(char *key)
 		curr = curr->next;
 	}
 	return (ft_strdup(""));
+}
+
+t_env	*find_env(t_list *envs, char *key)
+{
+	t_list	*curr;
+	t_env	*env;
+
+	if (!envs)
+		return (NULL);
+	curr = envs;
+	while (curr)
+	{
+		env = (t_env *)curr->content;
+		if (!ft_strcmp(env->key, key))
+			return (env);
+		curr = curr->next;
+	}
+	return (NULL);
 }
 
 // void	update_env(void)

@@ -12,16 +12,6 @@
 
 #include "minishell.h"
 
-int	str_len(char *str, char *sep)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && !ft_strchr(sep, str[i]))
-		i++;
-	return (i);
-}
-
 bool	is_redir_or_pipe(t_token *token)
 {
 	if (!token)
@@ -54,14 +44,15 @@ bool	is_local_variable(t_token *token)
 	int	i;
 
 	i = -1;
-	if (token->tk[0])
+	if (token->tk[0] && token->tk[0] == '=')
 	{
-		if (token->tk[0] == '=')
-		{
-			show_error(token->tk, COMMAND, FAIL_FCMD);
-			return (false);
-		}
-		else if (token->tk[ft_strlen(token->tk) - 1] == '=')
-		
+		show_error(token->tk, COMMAND, FAIL_FCMD);
+		return (false);
 	}
+	while (token->tk[++i])
+	{
+		add_node_for_local(&ms()->local_var, token->tk);
+		return (true);
+	}
+	return (false);
 }

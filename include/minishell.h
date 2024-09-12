@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/12 12:20:26 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/12 20:22:34 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ typedef struct	s_ms
 	char	**path;
 	char	**envp;
 	t_list	*env_list;
+	t_list	*local_var;
 	t_list	*lexer_tk;
 	t_ast *ast;
 }	t_ms;
@@ -236,6 +237,7 @@ char	*get_path(char *exe);
 t_env	*new_env(char *key, char *value);
 char	*get_env(char *key);
 void	print_env(void);
+t_env	*find_env(t_list *envs, char *key);
 
 //Delete and clean function
 void	ft_free(void *p);
@@ -250,7 +252,7 @@ void	matrix_delete(void *matrix);
 //Link list function
 char	**list_to_arr(t_list *list);
 t_list	*init_list(char **strs);
-void	add_node(t_list **list, char *str);
+void	add_node_for_local(t_list **list,  char *str);
 
 //Utils function
 int	str_len(char *str, char *sep);
@@ -266,6 +268,7 @@ int syntax_error(t_token *next);
 
 /*BUILTINS*/
 void	ft_exit(char **strs);
+void	ft_export(char **args);
 
 
 #endif
