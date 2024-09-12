@@ -12,45 +12,26 @@
 
 #include "minishell.h"
 
-/*
-rl_replace_line(const char *text, int clear_undo);
-	text is used to replace current line,
-	clear_undo is 0 means not to clear the list. 
-	this func is use to clear current command line.
-rl_on_new_line(void);
-	tell readline lib now is on a new line,
-	and func will restart for new command.
-rl_redisplay(void);
-	display the readline buffer on screen.
-*/
-void	handle_sigint(int signal)
-{
-	if (signal == SIGINT)
-	{
-		rl_replace_line("", 0);
-		printf("\n");
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
 void	signal_default(void)
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-static void	handle_child(int signal)
-{
-	if (signal == SIGINT)
-		ft_putstr_fd("\n", STDERR_FILENO);
-	else if (signal == SIGQUIT)
-		ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
-	(ms()->exit) = 128 + signal;
-}
-
 void	signal_child(void)
 {
 	signal(SIGINT, handle_child);
 	signal(SIGQUIT, handle_child);
+}
+
+void signal_heredoc(void)
+{
+	signal(SIGINT, handle_heredoc);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void signal_ignore(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
