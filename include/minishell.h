@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/12 20:22:34 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/13 12:00:18 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,8 @@ t_env	*new_env(char *key, char *value);
 char	*get_env(char *key);
 void	print_env(void);
 t_env	*find_env(t_list *envs, char *key);
+t_env	*copy_env(t_env	*env);
+void	update_env(void);
 
 //Delete and clean function
 void	ft_free(void *p);
@@ -272,5 +274,7 @@ int syntax_error(t_token *next);
 void	ft_exit(char **strs);
 void	ft_export(char **args);
 void	ft_echo(char **token);
+void	ft_unset(char **args);
+
 
 #endif

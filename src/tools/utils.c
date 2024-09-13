@@ -51,8 +51,11 @@ bool	is_local_variable(t_token *token)
 	}
 	while (token->tk[++i])
 	{
-		add_node_for_local(&ms()->local_var, token->tk);
-		return (true);
+		if (token->tk[i] == '=')
+		{
+			add_node_for_local(&ms()->local_var, token->tk);
+			return (true);
+		}
 	}
 	return (false);
 }

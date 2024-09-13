@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/12 20:21:17 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/13 11:50:28 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static void	handle_command(char **cmds)
 		print_env();
 	else if (!ft_strcmp(cmds[0], "export"))
 		ft_export(cmds);
+	else if (!ft_strcmp(cmds[0], "unset"))
+		ft_unset(cmds);
 }
 
 //missed signal function

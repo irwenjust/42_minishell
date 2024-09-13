@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:37:11 by likong            #+#    #+#             */
-/*   Updated: 2024/09/12 16:27:32 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/13 12:00:11 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,18 +165,55 @@ bool	pre_handle(void)
 }
 */
 
+// static int only_local(t_ast *ast)
+// {
+// 	static int	status = 1;
+// 	if (!ast)
+// 	{
+// 		printf("stat: %d\n", status);
+// 		return (status);
+// 	}
+// 	only_local(ast->left);
+// 	only_local(ast->right);
+// 	printf("%s\n", ast->token->tk);
+// 	if (!is_local_variable(ast->token))
+// 	{
+// 		printf("Here\n");
+// 		status = 0;
+// 	}
+// 	return (status);
+// }
+
+static int	check_local(void)
+{
+	t_list	*tmp;
+
+	tmp = ms()->lexer_tk;
+	while (tmp)
+	{
+		if (!is_local_variable(tmp->content))
+			return (0);
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 static bool	pre_handle(void)
 {
 	if (!check_quote())
 		return (false);
 	if (!lexer())
 		return (false);
-	if (!check_syntax())
+	//print_ast_arg(ms()->ast);
+	if (!check_syntax() || check_local())
 		return (false);
 	expander();
 	if (!parser())
 		return (false);
-	//print_ast_arg(ms()->ast);
+	
+	// if (only_local(ms()->ast))
+	// 	return (false);
+	// print_ast_arg(ms()->ast);
 	return (true);
 }
 
@@ -193,7 +230,11 @@ void	start_shell(void)
 		}
 		add_history(ms()->input);
 		if (pre_handle() == true)
+		{
+			// printf("Here\n");
 			execute(ms()->ast);
+		}
+		update_env();
 		unlink("here_doc");
 		restart(false);
 	}

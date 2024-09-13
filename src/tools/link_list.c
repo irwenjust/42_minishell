@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 17:37:16 by likong            #+#    #+#             */
-/*   Updated: 2024/09/12 20:24:22 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/13 10:14:56 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	add_node_for_local(t_list **list,  char *str)
 	env = find_env(*list, name);
 	if (env)
 	{
-		free(name);
-		free(env->value);
+		ft_free(name);
+		ft_free(env->value);
 		env->value = value;
 	}
 	else
