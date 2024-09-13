@@ -31,7 +31,7 @@ int	token_add(char *input, t_token_type type, bool mergeable)
 
 	token = token_new(input, type, mergeable);
 	if (!token || !input)
-		return (0);
+		return (-1);
 	ft_lstadd_back(&ms()->lexer_tk, ft_lstnew(token));
 	return (ft_strlen(input));
 }

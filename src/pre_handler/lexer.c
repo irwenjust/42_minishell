@@ -47,6 +47,8 @@ bool	check_quote(void)
 这似乎不太全面???还不太清楚哪些需要合并
 如果去掉symbols和special里的space之后，就可以合并echo "hello" "world"了
 看有的代码，并没有merge check这一项，盲猜可能不用这一条，在parse AST的时候再处理亦可。
+cat "infi"le will be merge
+ca"t" infile
 */
 static bool	check_mergeable(char *need_match, char *input, int end)
 {
@@ -100,7 +102,8 @@ void	lexer(void)
 		if (ms()->input[i] == ' ')
 			i++;
 		else if (ms()->input[i] == '|')
-			i += token_add(ft_strdup("|"), TK_PIPE, false); //????must use ft_strdup? can just "|" ">>"?
+			i += token_add(ft_strdup("|"), TK_PIPE, false);
+			//check token_add fail
 		else if (!ft_strncmp(&(ms()->input[i]), "<<", 2))
 			i += token_add(ft_strdup("<<"), TK_HEREDOC, false);
 		else if (!ft_strncmp(&(ms()->input[i]), ">>", 2))
@@ -114,7 +117,7 @@ void	lexer(void)
 		else if (ms()->input[i] == '\'')
 			i += find_match("\'", &ms()->input[i + 1]) + 2;
 		else
-			i += find_match("<>\'\"| ", &ms()->input[i]); //to find the end of a cmd?
+			i += find_match("<>\'\"| ", &ms()->input[i]);
 	}
 }
 

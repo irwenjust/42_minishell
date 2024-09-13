@@ -65,6 +65,7 @@ static t_ast	*parse_cmd(void)
 		if (token_manager(CUR)->type >= TK_IN_RE
 			&& token_manager(CUR)->type <= TK_APPEND)
 			cmd = redirection_cmd(cmd);
+			//check cmd failed
 		//get the arg of cmd mode
 		else
 			cmd->arg = matrix_add(cmd->arg, ft_strdup(token_manager(CUR)->tk));
@@ -74,11 +75,14 @@ static t_ast	*parse_cmd(void)
 	return (cmd);
 }
 
-t_ast *change_fist_token(t_ast *cmd)
+t_ast *change_fist_token(t_ast *cmd, int need_change)
 {
-	ft_free(cmd->token->tk);
-	cmd->token->tk = ft_strdup(cmd->arg[0]);
-	cmd->token->type = TK_KEYWORD;
+	if (need_change == 1)
+	{
+		ft_free(cmd->token->tk);
+		cmd->token->tk = ft_strdup(cmd->arg[0]);
+		cmd->token->type = TK_KEYWORD;
+	}
 	return (cmd);
 }
 
@@ -92,12 +96,11 @@ void	parser(void)
 	need_chage = 0;
 	token_manager(RESET);
 	if (token_manager(CUR)->type >= TK_IN_RE && token_manager(CUR)->type <= TK_APPEND)
-			need_chage = 1;
+		need_chage = 1;
 	(ms()->ast) = parse_cmd();
 	if (!(ms()->ast))
 		return ;
-	if (need_chage == 1)
-		(ms()->ast) = change_fist_token((ms()->ast));
+	(ms()->ast) = change_fist_token((ms()->ast), need_chage);
 	while (token_manager(CUR) && token_manager(CUR)->type == TK_PIPE)
 	{
 		need_chage = 0;
@@ -105,8 +108,9 @@ void	parser(void)
 		if (token_manager(CUR)->type >= TK_IN_RE && token_manager(CUR)->type <= TK_APPEND)
 			need_chage = 1;
 		cmd = parse_cmd();
-		if (need_chage == 1)
-			cmd = change_fist_token(cmd);
+		//check parse_cmd fail
+		cmd = change_fist_token(cmd, need_chage);
 		(ms()->ast) = parse_pipe(ms()->ast, cmd);
+		//check parse_pipr fail
 	}
 }
