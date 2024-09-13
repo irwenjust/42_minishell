@@ -30,7 +30,7 @@ static char	*set_prompt(void)
 	return (res2);
 }
 
-void print_ast_arg(t_ast *node, int depth, int is_left) 
+/*void print_ast_arg(t_ast *node, int depth, int is_left) 
 {
     if (node == NULL)
         return;
@@ -67,10 +67,9 @@ void print_ast_arg(t_ast *node, int depth, int is_left)
     // Recursively print the left and right subtrees
     print_ast_arg(node->left, depth + 1, 1);
     print_ast_arg(node->right, depth + 1, 0);
-}
+}*/
 
-/*
-void print_ast_arg(t_ast *node) 
+/*void print_ast_arg(t_ast *node) 
 {
 
 	t_ast *left_node = NULL;
@@ -122,10 +121,9 @@ void print_ast_arg(t_ast *node)
 	right_node = node->right;
 	printf("Index: %d, Token:%s", right_node->index, right_node->token ? right_node->token->tk : "NULL");
 	printf("\n");
-}
-*/
-/*
-bool	pre_handle(void)
+}*/
+
+/*bool	pre_handle(void)
 {
 //lexer
     if (!check_quote())
@@ -162,8 +160,7 @@ bool	pre_handle(void)
 	 //print_ast_arg(ast);
 
     return (true);
-}
-*/
+}*/
 
 // static int only_local(t_ast *ast)
 // {
