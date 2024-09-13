@@ -43,6 +43,7 @@ char	*ft_strreplace(char *str, char *old, char *new)
 	if (!str || !old || !new)
 		return (NULL);
 	len = ft_strlen(str) + ft_strlen(new) - ft_strlen(old);
+	
 	ret = ft_calloc(len + 1, sizeof(char));
 	if (!ret)
 		return (NULL);

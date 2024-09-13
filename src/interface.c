@@ -124,7 +124,7 @@ void print_ast_arg(t_ast *node)
 	printf("\n");
 }
 */
-
+/*
 bool	pre_handle(void)
 {
 //lexer
@@ -163,35 +163,22 @@ bool	pre_handle(void)
 
     return (true);
 }
+*/
 
-<<<<<<< HEAD
 static bool	pre_handle(void)
 {
 	if (!check_quote())
 		return (false);
-	lexer();
+	if (!lexer())
+		return (false);
 	if (!check_syntax())
 		return (false);
 	expander();
-	parser();
-	// print_ast_arg(ms()->ast);
+	if (!parser())
+		return (false);
+	//print_ast_arg(ms()->ast);
 	return (true);
 }
-=======
-
-//static bool	pre_handle(void)
-//{
-//	if (!check_quote())
-//		return (false);
-//	lexer();
-//	if (!check_syntax())
-//		return (false);
-//	expander();
-//	parser();
-//	print_ast_arg(ms()->ast);
-//	return (true);
-//}
->>>>>>> 01bdb9d (update)
 
 void	start_shell(void)
 {
@@ -206,13 +193,7 @@ void	start_shell(void)
 		}
 		add_history(ms()->input);
 		if (pre_handle() == true)
-<<<<<<< HEAD
-		{
-			// printf("\n");
-=======
->>>>>>> 01bdb9d (update)
 			execute(ms()->ast);
-		}
 		unlink("here_doc");
 		restart(false);
 	}

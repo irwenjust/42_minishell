@@ -17,6 +17,8 @@ static t_ast	*parse_pipe(t_ast *ast, t_ast *cmd)
 {
 	t_ast	*res;
 
+	if (!ast || !cmd)
+		return (NULL);
 	//add pipe into ast, token is pipe, arg is NULL
 	res = ast_new(token_new(ft_strdup("|"), TK_PIPE, false));
 	if (!res)
@@ -31,19 +33,19 @@ static t_ast	*parse_pipe(t_ast *ast, t_ast *cmd)
 //redir parse
 static t_ast	*redirection_cmd(t_ast *cmd)
 {
-	t_ast	*red;
+	t_ast	*res;
 
 	//get redir operator
-	red = ast_new(token_copy(token_manager(CUR)));
-	if (!red)
+	res = ast_new(token_copy(token_manager(CUR)));
+	if (!res || !cmd)
 		return (NULL);
 	//move to next token, should be the direction of redir
 	token_manager(NEXT);
 	//add direction to redir's arg
-	red->arg = matrix_add(red->arg, ft_strdup(token_manager(CUR)->tk));
+	res->arg = matrix_add(res->arg, ft_strdup(token_manager(CUR)->tk));
 	//insert redir to the left of cmd node
-	red->left = cmd->left;
-	cmd->left = red;
+	res->left = cmd->left;
+	cmd->left = res;
 	return (cmd);
 }
 
@@ -52,11 +54,9 @@ static t_ast	*parse_cmd(void)
 {
 	t_ast	*cmd;
 
-	//create ast with token, and initialize arg memory
 	cmd = ast_new(token_copy(token_manager(CUR)));
 	if (!cmd)
 		return (NULL);
-	//why need this????????????????????????
 	cmd->index = ms()->cmd_nb++;
 	//loop until end of token or meet pipe
 	while (token_manager(CUR) && token_manager(CUR)->type != TK_PIPE)
@@ -64,12 +64,13 @@ static t_ast	*parse_cmd(void)
 		// if current token is redir, need to parse redir
 		if (token_manager(CUR)->type >= TK_IN_RE
 			&& token_manager(CUR)->type <= TK_APPEND)
+		{
 			cmd = redirection_cmd(cmd);
-			//check cmd failed
-		//get the arg of cmd mode
+			if (!cmd)
+				return (NULL);
+		}
 		else
 			cmd->arg = matrix_add(cmd->arg, ft_strdup(token_manager(CUR)->tk));
-		//move to next token
 		token_manager(NEXT);
 	}
 	return (cmd);
@@ -77,6 +78,8 @@ static t_ast	*parse_cmd(void)
 
 t_ast *change_fist_token(t_ast *cmd, int need_change)
 {
+	if (!cmd)
+		return (NULL);
 	if (need_change == 1)
 	{
 		ft_free(cmd->token->tk);
@@ -87,7 +90,7 @@ t_ast *change_fist_token(t_ast *cmd, int need_change)
 }
 
 /*patrse func to creat ast*/
-void	parser(void)
+bool	parser(void)
 {
 	t_ast	*cmd;
 	int need_chage;
@@ -99,7 +102,7 @@ void	parser(void)
 		need_chage = 1;
 	(ms()->ast) = parse_cmd();
 	if (!(ms()->ast))
-		return ;
+		return (false);
 	(ms()->ast) = change_fist_token((ms()->ast), need_chage);
 	while (token_manager(CUR) && token_manager(CUR)->type == TK_PIPE)
 	{
@@ -108,9 +111,10 @@ void	parser(void)
 		if (token_manager(CUR)->type >= TK_IN_RE && token_manager(CUR)->type <= TK_APPEND)
 			need_chage = 1;
 		cmd = parse_cmd();
-		//check parse_cmd fail
 		cmd = change_fist_token(cmd, need_chage);
 		(ms()->ast) = parse_pipe(ms()->ast, cmd);
-		//check parse_pipr fail
+		if (!(ms()->ast))
+			return (false);
 	}
+	return (true);
 }
