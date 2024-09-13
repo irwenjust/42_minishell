@@ -1,0 +1,9 @@
+copy
+include
+infile
+libft
+Makefile
+minishell
+objs
+README.md
+src

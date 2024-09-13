@@ -188,10 +188,12 @@ void	handle_heredoc(int signal);
 
 
 /*PRE HANDLING*/
-//Lexer
+//checker
 bool check_quote(void);
-void lexer(void);
 bool check_syntax(void);
+
+//Lexer
+bool lexer(void);
 
 //token manager
 t_token *token_new(char *input, t_token_type type, bool mergeable);
@@ -205,7 +207,7 @@ void expander(void);
 char	*find_keyword(char *str);
 
 //Parser
-void	parser(void);
+bool	parser(void);
 
 //ast
 t_ast *ast_new(t_token *token);
@@ -269,6 +271,6 @@ int syntax_error(t_token *next);
 /*BUILTINS*/
 void	ft_exit(char **strs);
 void	ft_export(char **args);
-
+void	ft_echo(char **token);
 
 #endif

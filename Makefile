@@ -9,9 +9,9 @@ SRCS_SUBDIR = builtins execution pre_handler tools signal
 VPATH = $(SRCS_DIR) $(addprefix $(SRCS_DIR)/, $(SRCS_SUBDIR))
 SRCS =	main.c interface.c \
 		signal.c signal_handler.c \
-		lexer.c token.c expander.c parser.c ast.c \
+		ast.c checker.c expander.c lexer.c parser.c token.c \
 		envlist.c error.c for_ms.c link_list.c matrix.c restart.c utils.c \
-		exit.c export.c\
+		exit.c export.c echo.c\
 		execute.c pipe.c exec_tools.c redirection.c path.c \
 
 OBJS_DIR = objs
