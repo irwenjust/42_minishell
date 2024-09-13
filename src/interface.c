@@ -30,6 +30,7 @@ static char	*set_prompt(void)
 	return (res2);
 }
 
+/*
 void print_ast_arg(t_ast *node, int depth, int is_left) 
 {
     if (node == NULL)
@@ -69,7 +70,6 @@ void print_ast_arg(t_ast *node, int depth, int is_left)
     print_ast_arg(node->right, depth + 1, 0);
 }
 
-/*
 void print_ast_arg(t_ast *node) 
 {
 
@@ -123,8 +123,7 @@ void print_ast_arg(t_ast *node)
 	printf("Index: %d, Token:%s", right_node->index, right_node->token ? right_node->token->tk : "NULL");
 	printf("\n");
 }
-*/
-/*
+
 bool	pre_handle(void)
 {
 //lexer
@@ -184,7 +183,7 @@ bool	pre_handle(void)
 // 	return (status);
 // }
 
-static int	check_local(void)
+static int	check_all_local(void)
 {
 	t_list	*tmp;
 
@@ -204,16 +203,13 @@ static bool	pre_handle(void)
 		return (false);
 	if (!lexer())
 		return (false);
-	//print_ast_arg(ms()->ast);
-	if (!check_syntax() || check_local())
+	if (!check_syntax())
 		return (false);
 	expander();
 	if (!parser())
 		return (false);
-	
-	// if (only_local(ms()->ast))
-	// 	return (false);
-	// print_ast_arg(ms()->ast);
+	if (check_all_local())
+		return (false);
 	return (true);
 }
 
@@ -230,10 +226,7 @@ void	start_shell(void)
 		}
 		add_history(ms()->input);
 		if (pre_handle() == true)
-		{
-			// printf("Here\n");
 			execute(ms()->ast);
-		}
 		update_env();
 		unlink("here_doc");
 		restart(false);

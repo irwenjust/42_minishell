@@ -23,16 +23,16 @@ static void	exec_others(char **cmds)
 	if (path)
 	{
 		if (S_ISDIR(path_stat.st_mode))
-			show_error(path, DIRECTORY, FAIL_EXEC);
+			ft_err(path, DIRECTORY, FAIL_EXEC);
 		else if (S_ISREG(path_stat.st_mode))
 		{
 			execve(path, cmds, ms()->envp);
-			show_error(path, PERMISSION, FAIL_EXEC);
+			ft_err(path, PERMISSION, FAIL_EXEC);
 		}
 		ft_free(path);
 	}
 	else
-		show_error(path, COMMAND, FAIL_FCMD);
+		ft_err(path, COMMAND, FAIL_FCMD);
 	return ;
 }
 
@@ -40,12 +40,16 @@ static void	handle_command(char **cmds)
 {
 	if (!is_builtin(cmds[0]))
 		exec_others(cmds);
-	if (!ft_strcmp(cmds[0], "exit") && ms()->cmd_nb == 1)
-		ft_exit(cmds);
-	else if (!ft_strcmp(cmds[0], "pwd") && matrix_size(cmds) == 1)
+	if (!ft_strcmp(cmds[0], "pwd") && matrix_size(cmds) == 1)
 		printf("%s\n", ms()->cwd);
+	else if (!ft_strcmp(cmds[0], "cd") && matrix_size(cmds) <= 2)
+		ft_cd(cmds);
+	else if (!ft_strcmp(cmds[0], "echo"))
+		ft_echo(cmds);
 	else if (!ft_strcmp(cmds[0], "env") && matrix_size(cmds) == 1)
-		print_env();
+		ft_env();
+	else if (!ft_strcmp(cmds[0], "exit") && ms()->cmd_nb == 1)
+		ft_exit(cmds);
 	else if (!ft_strcmp(cmds[0], "export"))
 		ft_export(cmds);
 	else if (!ft_strcmp(cmds[0], "unset"))
@@ -60,7 +64,7 @@ static pid_t	handle_child_process(t_ast *node)
 	signal_child();
 	pid = fork();
 	if (pid < 0)
-		show_error(NULL, FORK, FAIL_STD);
+		ft_err(NULL, FORK, FAIL_STD);
 	else if (pid == 0)
 	{
 		if (ms()->in_fd == -1 || ms()->out_fd == -1)
@@ -83,8 +87,7 @@ static pid_t	fill_pipe(t_ast *node)
 		return (pid);
 	pid = fill_pipe(node->left);
 	pid = fill_pipe(node->right);
-	// printf("index: %d\n", node->index);
-	if (!is_redir_or_pipe(node->token))
+	if (!is_redir_or_pipe(node->token) && node->token->type != TK_LOC_V)
 	{
 		if (is_unfork(node->arg[0], node->arg[1]))
 			handle_command(node->arg);

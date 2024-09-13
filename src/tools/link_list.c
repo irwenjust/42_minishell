@@ -18,20 +18,20 @@ static void	add_node(t_list **list, char *str)
 	char	*key;
 	char	*value;
 
-	i = str_len(str, "=");
+	i = ft_strlen_sep(str, "=");
 	key = ft_substr(str, 0, i);
 	value = ft_strdup(str + i + 1);
 	ft_lstadd_front(list, ft_lstnew(new_env(key, value)));
 }
 
-void	add_node_for_local(t_list **list,  char *str)
+void	add_node_for_local(t_list **list, char *str)
 {
 	int		i;
 	char	*name;
 	char	*value;
 	t_env	*env;
 
-	i = str_len(str, "=");
+	i = ft_strlen_sep(str, "=");
 	name = ft_substr(str, 0, i);
 	value = ft_strdup(str + i + 1);
 	env = find_env(*list, name);

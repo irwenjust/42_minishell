@@ -19,7 +19,7 @@ static bool	compare_key(t_env *env, char *key)
 
 void	ft_unset(char **args)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (args[++i])

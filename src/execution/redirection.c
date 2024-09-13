@@ -43,7 +43,6 @@ char	*ft_strreplace(char *str, char *old, char *new)
 	if (!str || !old || !new)
 		return (NULL);
 	len = ft_strlen(str) + ft_strlen(new) - ft_strlen(old);
-	
 	ret = ft_calloc(len + 1, sizeof(char));
 	if (!ret)
 		return (NULL);
@@ -92,14 +91,14 @@ static void	read_heredoc(char *end_of_file)
 
 	fd = open("here_doc", O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd == -1)
-		show_error(NULL, HERE_DOC, FAIL_STD);
+		ft_err(NULL, HERE_DOC, FAIL_STD);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 		{
 			write(1, "\n", 1);
-			show_error(NULL, NEXT_LINE, FAIL_STD);
+			ft_err(NULL, NEXT_LINE, FAIL_STD);
 			break ;
 		}
 		if (!ft_strcmp(line, end_of_file))
@@ -125,7 +124,7 @@ static int	start_heredoc(char *f_name)
 		close(ms()->in_fd);
 	pid = fork();
 	if (pid < 0)
-		show_error(NULL, FORK, FAIL_STD);
+		ft_err(NULL, FORK, FAIL_STD);
 	else if (pid == 0)
 		read_heredoc(f_name);
 	// signals_ignore();
@@ -140,12 +139,12 @@ void	redirect(t_token_type type, char *f_name)
 {
 	if (type == TK_IN_RE)
 		(ms()->in_fd) = open(f_name, O_RDONLY, 0444);
-	else if (type == TK_HEREDOC)
+	else if (type == TK_HDOC)
 		(ms()->in_fd) = start_heredoc(f_name);
 	else if (type == TK_OUT_RE)
 		(ms()->out_fd) = open(f_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (type == TK_APPEND)
 		(ms()->out_fd) = open(f_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (ms()->in_fd == -1 || ms()->out_fd == -1)
-		show_error(f_name, FILE_NAME, FAIL_STD);
+		ft_err(f_name, FILE_NAME, FAIL_STD);
 }

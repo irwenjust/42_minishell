@@ -46,7 +46,7 @@ bool	is_local_variable(t_token *token)
 	i = -1;
 	if (token->tk[0] && token->tk[0] == '=')
 	{
-		show_error(token->tk, COMMAND, FAIL_FCMD);
+		ft_err(token->tk, COMMAND, FAIL_FCMD);
 		return (false);
 	}
 	while (token->tk[++i])

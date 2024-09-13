@@ -33,7 +33,6 @@ void	restart(bool status)
 	matrix_delete(ms()->fds);
 	ast_clear(ms()->ast, ast_delone);
 	ft_lstclear(&ms()->lexer_tk, (void (*)(void *))token_delete);
-
 	(ms()->fds) = NULL;
 	(ms()->ast) = NULL;
 	(ms()->lexer_tk) = NULL;

@@ -6,62 +6,61 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:20:14 by likong            #+#    #+#             */
-/*   Updated: 2024/09/11 16:00:04 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/13 15:36:34 by yzhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	show_message(char *message, t_error error)
+static void	show_message(char *message, t_error err_type)
 {
 	ft_putstr_fd("minishell: ", STD_ERR);
 	if (message)
 		ft_putstr_fd(message, STD_ERR);
-	if (error == FORK)
+	if (err_type == FORK)
 		ft_putstr_fd("fork() error", STD_ERR);
-	else if (error == MALLOC)
+	else if (err_type == MALLOC)
 		ft_putstr_fd(": malloc() failed", STD_ERR);
-	else if (error == PIPE)
+	else if (err_type == PIPE)
 		ft_putstr_fd("pipe() creation failed", STD_ERR);
-	else if (error == PERMISSION)
+	else if (err_type == PERMISSION)
 		ft_putstr_fd(": Permission denied", STD_ERR);
-	else if (error == FILE_NAME)
+	else if (err_type == FILE_NAME)
 		ft_putstr_fd(": No such file or directory", STD_ERR);
-	else if (error == DUP2)
+	else if (err_type == DUP2)
 		ft_putstr_fd("dup2() error", STD_ERR);
-	else if (error == DIRECTORY)
+	else if (err_type == DIRECTORY)
 		ft_putstr_fd(": Is a directory", STD_ERR);
-	else if (error == COMMAND)
+	else if (err_type == COMMAND)
 		ft_putstr_fd(": command not found", STD_ERR);
-	else if (error == HERE_DOC)
+	else if (err_type == HERE_DOC)
 		ft_putstr_fd("Could not open here_doc file", STD_ERR);
-	else if (error == NEXT_LINE)
+	else if (err_type == NEXT_LINE)
 		ft_putstr_fd("warning: here_doc at line 50 delimited by \
 		end-of-file", STD_ERR);
 	ft_putchar_fd('\n', STD_ERR);
 }
 
-int	show_error(char *message, t_error error, int err_fd)
+int	ft_err(char *message, t_error err_type, int err_fd)
 {
-	show_message(message, error);
+	show_message(message, err_type);
 	ms()->exit = err_fd;
-	// restart(true);
 	return (0);
 }
 
-int syntax_error(t_token *next)
+int	syntax_error(t_token *next)
 {
 	if (!next)
-		return (show_error("syntax error near unexpected token `newline'", -1, 1));
+		return (ft_err("syntax error near unexpected token `newline'", -1, 1));
 	else if (next->type == TK_PIPE)
-		return (show_error("syntax error near unexpected token `|'", -1, 1));
+		return (ft_err("syntax error near unexpected token `|'", -1, 1));
 	else if (next->type == TK_IN_RE)
-		return (show_error("syntax error near unexpected token `<'", -1, 1));
+		return (ft_err("syntax error near unexpected token `<'", -1, 1));
 	else if (next->type == TK_OUT_RE)
-		return (show_error("syntax error near unexpected token `>'", -1, 1));
-	else if (next->type == TK_HEREDOC)
-		return (show_error("syntax error near unexpected token `<<'", -1, 1));
+		return (ft_err("syntax error near unexpected token `>'", -1, 1));
+	else if (next->type == TK_HDOC)
+		return (ft_err("syntax error near unexpected token `<<'", -1, 1));
 	else if (next->type == TK_APPEND)
-		return (show_error("syntax error near unexpected token `>>'", -1, 1));
+		return (ft_err("syntax error near unexpected token `>>'", -1, 1));
 	return (0);
 }

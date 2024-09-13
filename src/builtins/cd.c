@@ -6,31 +6,49 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:58:49 by yzhan             #+#    #+#             */
-/*   Updated: 2024/09/10 09:27:56 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/13 15:20:42 by yzhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	update_pwd(t_list **env_list, char *newpwd)
+{
+	int		i;
+	char	*name;
+	char	*value;
+	t_env	*env;
+
+	i = ft_strlen_sep(newpwd, "=");
+	name = ft_substr(newpwd, 0, i);
+	value = ft_strdup(newpwd + i + 1);
+	env = find_env(*env_list, name);
+	if (env)
+	{
+		free(name);
+		free(env->value);
+		env->value = value;
+	}
+	else
+		ft_lstadd_front(env_list, ft_lstnew(new_env(name, value)));
+}
+
 void	change_dir(char *path)
 {
-	char *newpwd;
+	char	*newpwd;
 
-	if (!ft_strcmp(path, "")) //why not just !path????
-		show_error_info("error cd no home.", -1, 2);
+	if (!ft_strcmp(path, ""))
+		ft_err("error cd no home.", -1, 2);
 	newpwd = "OLDPWD=";
 	newpwd = ft_strjoin(newpwd, ms()->cwd);
-	//update old pwd which is current one
-	export_dir(&ms()->env_list, newpwd);
+	update_pwd(&ms()->env_list, newpwd);
 	free(newpwd);
-	//default func chdir to change the dir
 	chdir(path);
 	free(ms()->cwd);
 	(ms()->cwd) = getcwd(NULL, 4096);
 	newpwd = "PWD=";
 	newpwd = ft_strjoin(newpwd, ms()->cwd);
-	//update cur pwd env
-	export_dir(&ms()->env_list, newpwd);
+	update_pwd(&ms()->env_list, newpwd);
 	free(newpwd);
 	free(path);
 }
@@ -41,27 +59,18 @@ a file is a directory.
 The macro takes the st_mode value as an argument and checks 
 if the file type corresponds to a directory.
 */
-void ft_cd(char **token)
+void	ft_cd(char **token)
 {
-	struct stat cur_stat;
+	struct stat	cur_stat;
 
-	if (matrix_size(token) > 1)
-	{
-		show_error("too many args", -1, 2);
-		return ;
-	}
-	//if no arg or arg[0] is ~, cd to HOME dir
-	if (!token[0] || !ft_strcmp(token[0], "~"))
+	if (!token[1] || !ft_strcmp(token[1], "~"))
 	{
 		change_dir(get_env("HOME"));
 		return ;
 	}
-	//stat() system call to retrieve information about the file 
-	//or directory specified by token[0] (the target directory).
-	stat(token[0], &cur_stat);
-	//check target path is dir or not, with st_mode
+	stat(token[1], &cur_stat);
 	if (S_ISDIR(cur_stat.st_mode))
-		change_dir(ft_strdup(token[0]));
+		change_dir(ft_strdup(token[1]));
 	else
-		show_error("127", -1, 2);
+		ft_err("127", -1, 2);
 }
