@@ -57,7 +57,7 @@ fcntl: O_WRONLY, O_RDONLY etc.
 token type for lexer
 TK_PIPE: pipes |
 TK_IN_RE/TK_OUT_RE: redirection </>
-TK_HEREDOC: <<
+TK_HDOC: <<
 TK_APPEND: >>
 TK_SINGLE_QT/TK_DOUBLE_QT: single quote''/double quote ""
 TK_END: end of command
@@ -67,11 +67,12 @@ typedef enum e_token_type
 	TK_PIPE,
 	TK_IN_RE,
 	TK_OUT_RE,
-	TK_HEREDOC,
+	TK_HDOC,
 	TK_APPEND,
 	TK_SINGLE_QT,
 	TK_DOUBLE_QT,
-	TK_KEYWORD, //?????
+	TK_KEYWORD,
+	TK_LOC_V,
 }	t_token_type;
 
 /*
@@ -238,7 +239,6 @@ char	*get_path(char *exe);
 // void	update_env(void);
 t_env	*new_env(char *key, char *value);
 char	*get_env(char *key);
-void	print_env(void);
 t_env	*find_env(t_list *envs, char *key);
 t_env	*copy_env(t_env	*env);
 void	update_env(void);
@@ -259,22 +259,23 @@ t_list	*init_list(char **strs);
 void	add_node_for_local(t_list **list,  char *str);
 
 //Utils function
-int	str_len(char *str, char *sep);
 bool is_redir_or_pipe(t_token *token);
 bool is_redir(t_token *token);
 bool	is_pipe(t_token *token);
 bool	is_local_variable(t_token *token);
 
 //error
-int	show_error(char *message, t_error error, int err_fd);
+int	ft_err(char *message, t_error error, int err_fd);
 int syntax_error(t_token *next);
 
 
 /*BUILTINS*/
+void ft_cd(char **token);
+void	ft_echo(char **token);
 void	ft_exit(char **strs);
 void	ft_export(char **args);
-void	ft_echo(char **token);
 void	ft_unset(char **args);
+void	ft_env(void);
 
 
 #endif

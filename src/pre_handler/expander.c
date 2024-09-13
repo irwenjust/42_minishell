@@ -64,7 +64,7 @@ static void	expand_current(t_token *token)
 	while (ft_strnstr(token->tk, "$", ft_strlen(token->tk)))
 	{
 		keyword = find_keyword(token->tk);
-		if (!ft_strcmp(keyword, "$?")) //???
+		if (!ft_strcmp(keyword, "$?"))
 			real_key = ft_itoa(ms()->exit);
 		else
 			real_key = get_env(keyword);
@@ -114,10 +114,12 @@ void	expander(void)
 	while (token)
 	{
 		current = (t_token *)token->content;
-		if (current->type == TK_HEREDOC)
+		if (current->type == TK_HDOC)
 			token = token->next;
 		else if (current->type == TK_DOUBLE_QT || current->type == TK_KEYWORD)
 			expand_current(current);
+		if (is_local_variable(current))
+			current->type = TK_LOC_V;
 		token = token->next;
 	}
 	merge(ms()->lexer_tk);

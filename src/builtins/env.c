@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yzhan <yzhan@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/05 15:51:42 by yzhan             #+#    #+#             */
-/*   Updated: 2024/09/05 15:56:23 by yzhan            ###   ########.fr       */
+/*   Created: 2024/09/13 15:21:17 by yzhan             #+#    #+#             */
+/*   Updated: 2024/09/13 15:21:25 by yzhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(char **token)
+char	*get_env(char *key)
+{
+	t_env	*tmp;
+	t_list	*curr;
+
+	if (key[0] == '$')
+		key++;
+	curr = ms()->env_list;
+	while (curr)
+	{
+		tmp = (t_env *)curr->content;
+		if (!ft_strcmp(tmp->key, key))
+			return (ft_strdup(tmp->value));
+		curr = curr->next;
+	}
+	return (ft_strdup(""));
+}
+
+void	ft_env(void)
 {
 	int	i;
-	int	flag;
 
-	i = 1;
-	flag = 0;
-	if (token[1] && !ft_strcmp(token[1], "-n"))
-	{
-		flag = 1;
-		i++;
-	}
-	while (token[i])
-	{
-		printf("%s", token[i]);
-		i++;
-		if (token[i])
-			printf(" ");
-	}
-	if (!token[1] || flag == 0)
-		printf("\n");
+	i = -1;
+	while (ms()->envp[++i])
+		printf("%s\n", ms()->envp[i]);
 }

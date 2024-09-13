@@ -65,7 +65,7 @@ void	ft_putnbr_fd(int n, int fd);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_isnum(char *str);
-int		str_len(char *str, char *sep);
+int		ft_strlen_sep(char *str, char *sep);
 
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
@@ -78,7 +78,7 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	ft_list_remove_if(t_list **begin_list, void *data_ref, \
 	bool (*cmp)(), void (*free_fct)());
-	
+
 //New function
 void	free_matrix(char **matrix);
 int		check_white(char c);

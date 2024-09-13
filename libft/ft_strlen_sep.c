@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	str_len(char *str, char *sep)
+int	ft_strlen_sep(char *str, char *sep)
 {
 	int	i;
 

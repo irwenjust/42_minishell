@@ -6,7 +6,7 @@
 /*   By: yzhan <yzhan@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:15:51 by yzhan             #+#    #+#             */
-/*   Updated: 2024/09/05 13:29:38 by yzhan            ###   ########.fr       */
+/*   Updated: 2024/09/13 15:24:32 by yzhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ static int	find_match(char *need_match, char *input)
 	return (end);
 }
 
-static int lexer_redir(int i)
+static int	lexer_redir(int i)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	if (!ft_strncmp(&(ms()->input[i]), "<<", 2))
-		j = token_add(ft_strdup("<<"), TK_HEREDOC, false);
+		j = token_add(ft_strdup("<<"), TK_HDOC, false);
 	else if (!ft_strncmp(&(ms()->input[i]), ">>", 2))
 		j = token_add(ft_strdup(">>"), TK_APPEND, false);
 	else if (ms()->input[i] == '<')
@@ -71,9 +71,9 @@ static int lexer_redir(int i)
 	return (j);
 }
 
-static int lexer_match(int i)
+static int	lexer_match(int i)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	if (ms()->input[i] == '"')
@@ -88,7 +88,7 @@ static int lexer_match(int i)
 bool	lexer(void)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = 0;
 	while (ms()->input[i])
@@ -108,4 +108,3 @@ bool	lexer(void)
 	}
 	return (true);
 }
-

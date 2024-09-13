@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:21:36 by likong            #+#    #+#             */
-/*   Updated: 2024/09/13 11:26:24 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/13 15:35:17 by yzhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,6 @@ t_env	*new_env(char *key, char *value)
 	res->key = key;
 	res->value = value;
 	return (res);
-}
-
-char	*get_env(char *key)
-{
-	t_env	*tmp;
-	t_list	*curr;
-
-	if (key[0] == '$')
-		key++;
-	curr = ms()->env_list;
-	while (curr)
-	{
-		tmp = (t_env *)curr->content;
-		if (!ft_strcmp(tmp->key, key))
-			return (ft_strdup(tmp->value));
-		curr = curr->next;
-	}
-	return (ft_strdup(""));
 }
 
 t_env	*copy_env(t_env	*env)
@@ -80,13 +62,4 @@ void	update_env(void)
 	(ms()->path) = ft_split(res, ':');
 	(ms()->envp) = list_to_arr(ms()->env_list);
 	free(res);
-}
-
-void	print_env(void)
-{
-	int	i;
-
-	i = -1;
-	while (ms()->envp[++i])
-		printf("%s\n", ms()->envp[i]);
 }

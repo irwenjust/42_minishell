@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:55:18 by likong            #+#    #+#             */
-/*   Updated: 2024/09/05 13:52:59 by yzhan            ###   ########.fr       */
+/*   Updated: 2024/09/13 15:34:05 by yzhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**matrix_add(char **matrix, char *str)
 	size_t	i;
 
 	i = 0;
-	res = ft_calloc(matrix_size(matrix) + 2, sizeof(char *)); //??+2???????????????????????????????
+	res = ft_calloc(matrix_size(matrix) + 2, sizeof(char *));
 	if (!res)
 		return (NULL);
 	while (matrix[i])

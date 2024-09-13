@@ -24,13 +24,13 @@ void	signal_child(void)
 	signal(SIGQUIT, handle_child);
 }
 
-void signal_heredoc(void)
+void	signal_heredoc(void)
 {
 	signal(SIGINT, handle_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void signal_ignore(void)
+void	signal_ignore(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	print_all_env()
+static void	print_all_env(void)
 {
 	t_env	*env;
 	t_list	*tmp;
@@ -53,9 +53,9 @@ void	find_envtmp(char *key)
 
 void	ft_export(char **args)
 {
-	int	i;
+	int		i;
 	t_token	*tmp;
-	
+
 	if (matrix_size(args) == 1)
 		print_all_env();
 	i = 0;

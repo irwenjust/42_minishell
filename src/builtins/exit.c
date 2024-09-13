@@ -53,6 +53,5 @@ void	ft_exit(char **args)
 		ft_putstr_fd("exit\n", 1);
 		ms()->exit = ft_atoi(args[1]) % 256;
 	}
-	// matrix_delete(args);
 	restart(true);
 }

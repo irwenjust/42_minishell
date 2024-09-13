@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   checker.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yzhan <yzhan@student.hive.fi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/13 15:23:02 by yzhan             #+#    #+#             */
+/*   Updated: 2024/09/13 15:23:24 by yzhan            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 bool	check_quote(void)
@@ -22,7 +34,7 @@ bool	check_quote(void)
 	}
 	if (start_quote)
 	{
-		show_error("unclosed quotes", -1, 1);
+		ft_err("unclosed quotes", -1, 1);
 		return (false);
 	}
 	return (true);
@@ -38,7 +50,7 @@ bool	check_syntax(void)
 	cmd_nb = 1;
 	token_manager(RESET);
 	if (is_pipe(token_manager(CUR)))
-		return (show_error("syntax error near unexpected token `|'", -1, 1));
+		return (ft_err("syntax error near unexpected token `|'", -1, 1));
 	while (token_manager(CUR))
 	{
 		next = token_manager(PREVIEW);
@@ -53,6 +65,6 @@ bool	check_syntax(void)
 		token_manager(NEXT);
 	}
 	if (pipe_nb >= cmd_nb)
-		return (show_error("syntax error near unexpected token `|'", -1, 1));
+		return (ft_err("syntax error near unexpected token `|'", -1, 1));
 	return (true);
 }
