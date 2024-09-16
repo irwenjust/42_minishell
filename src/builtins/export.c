@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 12:02:34 by likong            #+#    #+#             */
-/*   Updated: 2024/09/13 11:22:35 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/16 13:47:37 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,16 @@ void	ft_export(char **args)
 	while (args[++i])
 	{
 		tmp = token_new(args[i], TK_KEYWORD, false);
+		
+		if (((tmp->tk[0] - '0') >= 0 && (tmp->tk[0] - '0') <= 9)
+			|| !ft_strchr_sep(tmp->tk, '-', '=') || tmp->tk[0] == '=')
+		{
+			ft_putstr_fd("minishell: export: `", STD_ERR);
+			ft_putstr_fd(args[i], STD_ERR);
+			ft_putstr_fd("': not a valid identifier\n", STD_ERR);
+			ms()->exit = 1;
+			continue ;
+		}
 		if (is_local_variable(tmp))
 			add_node_for_local(&ms()->env_list, args[i]);
 		else

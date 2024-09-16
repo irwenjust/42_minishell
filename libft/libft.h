@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 22:43:48 by likong            #+#    #+#             */
-/*   Updated: 2024/09/13 11:45:47 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/16 13:23:17 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ void	ft_list_remove_if(t_list **begin_list, void *data_ref, \
 void	free_matrix(char **matrix);
 int		check_white(char c);
 char	**split_plus(char *str, char c);
+bool	ft_strchr_sep(char *s, int c, char sep);
 
 #endif

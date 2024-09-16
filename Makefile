@@ -11,7 +11,7 @@ SRCS =	main.c interface.c \
 		signal.c signal_handler.c \
 		ast.c checker.c expander.c lexer.c parser.c token.c \
 		envlist.c error.c for_ms.c link_list.c matrix.c restart.c utils.c \
-		cd.c echo.c env.c exit.c export.c unset.c\
+		cd.c echo.c env.c exit.c export.c unset.c \
 		execute.c pipe.c exec_tools.c redirection.c path.c \
 
 OBJS_DIR = objs

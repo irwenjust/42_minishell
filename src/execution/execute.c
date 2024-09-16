@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/13 11:50:28 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/16 15:05:13 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,22 @@ static void	exec_others(char **cmds)
 	struct stat	path_stat;
 
 	path = get_path(cmds[0]);
+	// printf("path: %s\n", path);
 	stat(path, &path_stat);
 	if (path)
 	{
 		if (S_ISDIR(path_stat.st_mode))
-			ft_err(path, DIRECTORY, FAIL_EXEC);
+			ft_err(cmds[0], DIRECTORY, FAIL_EXEC);
 		else if (S_ISREG(path_stat.st_mode))
 		{
 			execve(path, cmds, ms()->envp);
-			ft_err(path, PERMISSION, FAIL_EXEC);
+			if (cmds[0][0] != '$')
+				ft_err(cmds[0], PERMISSION, FAIL_EXEC);
 		}
 		ft_free(path);
 	}
-	else
-		ft_err(path, COMMAND, FAIL_FCMD);
+	else if (cmds[0][0] != '$' && ft_strlen(cmds[0]) > 1)
+		ft_err(cmds[0], COMMAND, FAIL_FCMD);
 	return ;
 }
 

@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strchr_sep.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 15:21:17 by yzhan             #+#    #+#             */
-/*   Updated: 2024/09/16 11:50:22 by likong           ###   ########.fr       */
+/*   Created: 2024/09/16 13:18:52 by likong            #+#    #+#             */
+/*   Updated: 2024/09/16 13:23:07 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	ft_env(void)
+bool	ft_strchr_sep(char *s, int c, char sep)
 {
-	int	i;
+	size_t	i;
+	size_t	len;
 
-	i = -1;
-	if (!find_env(ms()->env_list, "PATH"))
-		return ;
-	while (ms()->envp[++i])
-		printf("%s\n", ms()->envp[i]);
+	i = 0;
+	len = ft_strlen(s);
+	if (!s)
+		return (false);
+	while (i < len + 1 && ((unsigned char *)s)[i] != (unsigned char)sep)
+	{
+		if (((unsigned char *)s)[i] == (unsigned char)c)
+			return (false);
+		i++;
+	}
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/13 12:00:18 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/16 12:06:09 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,6 +276,5 @@ void	ft_exit(char **strs);
 void	ft_export(char **args);
 void	ft_unset(char **args);
 void	ft_env(void);
-
 
 #endif

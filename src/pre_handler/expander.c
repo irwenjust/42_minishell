@@ -43,6 +43,7 @@ char	*find_keyword(char *str)
 	int		i;
 
 	tmp = ft_strnstr(str, "$", ft_strlen(str));
+	// printf("tmp: %s\n", tmp);
 	if (tmp[1] == '?')
 	{
 		keyword = ft_strdup("$?");
@@ -52,6 +53,7 @@ char	*find_keyword(char *str)
 	while (ft_isalnum(tmp[i]) || tmp[i] == '_')
 		i++;
 	keyword = ft_substr(tmp, 0, i);
+	// printf("keyword: %s\n", keyword);
 	return (keyword);
 }
 
@@ -61,6 +63,8 @@ static void	expand_current(t_token *token)
 	char	*real_key;
 	char	*tmp;
 
+	if (token->tk[0] == '$' && ft_strlen(token->tk) == 1)
+		return ;
 	while (ft_strnstr(token->tk, "$", ft_strlen(token->tk)))
 	{
 		keyword = find_keyword(token->tk);
@@ -69,7 +73,10 @@ static void	expand_current(t_token *token)
 		else
 			real_key = get_env(keyword);
 		tmp = token->tk;
+		// printf("tmp: %s\n", tmp);
+		// if (token->tk[0] == '$' && ft_strlen(token->tk) != 1)
 		token->tk = replace_keyword(token->tk, keyword, real_key);
+		// printf("tk: %s\n", token->tk);
 		ft_free(keyword);
 		ft_free(real_key);
 		ft_free(tmp);

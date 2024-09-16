@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yzhan <yzhan@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:51:42 by yzhan             #+#    #+#             */
-/*   Updated: 2024/09/05 15:56:23 by yzhan            ###   ########.fr       */
+/*   Updated: 2024/09/16 11:37:46 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ft_echo(char **token)
 
 	i = 1;
 	flag = 0;
+	// printf("key: %s\n", token[1]);
 	if (token[1] && !ft_strcmp(token[1], "-n"))
 	{
 		flag = 1;
