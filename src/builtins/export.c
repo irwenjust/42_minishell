@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 12:02:34 by likong            #+#    #+#             */
-/*   Updated: 2024/09/17 13:58:56 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 14:17:05 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,13 @@ void	find_envtmp(char *key)
 void	ft_export(char **args)
 {
 	int		i;
+	bool	checker;
 	t_token	*tmp;
 
 	if (matrix_size(args) == 1)
 		print_all_env();
 	i = 0;
+	checker = false;
 	while (args[++i])
 	{
 		tmp = token_new(args[i], TK_KEYWORD, false);
@@ -69,6 +71,7 @@ void	ft_export(char **args)
 			ft_putstr_fd(args[i], STD_ERR);
 			ft_putstr_fd("': not a valid identifier\n", STD_ERR);
 			ms()->exit = 1;
+			checker = true;
 			continue ;
 		}
 		if (is_local_variable(tmp))
@@ -77,5 +80,6 @@ void	ft_export(char **args)
 			find_envtmp(args[i]);
 		ft_free(tmp);
 	}
-	ms()->exit = 0;
+	if (checker == false)
+		ms()->exit = 0;
 }

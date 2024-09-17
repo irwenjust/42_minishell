@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 13:59:03 by likong            #+#    #+#             */
-/*   Updated: 2024/09/13 15:47:56 by yzhan            ###   ########.fr       */
+/*   Updated: 2024/09/17 14:17:52 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 void	dup_fd(void)
 {
 	if (ms()->in_fd >= STD_IN)
-		dup2(ms()->in_fd, STD_IN);
+		if (dup2(ms()->in_fd, STD_IN) == -1)
+			ft_err(NULL, DUP2, FAIL_STD);
 	if (ms()->out_fd >= STD_OUT)
-		dup2(ms()->out_fd, STD_OUT);
+		if (dup2(ms()->out_fd, STD_OUT) == -1)
+			ft_err(NULL, DUP2, FAIL_STD);
 }
 
 void	apply_fd(int index)
