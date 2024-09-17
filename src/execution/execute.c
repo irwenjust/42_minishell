@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/16 15:05:13 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 11:10:30 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	exec_others(char **cmds)
 	struct stat	path_stat;
 
 	path = get_path(cmds[0]);
+	// printf("cmd: %s\n", cmds[0]);
 	// printf("path: %s\n", path);
 	stat(path, &path_stat);
 	if (path)
@@ -33,7 +34,9 @@ static void	exec_others(char **cmds)
 		}
 		ft_free(path);
 	}
-	else if (cmds[0][0] != '$' && ft_strlen(cmds[0]) > 1)
+	else if (ft_strchr(cmds[0], '/'))
+		ft_err(cmds[0], FILE_NAME, FAIL_FCMD);
+	else if (ft_strlen(cmds[0]) >= 1)
 		ft_err(cmds[0], COMMAND, FAIL_FCMD);
 	return ;
 }
@@ -42,7 +45,7 @@ static void	handle_command(char **cmds)
 {
 	if (!is_builtin(cmds[0]))
 		exec_others(cmds);
-	if (!ft_strcmp(cmds[0], "pwd") && matrix_size(cmds) == 1)
+	if (!ft_strcmp(cmds[0], "pwd"))
 		printf("%s\n", ms()->cwd);
 	else if (!ft_strcmp(cmds[0], "cd") && matrix_size(cmds) <= 2)
 		ft_cd(cmds);
@@ -89,14 +92,14 @@ static pid_t	fill_pipe(t_ast *node)
 		return (pid);
 	pid = fill_pipe(node->left);
 	pid = fill_pipe(node->right);
-	if (!is_redir_or_pipe(node->token) && node->token->type != TK_LOC_V)
+	if (!is_pipe(node->token) && node->token->type != TK_LOC_V)
 	{
 		if (is_unfork(node->arg[0], node->arg[1]))
 			handle_command(node->arg);
 		else
 			pid = handle_child_process(node);
 	}
-	else if (is_redir(node->token) && node->arg[0])
+	if (is_redir(node->token) && node->arg[0])
 		redirect(node->token->type, node->arg[0]);
 	return (pid);
 }

@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:13:39 by likong            #+#    #+#             */
-/*   Updated: 2024/09/16 11:08:42 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 11:10:12 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,4 +147,5 @@ void	redirect(t_token_type type, char *f_name)
 		(ms()->out_fd) = open(f_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (ms()->in_fd == -1 || ms()->out_fd == -1)
 		ft_err(f_name, FILE_NAME, FAIL_STD);
+		
 }

@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 10:29:50 by likong            #+#    #+#             */
-/*   Updated: 2024/09/11 11:03:23 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 10:42:26 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ static char	*absolute_path(char *exe)
 	i = -1;
 	if (exe[0] == '\0')
 		return (NULL);
-	if (access(exe, F_OK) == 0)
+	if (access(exe, F_OK) == 0 && access(exe, X_OK) == 0 && ft_strchr(exe, '/'))
 	{
+		// printf("Here\n");
 		path = ft_strjoin("", exe);
 		return (path);
 	}

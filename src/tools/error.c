@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:20:14 by likong            #+#    #+#             */
-/*   Updated: 2024/09/16 11:43:51 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 10:10:22 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	show_message(char *message, t_error err_type)
 
 int	ft_err(char *message, t_error err_type, int err_fd)
 {
-	if (!find_env(ms()->env_list, "PATH"))
+	if (!find_env(ms()->env_list, "PATH") || err_type == FILE_NAME)
 		ft_putstr_fd("minishell: ", STD_ERR);
 	show_message(message, err_type);
 	ms()->exit = err_fd;

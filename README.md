@@ -20,6 +20,7 @@ cd, pwd, exit, export, unset), env should not work.
 9. when use '=' in commands part, if the string start by number or there have
 '-' in the left side, it should be the error. and the message should be care. Like in normal command it just cannot find command but it is "not a valid identifier" when use export, like export 123=456 (BE CAREFUL!!!!!!!!! IN EXPORT ERROR THERE WILL SHOW 'BASH:' ALSO. FK)   (fixed part of this. can handle if - or number when use export and '=' cannot be the first place) (BUT HAVE MORE ISSUES HERE. IF WRITE '=SOMTHING' THE ERROR MESSAGE WILL SHOW SEVERAL TIMES NOT ONLY ONE TIME)  
 10. handle $ when it is on the first position for command  (can handle only doller sign and doesn't exist command/div command. The regular things(from env) still needs to adjust. probably from general error message handle)   
+11. Didn't handle this case: $EMPTY echo hi
 
 Some doubts:   
 1. handle if there have some arguments in pwd   
