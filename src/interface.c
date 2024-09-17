@@ -205,7 +205,16 @@ static bool	pre_handle(void)
 		return (false);
 	if (!check_syntax())
 		return (false);
+	 
 	expander();
+	//t_list *exp;
+    // exp = ms()->lexer_tk;
+    // while (exp)
+    // {
+	// 	printf("[%s]\n", ((t_token *)(exp->content))->tk);
+	//	printf("[%u]\n", ((t_token *)(exp->content))->type);
+    //     exp = exp->next;
+    // }
 	if (!parser())
 		return (false);
 	if (check_all_local())

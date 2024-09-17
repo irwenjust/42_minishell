@@ -18,9 +18,17 @@ static void	exec_others(char **cmds)
 	char		*path;
 	struct stat	path_stat;
 
+	if (!ft_strcmp(cmds[0], "="))
+	{
+		ft_err(cmds[0], COMMAND, FAIL_FCMD);
+		return ;
+	}
 	path = get_path(cmds[0]);
+<<<<<<< HEAD
 	// printf("cmd: %s\n", cmds[0]);
 	// printf("path: %s\n", path);
+=======
+>>>>>>> d5d5b49 (fix export & echo)
 	stat(path, &path_stat);
 	if (path)
 	{
