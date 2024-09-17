@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/17 11:10:30 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 13:28:02 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static pid_t	fill_pipe(t_ast *node)
 		return (pid);
 	pid = fill_pipe(node->left);
 	pid = fill_pipe(node->right);
-	if (!is_pipe(node->token) && node->token->type != TK_LOC_V)
+	if (!is_redir_or_pipe(node->token) && node->token->type != TK_LOC_V)
 	{
 		if (is_unfork(node->arg[0], node->arg[1]))
 			handle_command(node->arg);

@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 15:21:17 by yzhan             #+#    #+#             */
-/*   Updated: 2024/09/16 11:50:22 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 13:56:01 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,5 @@ void	ft_env(void)
 		return ;
 	while (ms()->envp[++i])
 		printf("%s\n", ms()->envp[i]);
+	ms()->exit = 0;
 }

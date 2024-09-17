@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:40:25 by likong            #+#    #+#             */
-/*   Updated: 2024/09/16 12:17:52 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 13:58:28 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,5 @@ void	ft_unset(char **args)
 		ft_list_remove_if(&ms()->env_list, args[i], compare_key, delete_env);
 		ft_list_remove_if(&ms()->local_var, args[i], compare_key, delete_env);
 	}
+	ms()->exit = 0;
 }

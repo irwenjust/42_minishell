@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 12:02:34 by likong            #+#    #+#             */
-/*   Updated: 2024/09/16 13:47:37 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 13:58:56 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,5 @@ void	ft_export(char **args)
 			find_envtmp(args[i]);
 		ft_free(tmp);
 	}
+	ms()->exit = 0;
 }
