@@ -128,6 +128,5 @@ void	expander(void)
 		token_manager(NEXT);
 	}
 	merge(ms()->lexer_tk);
-	
 	(ms()->lexer_tk) = check_empty(ms()->lexer_tk);
 }
