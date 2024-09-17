@@ -68,3 +68,33 @@ bool	check_syntax(void)
 		return (ft_err("syntax error near unexpected token `|'", -1, 1));
 	return (true);
 }
+
+t_list *check_empty(t_list *lexer_tk)
+{
+	t_list *head;
+	t_list *tmp;
+	t_list *pre;
+	t_token *current;
+
+	pre = NULL;
+	while (lexer_tk)
+	{
+		current = lexer_tk->content;
+		if (ft_strlen(current->tk) == 0)
+		{
+			tmp = lexer_tk;
+			lexer_tk = lexer_tk->next;
+			if (!pre)
+				head = lexer_tk;
+			else
+				pre->next = lexer_tk;
+			ft_lstdelone(tmp, (void *)token_delete);
+		}
+		else
+		{
+			pre = lexer_tk;
+			lexer_tk = lexer_tk->next;
+		}
+	}
+	return (head);
+}
