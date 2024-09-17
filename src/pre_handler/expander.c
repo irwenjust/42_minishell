@@ -43,7 +43,8 @@ char	*find_keyword(char *str)
 	int		i;
 
 	tmp = ft_strnstr(str, "$", ft_strlen(str));
-	// printf("tmp: %s\n", tmp);
+	if (!tmp || tmp[1] == ' ')
+		return (NULL);
 	if (tmp[1] == '?')
 	{
 		keyword = ft_strdup("$?");
@@ -53,7 +54,6 @@ char	*find_keyword(char *str)
 	while (ft_isalnum(tmp[i]) || tmp[i] == '_')
 		i++;
 	keyword = ft_substr(tmp, 0, i);
-	// printf("keyword: %s\n", keyword);
 	return (keyword);
 }
 
@@ -63,20 +63,19 @@ static void	expand_current(t_token *token)
 	char	*real_key;
 	char	*tmp;
 
-	if (token->tk[0] == '$' && ft_strlen(token->tk) == 1)
+	if (token->tk[0] == '$' && (ft_strlen(token->tk) == 1 || (ft_strlen(token->tk) > 1 && token->tk[1] == ' ')))
 		return ;
 	while (ft_strnstr(token->tk, "$", ft_strlen(token->tk)))
 	{
 		keyword = find_keyword(token->tk);
+		if (!keyword)
+			return ;
 		if (!ft_strcmp(keyword, "$?"))
 			real_key = ft_itoa(ms()->exit);
 		else
 			real_key = get_env(keyword);
 		tmp = token->tk;
-		// printf("tmp: %s\n", tmp);
-		// if (token->tk[0] == '$' && ft_strlen(token->tk) != 1)
 		token->tk = replace_keyword(token->tk, keyword, real_key);
-		// printf("tk: %s\n", token->tk);
 		ft_free(keyword);
 		ft_free(real_key);
 		ft_free(tmp);
@@ -114,20 +113,19 @@ static void	merge(t_list *lexer_tk)
 
 void	expander(void)
 {
-	t_list	*token;
 	t_token	*current;
 
-	token = ms()->lexer_tk;
-	while (token)
+	token_manager(RESET);
+	while (token_manager(CUR))
 	{
-		current = (t_token *)token->content;
-		if (current->type == TK_HDOC)
-			token = token->next;
-		else if (current->type == TK_DOUBLE_QT || current->type == TK_KEYWORD)
+		current = token_manager(CUR);
+		//if (current->type == TK_HDOC)
+		//	token_manager(NEXT);
+		if (current->type == TK_DOUBLE_QT || current->type == TK_KEYWORD)
 			expand_current(current);
 		if (is_local_variable(current))
 			current->type = TK_LOC_V;
-		token = token->next;
+		token_manager(NEXT);
 	}
 	merge(ms()->lexer_tk);
 }

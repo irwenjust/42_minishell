@@ -62,7 +62,6 @@ void	ft_export(char **args)
 	while (args[++i])
 	{
 		tmp = token_new(args[i], TK_KEYWORD, false);
-		
 		if (((tmp->tk[0] - '0') >= 0 && (tmp->tk[0] - '0') <= 9)
 			|| !ft_strchr_sep(tmp->tk, '-', '=') || tmp->tk[0] == '=')
 		{

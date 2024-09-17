@@ -18,9 +18,12 @@ static void	exec_others(char **cmds)
 	char		*path;
 	struct stat	path_stat;
 
+	if (!ft_strcmp(cmds[0], "="))
+	{
+		ft_err(cmds[0], COMMAND, FAIL_FCMD);
+		return ;
+	}
 	path = get_path(cmds[0]);
-	// printf("cmd: %s\n", cmds[0]);
-	// printf("path: %s\n", path);
 	stat(path, &path_stat);
 	if (path)
 	{
@@ -47,7 +50,7 @@ static void	handle_command(char **cmds)
 		exec_others(cmds);
 	if (!ft_strcmp(cmds[0], "pwd"))
 		printf("%s\n", ms()->cwd);
-	else if (!ft_strcmp(cmds[0], "cd") && matrix_size(cmds) <= 2)
+	else if (!ft_strcmp(cmds[0], "cd"))
 		ft_cd(cmds);
 	else if (!ft_strcmp(cmds[0], "echo"))
 		ft_echo(cmds);

@@ -43,7 +43,8 @@ void	ft_exit(char **args)
 	}
 	if (matrix_size(args) == 2 && check_status(args[1]))
 	{
-		ft_putstr_fd("exit\nminishell: exit: ", 2);
+		ft_putstr_fd("exit\n", 1);
+		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		ms()->exit = 2;

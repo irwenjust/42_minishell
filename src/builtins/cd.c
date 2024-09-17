@@ -38,7 +38,7 @@ void	change_dir(char *path)
 	char	*newpwd;
 
 	if (!ft_strcmp(path, ""))
-		ft_err("error cd no home.", -1, 2);
+		ft_err("error cd no home.", -1, STD_ERR);
 	newpwd = "OLDPWD=";
 	newpwd = ft_strjoin(newpwd, ms()->cwd);
 	update_pwd(&ms()->env_list, newpwd);
@@ -63,6 +63,11 @@ void	ft_cd(char **token)
 {
 	struct stat	cur_stat;
 
+	if (matrix_size(token) > 2)
+	{
+		ft_err("cd: too many arguments", -1, FAIL_STD);
+		return ;
+	}
 	if (!token[1] || !ft_strcmp(token[1], "~"))
 	{
 		change_dir(get_env("HOME"));
@@ -72,5 +77,10 @@ void	ft_cd(char **token)
 	if (S_ISDIR(cur_stat.st_mode))
 		change_dir(ft_strdup(token[1]));
 	else
-		ft_err("127", -1, 2);
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(token[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		ms()->exit = 1;
+	}
 }
