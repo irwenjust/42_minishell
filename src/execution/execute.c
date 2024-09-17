@@ -24,11 +24,6 @@ static void	exec_others(char **cmds)
 		return ;
 	}
 	path = get_path(cmds[0]);
-<<<<<<< HEAD
-	// printf("cmd: %s\n", cmds[0]);
-	// printf("path: %s\n", path);
-=======
->>>>>>> d5d5b49 (fix export & echo)
 	stat(path, &path_stat);
 	if (path)
 	{
@@ -55,7 +50,7 @@ static void	handle_command(char **cmds)
 		exec_others(cmds);
 	if (!ft_strcmp(cmds[0], "pwd"))
 		printf("%s\n", ms()->cwd);
-	else if (!ft_strcmp(cmds[0], "cd") && matrix_size(cmds) <= 2)
+	else if (!ft_strcmp(cmds[0], "cd"))
 		ft_cd(cmds);
 	else if (!ft_strcmp(cmds[0], "echo"))
 		ft_echo(cmds);
