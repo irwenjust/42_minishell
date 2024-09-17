@@ -53,6 +53,9 @@ void	token_delete(t_token *token)
 	if (!token)
 		return ;
 	ft_free(token->tk);
+	token->tk = NULL;
+	token->type = -1;
+	token->mergeable = 0;
 	ft_free(token);
 }
 

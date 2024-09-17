@@ -75,8 +75,10 @@ t_list *check_empty(t_list *lexer_tk)
 	t_list *tmp;
 	t_list *pre;
 	t_token *current;
+	int i;
 
-	pre = NULL;
+	i = 0;
+	head = lexer_tk;
 	while (lexer_tk)
 	{
 		current = lexer_tk->content;
@@ -84,14 +86,16 @@ t_list *check_empty(t_list *lexer_tk)
 		{
 			tmp = lexer_tk;
 			lexer_tk = lexer_tk->next;
-			if (!pre)
+			if (i == 0)
 				head = lexer_tk;
 			else
 				pre->next = lexer_tk;
 			ft_lstdelone(tmp, (void *)token_delete);
+			tmp = NULL;
 		}
 		else
 		{
+			i = 1;
 			pre = lexer_tk;
 			lexer_tk = lexer_tk->next;
 		}

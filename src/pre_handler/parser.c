@@ -101,6 +101,7 @@ bool	parser(void)
 	(ms()->ast) = change_fist_token((ms()->ast), need_chage);
 	while (token_manager(CUR) && token_manager(CUR)->type == TK_PIPE)
 	{
+		
 		need_chage = 0;
 		token_manager(NEXT);
 		if (is_redir(token_manager(CUR)) && token_manager(CUR)->type != TK_HDOC)
