@@ -192,6 +192,7 @@ void	handle_heredoc(int signal);
 //checker
 bool check_quote(void);
 bool check_syntax(void);
+t_list *check_empty(t_list *lexer_tk);
 
 //Lexer
 bool lexer(void);
