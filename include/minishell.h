@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/18 08:38:30 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/18 08:40:44 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,8 @@ void	handle_heredoc(int signal);
 //checker
 bool check_quote(void);
 bool check_syntax(void);
+t_list *check_empty(t_list *lexer_tk);
+
 
 //Lexer
 bool lexer(void);

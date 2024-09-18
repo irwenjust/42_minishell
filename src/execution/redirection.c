@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:13:39 by likong            #+#    #+#             */
-/*   Updated: 2024/09/17 20:04:44 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/18 09:41:31 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,15 +138,22 @@ static int	start_heredoc(char *f_name)
 int	redirect(t_token_type type, char *f_name)
 {
 	if (type == TK_IN_RE)
+	{
+		// printf("Here: fd: %d\n", (ms()->in_fd));
 		(ms()->in_fd) = open(f_name, O_RDONLY, 0444);
+	}
 	else if (type == TK_HDOC)
 		(ms()->in_fd) = start_heredoc(f_name);
 	else if (type == TK_OUT_RE)
 		(ms()->out_fd) = open(f_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (type == TK_APPEND)
 		(ms()->out_fd) = open(f_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	// printf("fd: %d, f_name: %s\n", ms()->in_fd, f_name);
 	if (ms()->in_fd == -1 || ms()->out_fd == -1)
-		// ft_err(f_name, FILE_NAME, FAIL_STD);
-		return (1);
+	{
+		ft_err(f_name, FILE_NAME, FAIL_STD);
+		restart(true);
+	}
+		// return (1);
 	return (0);
 }
