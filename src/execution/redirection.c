@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:13:39 by likong            #+#    #+#             */
-/*   Updated: 2024/09/18 09:41:31 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/18 20:33:36 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,5 @@ int	redirect(t_token_type type, char *f_name)
 		ft_err(f_name, FILE_NAME, FAIL_STD);
 		restart(true);
 	}
-		// return (1);
 	return (0);
 }

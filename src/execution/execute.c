@@ -6,11 +6,32 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/18 13:13:49 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/18 21:43:44 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	new_close(void)
+{
+	size_t	i;
+
+	i = 0;
+	if (ms()->in_fd > STD_IN)
+		close(ms()->in_fd);
+	if (ms()->out_fd > STD_OUT)
+		close(ms()->out_fd);
+	while (i < matrix_size((char **)ms()->fds))
+	{
+		if (ms()->fds[i][0] >= 0)
+			close(ms()->fds[i][0]);
+		if (ms()->fds[i][1] >= 0)
+			close(ms()->fds[i][1]);
+		i++;
+	}
+	ms()->in_fd = STD_IN;
+	ms()->out_fd = STD_OUT;
+}
 
 // Might need change later
 static int	exec_others(char **cmds)
@@ -19,7 +40,7 @@ static int	exec_others(char **cmds)
 	char		*path;
 	struct stat	path_stat;
 
-	status = 1;
+	status = 0;
 	if (!ft_strcmp(cmds[0], "="))
 	{
 		status = ft_err(cmds[0], COMMAND, FAIL_FCMD);
@@ -82,26 +103,35 @@ static int	exec_re(t_ast *node)
 	if (!node)
 		return (status);
 	status = exec_re(node->left);
-	status = exec_re(node->right);
+	// status = exec_re(node->right);
 	if (ms()->in_fd == -1 || ms()->out_fd == -1)
 		restart(true);
-	// printf("token: %d, arg: %s\n", node->token->type, node->arg[0]);
+	//printf("token: %s, arg: %s\n", node->token->tk, node->arg[0]);
 	if (is_redir(node->token) && node->arg[0])
 	{
 		// printf("here\n");
+
 		redirect(node->token->type, node->arg[0]);
+		// printf("Here?\n");
+
 		apply_fd(node->index);
+		
 		dup_fd();
-		close_fd(node->index);
+		// printf("come\n");
+
+		//close_fd(node->index);
+		//new_close();
 		return (status);
 	}
 	apply_fd(node->index);
 	dup_fd();
-	close_fd(node->index);	
+	//close_fd(node->index);
 	// printf("arg: %s\n", node->arg[0]);
+	new_close();
+	// printf("in: %d, out: %d\n", ms()->in_fd, ms()->out_fd);
 	status = handle_command(node->arg);
 	// restart(true);
-	// printf("status: %d\n", status);
+	//printf("status: %d\n", status);
 	return (status);
 }
 
@@ -116,46 +146,23 @@ static pid_t	handle_child_process(t_ast *node)
 		ft_err(NULL, FORK, FAIL_STD);
 	else if (pid == 0)
 	{
-		// printf("node: %s\n", node->arg[0]);
+	
 		exec_re(node);
-		// printf("here\n")
-		// while (node)
-		// {
-		// 	if (!exec_re(node))
-		// 		break ;
-		// 	if (node->right)
-		// 		if (!exec_re(node->right))
-		// 			break ;
-		// 	node = node->left;
-		// }
-		// if (ms()->in_fd == -1 || ms()->out_fd == -1)
-		// 	restart(true);
-		// // printf("token: %d, arg: %s\n", node->token->type, node->arg[0]);
-		// if (is_redir(node->token) && node->arg[0])
-		// {
-		// 	// printf("here\n");
-		// 	redirect(node->token->type, node->arg[0]);
-		// }
-		// apply_fd(node->index);
-		// dup_fd();
-		
-		// handle_command(node->arg);
+		// close_fd(node->index);
 		restart(true);
 	}
 	close_fd(node->index);
+	// new_close();
 	return (pid);
 }
 
 static pid_t	fill_pipe(t_ast *node)
 {
-	// static int	redir_status = 0;
 	pid_t		pid;
 
 	pid = 0;
 	if (!node)
 		return (pid);
-	// pid = fill_pipe(node->left);
-	// pid = fill_pipe(node->right);
 	while (node)
 	{
 		if (is_pipe(node->token))
@@ -163,9 +170,9 @@ static pid_t	fill_pipe(t_ast *node)
 			pid = handle_child_process(node->right);
 			if (!is_pipe(node->left->token))
 			{
-				if (!ft_strcmp(node->arg[0], "exit") && ms()->cmd_nb == 1)
-					handle_command(node->arg);
-				else if (node->token->type != TK_LOC_V)
+				if (!ft_strcmp(node->left->arg[0], "exit") && ms()->cmd_nb == 1)
+					handle_command(node->left->arg);
+				else if (node->left->token->type != TK_LOC_V)
 					pid = handle_child_process(node->left);
 				break ;
 			}
@@ -183,23 +190,6 @@ static pid_t	fill_pipe(t_ast *node)
 		}
 		node = node->left;
 	}
-	// if (!is_pipe(node->token) && node->token->type != TK_LOC_V)
-	// {
-	// 	if (is_unfork(node->arg[0], node->arg[1]))
-	// 		handle_command(node->arg);
-	// 	else
-	// 		pid = handle_child_process(node);
-	// }
-	// else if (is_pipe(node->token))
-	// {
-	// 	pid = handle_child_process(node->right);
-	// 	if (!is_pipe(node->left->token))
-	// 		pid = handle_child_process(node->left);
-	// }
-	// if (is_redir(node->token) && node->arg[0])
-	// 	redirect(node->token->type, node->arg[0]);
-	// if (redir_status == 1)
-	// 	ft_err(node->arg[0], FILE_NAME, FAIL_STD);
 	return (pid);
 }
 
@@ -212,12 +202,12 @@ void	execute(t_ast *ast)
 	status = 0x7F;
 	create_pipe();
 	pid = fill_pipe(ast);
-	// printf("here\n");
-	close_fd(ast->index);
+	// close_fd(ast->index);
+	// printf("pre status: %d\n", status);
 	pid = waitpid(pid, &status, 0);
+	// printf("status: %d\n", status);
 	while (waitpid(0, NULL, 0) > 0)
 		continue ;
-	// printf("there\n");
 	if (WIFEXITED(status))
 		ms()->exit = WEXITSTATUS(status);
 	signal_default();

@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 13:59:03 by likong            #+#    #+#             */
-/*   Updated: 2024/09/18 12:29:08 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/18 20:33:28 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,34 @@
 
 void	dup_fd(void)
 {
+	//printf("in: %d, out: %d\n", ms()->in_fd, ms()->out_fd);
+	
 	if (ms()->in_fd >= STD_IN)
+	{
 		if (dup2(ms()->in_fd, STD_IN) == -1)
 			ft_err(NULL, DUP2, FAIL_STD);
+				
+		//else
+			 //printf("new in: %d\n", ms()->in_fd);
+	}
+	
 	if (ms()->out_fd >= STD_OUT)
+	{
 		if (dup2(ms()->out_fd, STD_OUT) == -1)
+		{
+			// printf("?\n");
 			ft_err(NULL, DUP2, FAIL_STD);
+		}
+		// else
+		// 	printf("new out: %d\n", ms()->out_fd);
+		// printf("hi\n");
+	}
+	// ft_printf("yyy\n\n");
 }
 
 void	apply_fd(int index)
 {
+	
 	if (ms()->cmd_nb < 2)
 		return ;
 	if (ms()->in_fd == STD_IN)
