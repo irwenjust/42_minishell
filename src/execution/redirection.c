@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:13:39 by likong            #+#    #+#             */
-/*   Updated: 2024/09/18 20:33:36 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/18 21:54:54 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,11 @@ int	redirect(t_token_type type, char *f_name)
 	// printf("fd: %d, f_name: %s\n", ms()->in_fd, f_name);
 	if (ms()->in_fd == -1 || ms()->out_fd == -1)
 	{
-		ft_err(f_name, FILE_NAME, FAIL_STD);
+		ft_putstr_fd("minishell: ", 2);
+		if (!access(f_name, F_OK))
+			ft_err(f_name, PERMISSION, FAIL_STD);
+		else
+			ft_err(f_name, FILE_NAME, FAIL_STD);
 		restart(true);
 	}
 	return (0);

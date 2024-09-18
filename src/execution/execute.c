@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/18 21:43:44 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/18 21:44:50 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ void	execute(t_ast *ast)
 	pid = fill_pipe(ast);
 	// close_fd(ast->index);
 	// printf("pre status: %d\n", status);
-	pid = waitpid(pid, &status, 0);
+	waitpid(-1, &status, 0);
 	// printf("status: %d\n", status);
 	while (waitpid(0, NULL, 0) > 0)
 		continue ;
