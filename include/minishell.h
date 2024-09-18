@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/16 12:06:09 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/18 08:38:30 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,6 @@ void	handle_heredoc(int signal);
 //checker
 bool check_quote(void);
 bool check_syntax(void);
-t_list *check_empty(t_list *lexer_tk);
 
 //Lexer
 bool lexer(void);
@@ -223,7 +222,7 @@ void	execute(t_ast *ast);
 void	create_pipe(void);
 
 //Redirect part
-void	redirect(t_token_type type, char *f_name);
+int		redirect(t_token_type type, char *f_name);
 
 //Exercute tools
 bool	is_unfork(char *cmd, char *arg);

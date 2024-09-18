@@ -44,8 +44,6 @@ bool	is_local_variable(t_token *token)
 	int	i;
 
 	i = -1;
-	if (!token)
-		return (false);
 	if (token->tk[0] && token->tk[0] == '=')
 	{
 		//ft_err(token->tk, COMMAND, FAIL_FCMD);

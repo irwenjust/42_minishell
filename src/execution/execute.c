@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/17 13:28:02 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 20:10:13 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ static pid_t	handle_child_process(t_ast *node)
 
 static pid_t	fill_pipe(t_ast *node)
 {
-	pid_t	pid;
+	static int	redir_status = 0;
+	pid_t		pid;
 
 	pid = 0;
 	if (!node)
@@ -103,7 +104,9 @@ static pid_t	fill_pipe(t_ast *node)
 			pid = handle_child_process(node);
 	}
 	if (is_redir(node->token) && node->arg[0])
-		redirect(node->token->type, node->arg[0]);
+		redir_status += redirect(node->token->type, node->arg[0]);
+	// if (redir_status == 1)
+	// 	ft_err(node->arg[0], FILE_NAME, FAIL_STD);
 	return (pid);
 }
 

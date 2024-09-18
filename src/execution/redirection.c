@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:13:39 by likong            #+#    #+#             */
-/*   Updated: 2024/09/17 12:15:43 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/17 20:04:44 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ static int	start_heredoc(char *f_name)
 }
 
 //The permission maybe need to adjust
-void	redirect(t_token_type type, char *f_name)
+int	redirect(t_token_type type, char *f_name)
 {
 	if (type == TK_IN_RE)
 		(ms()->in_fd) = open(f_name, O_RDONLY, 0444);
@@ -146,5 +146,7 @@ void	redirect(t_token_type type, char *f_name)
 	else if (type == TK_APPEND)
 		(ms()->out_fd) = open(f_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (ms()->in_fd == -1 || ms()->out_fd == -1)
-		ft_err(f_name, FILE_NAME, FAIL_STD);
+		// ft_err(f_name, FILE_NAME, FAIL_STD);
+		return (1);
+	return (0);
 }
