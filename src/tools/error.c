@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:20:14 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 12:18:11 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 15:14:26 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static void	show_message(char *message, t_error err_type)
 	else if (err_type == HERE_DOC)
 		ft_putstr_fd("Could not open here_doc file", STD_ERR);
 	else if (err_type == NEXT_LINE)
-		ft_putstr_fd("warning: here_doc at line 50 delimited by \
-		end-of-file", STD_ERR);
+		ft_putstr_fd("warning: here_doc at line 50 delimited by"
+			"end-of-file", STD_ERR);
 	ft_putchar_fd('\n', STD_ERR);
 }
 

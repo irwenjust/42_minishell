@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 12:23:41 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 13:18:34 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static pid_t	fill_pipe(t_ast *node, pid_t pid)
 				break ;
 			}
 		}
-		else if (node->token->type != TK_LOC_V)
+		else if (node->token->type != TK_LOC_V && node->token->tk != NULL)
 		{
 			pid = not_pipe(node, pid);
 			break ;

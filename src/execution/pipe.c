@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 12:10:01 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 12:03:33 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 14:43:36 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,15 @@ void	close_fd(int command_index)
 
 pid_t	not_pipe(t_ast *node, pid_t pid)
 {
-	if (is_unfork(node->arg[0], node->arg[1]))
-		handle_command(node->arg);
-	else if (!is_pipe(node->token) && node->token->type != TK_LOC_V)
+	if (node->arg[0])
+	{
+		if (is_unfork(node->arg[0], node->arg[1]))
+		{
+			handle_command(node->arg);
+			return (pid);
+		}
+	}
+	if (!is_pipe(node->token) && node->token->type != TK_LOC_V)
 		pid = handle_child_process(node);
 	return (pid);
 }
