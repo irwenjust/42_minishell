@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 22:43:48 by likong            #+#    #+#             */
-/*   Updated: 2024/09/16 13:23:17 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 12:29:16 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ void	free_matrix(char **matrix);
 int		check_white(char c);
 char	**split_plus(char *str, char c);
 bool	ft_strchr_sep(char *s, int c, char sep);
+char	*ft_strreplace(char *str, char *old, char *new);
 
 #endif
