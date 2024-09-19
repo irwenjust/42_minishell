@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/18 21:44:50 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 11:14:59 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,34 +103,19 @@ static int	exec_re(t_ast *node)
 	if (!node)
 		return (status);
 	status = exec_re(node->left);
-	// status = exec_re(node->right);
 	if (ms()->in_fd == -1 || ms()->out_fd == -1)
 		restart(true);
 	//printf("token: %s, arg: %s\n", node->token->tk, node->arg[0]);
 	if (is_redir(node->token) && node->arg[0])
 	{
-		// printf("here\n");
-
 		redirect(node->token->type, node->arg[0]);
-		// printf("Here?\n");
-
-		apply_fd(node->index);
-		
-		dup_fd();
-		// printf("come\n");
-
-		//close_fd(node->index);
-		//new_close();
 		return (status);
 	}
 	apply_fd(node->index);
 	dup_fd();
-	//close_fd(node->index);
-	// printf("arg: %s\n", node->arg[0]);
 	new_close();
 	// printf("in: %d, out: %d\n", ms()->in_fd, ms()->out_fd);
 	status = handle_command(node->arg);
-	// restart(true);
 	//printf("status: %d\n", status);
 	return (status);
 }
@@ -168,6 +153,9 @@ static pid_t	fill_pipe(t_ast *node)
 		if (is_pipe(node->token))
 		{
 			pid = handle_child_process(node->right);
+			// printf("pid: %d, node: %s\n", pid, node->right->token->tk);
+			if (ms()->last_pid == 0)
+				ms()->last_pid = pid;
 			if (!is_pipe(node->left->token))
 			{
 				if (!ft_strcmp(node->left->arg[0], "exit") && ms()->cmd_nb == 1)
@@ -204,7 +192,7 @@ void	execute(t_ast *ast)
 	pid = fill_pipe(ast);
 	// close_fd(ast->index);
 	// printf("pre status: %d\n", status);
-	waitpid(-1, &status, 0);
+	waitpid(ms()->last_pid, &status, 0);
 	// printf("status: %d\n", status);
 	while (waitpid(0, NULL, 0) > 0)
 		continue ;

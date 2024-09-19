@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:23:09 by likong            #+#    #+#             */
-/*   Updated: 2024/09/13 08:33:08 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 11:14:04 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	restart(bool status)
 	(ms()->ast) = NULL;
 	(ms()->lexer_tk) = NULL;
 	(ms()->cmd_nb) = 0;
+	(ms()->last_pid) = 0;
 	if (status)
 	{
 		ft_free(ms()->cwd);

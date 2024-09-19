@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/18 08:40:44 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 11:13:23 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ typedef struct	s_ms
 	char	*input;
 	char	**path;
 	char	**envp;
+	pid_t	last_pid;
 	t_list	*env_list;
 	t_list	*local_var;
 	t_list	*lexer_tk;
