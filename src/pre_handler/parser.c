@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:23:23 by likong            #+#    #+#             */
-/*   Updated: 2024/09/05 13:33:57 by yzhan            ###   ########.fr       */
+/*   Updated: 2024/09/19 12:16:47 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ bool	parser(void)
 	(ms()->ast) = change_fist_token((ms()->ast), need_chage);
 	while (token_manager(CUR) && token_manager(CUR)->type == TK_PIPE)
 	{
-		
 		need_chage = 0;
 		token_manager(NEXT);
 		if (is_redir(token_manager(CUR)) && token_manager(CUR)->type != TK_HDOC)

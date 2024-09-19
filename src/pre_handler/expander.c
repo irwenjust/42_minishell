@@ -63,7 +63,8 @@ static void	expand_current(t_token *token)
 	char	*real_key;
 	char	*tmp;
 
-	if (token->tk[0] == '$' && (ft_strlen(token->tk) == 1 || (ft_strlen(token->tk) > 1 && token->tk[1] == ' ')))
+	if (token->tk[0] == '$' && (ft_strlen(token->tk) == 1
+			|| (ft_strlen(token->tk) > 1 && token->tk[1] == ' ')))
 		return ;
 	while (ft_strnstr(token->tk, "$", ft_strlen(token->tk)))
 	{
@@ -119,8 +120,6 @@ void	expander(void)
 	while (token_manager(CUR))
 	{
 		current = token_manager(CUR);
-		//if (current->type == TK_HDOC)
-		//	token_manager(NEXT);
 		if (current->type == TK_DOUBLE_QT || current->type == TK_KEYWORD)
 			expand_current(current);
 		if (is_local_variable(current))

@@ -6,32 +6,11 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:13:39 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 09:54:26 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 12:25:08 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// void	handler_heredoc(int signum)
-// {
-// 	if (signum != SIGINT)
-// 		return ;
-// 	printf("\n");
-// 	restart(true);
-// 	(ms()->exit) = 130;
-// }
-
-// void	signals_heredoc(void)
-// {
-// 	signal(SIGINT, handler_heredoc);
-// 	signal(SIGQUIT, SIG_IGN);
-// }
-
-// void	signals_ignore(void)
-// {
-// 	signal(SIGINT, SIG_IGN);
-// 	signal(SIGQUIT, SIG_IGN);
-// }
 
 char	*ft_strreplace(char *str, char *old, char *new)
 {
@@ -57,7 +36,7 @@ char	*ft_strreplace(char *str, char *old, char *new)
 	return (ret);
 }
 
-char	*expand_line(char *input)
+char	*expand_line(char *input, int fd)
 {
 	char	*expanded;
 	char	*value;
@@ -78,12 +57,11 @@ char	*expand_line(char *input)
 		ft_free(value);
 		ft_free(key);
 	}
+	ft_putendl_fd(input, fd);
 	ft_free(input);
 	return (expanded);
 }
 
-//Use get_next_line to replace readline, 
-//not sure work or not, check it later
 static void	read_heredoc(char *end_of_file)
 {
 	int		fd;
@@ -106,20 +84,18 @@ static void	read_heredoc(char *end_of_file)
 			ft_free(line);
 			break ;
 		}
-		line = expand_line(line);
-		ft_putendl_fd(line, fd);
+		line = expand_line(line, fd);
 		free(line);
 	}
 	close(fd);
 	restart(true);
 }
 
-//Didn't handle signal part
 static int	start_heredoc(char *f_name)
 {
 	pid_t	pid;
 
-	// signals_heredoc();
+	signal_heredoc();
 	if (ms()->in_fd > STD_IN)
 		close(ms()->in_fd);
 	pid = fork();
@@ -127,28 +103,22 @@ static int	start_heredoc(char *f_name)
 		ft_err(NULL, FORK, FAIL_STD);
 	else if (pid == 0)
 		read_heredoc(f_name);
-	// signals_ignore();
+	signal_ignore();
 	waitpid(0, NULL, 0);
-	// signal_default();
-	//The permission maybe need to adjust
+	signal_default();
 	return (open("here_doc", O_RDONLY, 0444));
 }
 
-//The permission maybe need to adjust
 int	redirect(t_token_type type, char *f_name)
 {
 	if (type == TK_IN_RE)
-	{
-		// printf("Here: fd: %d\n", (ms()->in_fd));
 		(ms()->in_fd) = open(f_name, O_RDONLY, 0444);
-	}
 	else if (type == TK_HDOC)
 		(ms()->in_fd) = start_heredoc(f_name);
 	else if (type == TK_OUT_RE)
 		(ms()->out_fd) = open(f_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (type == TK_APPEND)
 		(ms()->out_fd) = open(f_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	// printf("fd: %d, f_name: %s\n", ms()->in_fd, f_name);
 	if (ms()->in_fd == -1 || ms()->out_fd == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);

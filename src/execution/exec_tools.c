@@ -6,62 +6,53 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 13:59:03 by likong            #+#    #+#             */
-/*   Updated: 2024/09/18 20:33:28 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 11:54:34 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	dup_fd(void)
+int	handle_command(char **cmds)
 {
-	//printf("in: %d, out: %d\n", ms()->in_fd, ms()->out_fd);
-	
-	if (ms()->in_fd >= STD_IN)
-	{
-		if (dup2(ms()->in_fd, STD_IN) == -1)
-			ft_err(NULL, DUP2, FAIL_STD);
-				
-		//else
-			 //printf("new in: %d\n", ms()->in_fd);
-	}
-	
-	if (ms()->out_fd >= STD_OUT)
-	{
-		if (dup2(ms()->out_fd, STD_OUT) == -1)
-		{
-			// printf("?\n");
-			ft_err(NULL, DUP2, FAIL_STD);
-		}
-		// else
-		// 	printf("new out: %d\n", ms()->out_fd);
-		// printf("hi\n");
-	}
-	// ft_printf("yyy\n\n");
+	int	status;
+
+	status = 0;
+	if (!is_builtin(cmds[0]))
+		status = exec_others(cmds);
+	if (!ft_strcmp(cmds[0], "pwd"))
+		printf("%s\n", ms()->cwd);
+	else if (!ft_strcmp(cmds[0], "cd"))
+		ft_cd(cmds);
+	else if (!ft_strcmp(cmds[0], "echo"))
+		ft_echo(cmds);
+	else if (!ft_strcmp(cmds[0], "env") && matrix_size(cmds) == 1)
+		ft_env();
+	else if (!ft_strcmp(cmds[0], "exit") && ms()->cmd_nb == 1)
+		ft_exit(cmds);
+	else if (!ft_strcmp(cmds[0], "export"))
+		ft_export(cmds);
+	else if (!ft_strcmp(cmds[0], "unset"))
+		ft_unset(cmds);
+	return (status);
 }
 
-void	apply_fd(int index)
+void	close_all(void)
 {
-	
-	if (ms()->cmd_nb < 2)
-		return ;
-	if (ms()->in_fd == STD_IN)
-		if (index != 0)
-			ms()->in_fd = ms()->fds[index - 1][READ];
-	if (ms()->out_fd == STD_OUT)
-		if (index < ms()->cmd_nb - 1)
-			ms()->out_fd = ms()->fds[index][WRITE];
-}
+	size_t	i;
 
-void	close_fd(int command_index)
-{
+	i = 0;
 	if (ms()->in_fd > STD_IN)
 		close(ms()->in_fd);
 	if (ms()->out_fd > STD_OUT)
 		close(ms()->out_fd);
-	if (command_index > 0)
-		close(ms()->fds[command_index - 1][READ]);
-	if (command_index < ms()->cmd_nb - 1)
-		close(ms()->fds[command_index][WRITE]);
+	while (i < matrix_size((char **)ms()->fds))
+	{
+		if (ms()->fds[i][0] >= 0)
+			close(ms()->fds[i][0]);
+		if (ms()->fds[i][1] >= 0)
+			close(ms()->fds[i][1]);
+		i++;
+	}
 	ms()->in_fd = STD_IN;
 	ms()->out_fd = STD_OUT;
 }

@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 16:20:14 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 09:54:33 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 12:18:11 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	show_message(char *message, t_error err_type)
 {
-	// ft_putstr_fd("minishell: ", STD_ERR);
 	if (message)
 		ft_putstr_fd(message, STD_ERR);
 	if (err_type == FORK)

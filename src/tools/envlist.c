@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:21:36 by likong            #+#    #+#             */
-/*   Updated: 2024/09/16 11:19:06 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 12:17:59 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ char	*get_env(char *key)
 	t_env	*tmp;
 	t_list	*curr;
 
-	// if (key[0] == '$' && ft_strlen(key) == 1)
-	// 	return (ft_strdup(key));
 	if (key[0] == '$')
 		key++;
 	curr = ms()->env_list;

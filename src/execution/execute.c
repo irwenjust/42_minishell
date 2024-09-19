@@ -6,35 +6,14 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 11:14:59 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 12:23:41 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	new_close(void)
-{
-	size_t	i;
-
-	i = 0;
-	if (ms()->in_fd > STD_IN)
-		close(ms()->in_fd);
-	if (ms()->out_fd > STD_OUT)
-		close(ms()->out_fd);
-	while (i < matrix_size((char **)ms()->fds))
-	{
-		if (ms()->fds[i][0] >= 0)
-			close(ms()->fds[i][0]);
-		if (ms()->fds[i][1] >= 0)
-			close(ms()->fds[i][1]);
-		i++;
-	}
-	ms()->in_fd = STD_IN;
-	ms()->out_fd = STD_OUT;
-}
-
 // Might need change later
-static int	exec_others(char **cmds)
+int	exec_others(char **cmds)
 {
 	int			status;
 	char		*path;
@@ -50,14 +29,7 @@ static int	exec_others(char **cmds)
 	stat(path, &path_stat);
 	if (path)
 	{
-		if (S_ISDIR(path_stat.st_mode))
-			status = ft_err(cmds[0], DIRECTORY, FAIL_EXEC);
-		else if (S_ISREG(path_stat.st_mode))
-		{
-			execve(path, cmds, ms()->envp);
-			if (cmds[0][0] != '$')
-				status = ft_err(cmds[0], PERMISSION, FAIL_EXEC);
-		}
+		status = path_error(path_stat, path, status, cmds);
 		ft_free(path);
 	}
 	else if (ft_strchr(cmds[0], '/'))
@@ -67,35 +39,7 @@ static int	exec_others(char **cmds)
 	return (status);
 }
 
-static int	handle_command(char **cmds)
-{
-	int	status;
-
-	status = 0;
-	if (!is_builtin(cmds[0]))
-	{
-		// printf("there\n");
-		status = exec_others(cmds);
-		// printf("here\n");
-	}
-	if (!ft_strcmp(cmds[0], "pwd"))
-		printf("%s\n", ms()->cwd);
-	else if (!ft_strcmp(cmds[0], "cd"))
-		ft_cd(cmds);
-	else if (!ft_strcmp(cmds[0], "echo"))
-		ft_echo(cmds);
-	else if (!ft_strcmp(cmds[0], "env") && matrix_size(cmds) == 1)
-		ft_env();
-	else if (!ft_strcmp(cmds[0], "exit") && ms()->cmd_nb == 1)
-		ft_exit(cmds);
-	else if (!ft_strcmp(cmds[0], "export"))
-		ft_export(cmds);
-	else if (!ft_strcmp(cmds[0], "unset"))
-		ft_unset(cmds);
-	return (status);
-}
-
-static int	exec_re(t_ast *node)
+int	exec_re(t_ast *node)
 {
 	int	status;
 
@@ -105,7 +49,6 @@ static int	exec_re(t_ast *node)
 	status = exec_re(node->left);
 	if (ms()->in_fd == -1 || ms()->out_fd == -1)
 		restart(true);
-	//printf("token: %s, arg: %s\n", node->token->tk, node->arg[0]);
 	if (is_redir(node->token) && node->arg[0])
 	{
 		redirect(node->token->type, node->arg[0]);
@@ -113,15 +56,12 @@ static int	exec_re(t_ast *node)
 	}
 	apply_fd(node->index);
 	dup_fd();
-	new_close();
-	// printf("in: %d, out: %d\n", ms()->in_fd, ms()->out_fd);
+	close_all();
 	status = handle_command(node->arg);
-	//printf("status: %d\n", status);
 	return (status);
 }
 
-//missed signal function
-static pid_t	handle_child_process(t_ast *node)
+pid_t	handle_child_process(t_ast *node)
 {
 	pid_t	pid;
 
@@ -131,29 +71,20 @@ static pid_t	handle_child_process(t_ast *node)
 		ft_err(NULL, FORK, FAIL_STD);
 	else if (pid == 0)
 	{
-	
 		exec_re(node);
-		// close_fd(node->index);
 		restart(true);
 	}
 	close_fd(node->index);
-	// new_close();
 	return (pid);
 }
 
-static pid_t	fill_pipe(t_ast *node)
+static pid_t	fill_pipe(t_ast *node, pid_t pid)
 {
-	pid_t		pid;
-
-	pid = 0;
-	if (!node)
-		return (pid);
 	while (node)
 	{
 		if (is_pipe(node->token))
 		{
 			pid = handle_child_process(node->right);
-			// printf("pid: %d, node: %s\n", pid, node->right->token->tk);
 			if (ms()->last_pid == 0)
 				ms()->last_pid = pid;
 			if (!is_pipe(node->left->token))
@@ -165,16 +96,10 @@ static pid_t	fill_pipe(t_ast *node)
 				break ;
 			}
 		}
-		else if (is_unfork(node->arg[0], node->arg[1]))
+		else if (node->token->type != TK_LOC_V)
 		{
-			handle_command(node->arg);
+			pid = not_pipe(node, pid);
 			break ;
-		}
-		else if (!is_pipe(node->token) && node->token->type != TK_LOC_V)
-		{
-			pid = handle_child_process(node);
-			break ;
-			// handle_command(node->arg);
 		}
 		node = node->left;
 	}
@@ -188,12 +113,11 @@ void	execute(t_ast *ast)
 	int		status;
 
 	status = 0x7F;
+	pid = 0;
 	create_pipe();
-	pid = fill_pipe(ast);
-	// close_fd(ast->index);
-	// printf("pre status: %d\n", status);
+	if (ast)
+		pid = fill_pipe(ast, pid);
 	waitpid(ms()->last_pid, &status, 0);
-	// printf("status: %d\n", status);
 	while (waitpid(0, NULL, 0) > 0)
 		continue ;
 	if (WIFEXITED(status))

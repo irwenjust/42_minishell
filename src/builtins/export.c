@@ -6,11 +6,20 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 12:02:34 by likong            #+#    #+#             */
-/*   Updated: 2024/09/17 14:17:05 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 12:01:34 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static bool	print_err_export(char *arg)
+{
+	ft_putstr_fd("minishell: export: `", STD_ERR);
+	ft_putstr_fd(arg, STD_ERR);
+	ft_putstr_fd("': not a valid identifier\n", STD_ERR);
+	ms()->exit = 1;
+	return (true);
+}
 
 static void	print_all_env(void)
 {
@@ -67,11 +76,7 @@ void	ft_export(char **args)
 		if (((tmp->tk[0] - '0') >= 0 && (tmp->tk[0] - '0') <= 9)
 			|| !ft_strchr_sep(tmp->tk, '-', '=') || tmp->tk[0] == '=')
 		{
-			ft_putstr_fd("minishell: export: `", STD_ERR);
-			ft_putstr_fd(args[i], STD_ERR);
-			ft_putstr_fd("': not a valid identifier\n", STD_ERR);
-			ms()->exit = 1;
-			checker = true;
+			checker = print_err_export(args[i]);
 			continue ;
 		}
 		if (is_local_variable(tmp))
