@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 12:24:48 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 17:47:42 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ typedef enum s_error
 	DUP2,
 	DIRECTORY,
 	COMMAND,
-	HERE_DOC,
-	NEXT_LINE
+	HERE_DOC
 }	t_error;
 
 /*
@@ -153,6 +152,7 @@ typedef struct s_ms
 	int		out_fd;
 	int		exit;
 	int		cmd_nb;
+	int		lines;
 	int		**fds;
 	char	*cwd;
 	char	*prompt;

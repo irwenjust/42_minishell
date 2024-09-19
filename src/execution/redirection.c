@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:13:39 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 12:28:02 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 17:43:02 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,21 @@ char	*expand_line(char *input, int fd)
 	return (expanded);
 }
 
+static void	heredoc_error(char *eof)
+{
+	char	*num;
+
+	num = ft_itoa(ms()->lines);
+	if (!num)
+		num = NULL;
+	ft_putstr_fd("bash: warning: here-document at line ", STD_ERR);
+	ft_putstr_fd(num, STD_ERR);
+	ft_putstr_fd(" delimited by end-of-file (wanted `", STD_ERR);
+	ft_putstr_fd(eof, STD_ERR);
+	ft_putstr_fd("')\n", STD_ERR);
+	ms()->exit = FAIL_STD;
+}
+
 static void	read_heredoc(char *end_of_file)
 {
 	int		fd;
@@ -51,8 +66,7 @@ static void	read_heredoc(char *end_of_file)
 		line = readline("> ");
 		if (!line)
 		{
-			write(1, "\n", 1);
-			ft_err(NULL, NEXT_LINE, FAIL_STD);
+			heredoc_error(end_of_file);
 			break ;
 		}
 		if (!ft_strcmp(line, end_of_file))

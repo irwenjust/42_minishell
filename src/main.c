@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:46:00 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 11:13:46 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 17:31:17 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	init_ms(char **envp)
 	(ms()->out_fd) = STD_OUT;
 	(ms()->exit) = 0;
 	(ms()->last_pid) = 0;
+	(ms()->lines) = 0;
 	(ms()->cwd) = getcwd(NULL, 2048);
 	if (!(ms()->cwd))
 	{

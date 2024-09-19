@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:37:11 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 11:58:14 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 17:31:30 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	start_shell(void)
 	{
 		ms()->prompt = set_prompt();
 		ms()->input = readline(ms()->prompt);
+		ms()->lines++;
 		if (!ms()->input)
 		{
 			write(1, "exit\n", 5);

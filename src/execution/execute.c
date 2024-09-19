@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 13:18:34 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 17:08:54 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,13 @@ pid_t	handle_child_process(t_ast *node)
 {
 	pid_t	pid;
 
-	signal_child();
+	signal_ignore();
 	pid = fork();
 	if (pid < 0)
 		ft_err(NULL, FORK, FAIL_STD);
 	else if (pid == 0)
 	{
+		signal_child();
 		exec_re(node);
 		restart(true);
 	}
