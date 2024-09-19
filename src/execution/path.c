@@ -71,6 +71,9 @@ char	*get_path(char *exe)
 {
 	char	*path;
 
+	path = NULL;
+	if (!exe)
+		return (NULL);
 	if (exe[0] == '.')
 		path = relative_path(exe);
 	else
