@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 21:07:40 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/20 09:40:52 by yzhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	execute(t_ast *ast)
 {
 	pid_t	pid;
 	int		status;
+	int		signal_num;
 
 	status = 0x7F;
 	pid = 0;
@@ -123,9 +124,8 @@ void	execute(t_ast *ast)
 		continue ;
 	if (WIFSIGNALED(status))
 	{
-		int signal_num = WTERMSIG(status);
-		// printf("sig: %d\n", signal_num);
-		ms()->exit = signal_num + 128;	
+		signal_num = WTERMSIG(status);
+		(ms()->exit) = signal_num + 128;
 	}
 	else if (WIFEXITED(status))
 		ms()->exit = WEXITSTATUS(status);

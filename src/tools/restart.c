@@ -6,18 +6,20 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:23:09 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 20:48:09 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/20 09:42:12 by yzhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_sig()
+static void	print_sig(void)
 {
 	if (ms()->exit == 130)
-		ft_putstr_fd("\n", 2);
+		ft_putstr_fd("\n", STD_ERR);
 	else if (ms()->exit == 131)
-		ft_putstr_fd("Quit (core dumped)\n", 2);
+		ft_putstr_fd("Quit (core dumped)\n", STD_ERR);
+	else if (ms()->exit == 139)
+		ft_putstr_fd("Segmentation fault (core dumped)\n", STD_ERR);
 }
 
 void	ft_free(void *p)

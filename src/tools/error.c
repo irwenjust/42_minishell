@@ -34,12 +34,16 @@ static void	show_message(char *message, t_error err_type)
 		ft_putstr_fd(": command not found", STD_ERR);
 	else if (err_type == HERE_DOC)
 		ft_putstr_fd("Could not open here_doc file", STD_ERR);
+	else if (err_type == CD)
+		ft_putstr_fd(": getcwd: cannot access parent directories"
+			": No such file or directory", STD_ERR);
 	ft_putchar_fd('\n', STD_ERR);
 }
 
 int	ft_err(char *message, t_error err_type, int err_fd)
 {
-	if (!find_env(ms()->env_list, "PATH") || err_type == FILE_NAME)
+	if (!find_env(ms()->env_list, "PATH") || err_type == FILE_NAME
+		|| err_type == STX)
 		ft_putstr_fd("minishell: ", STD_ERR);
 	show_message(message, err_type);
 	ms()->exit = err_fd;
@@ -49,16 +53,16 @@ int	ft_err(char *message, t_error err_type, int err_fd)
 int	syntax_error(t_token *next)
 {
 	if (!next)
-		return (ft_err("syntax error near unexpected token `newline'", -1, 1));
+		return (ft_err("syntax error near unexpected token `newline'", STX, 1));
 	else if (next->type == TK_PIPE)
-		return (ft_err("syntax error near unexpected token `|'", -1, 1));
+		return (ft_err("syntax error near unexpected token `|'", STX, 1));
 	else if (next->type == TK_IN_RE)
-		return (ft_err("syntax error near unexpected token `<'", -1, 1));
+		return (ft_err("syntax error near unexpected token `<'", STX, 1));
 	else if (next->type == TK_OUT_RE)
-		return (ft_err("syntax error near unexpected token `>'", -1, 1));
+		return (ft_err("syntax error near unexpected token `>'", STX, 1));
 	else if (next->type == TK_HDOC)
-		return (ft_err("syntax error near unexpected token `<<'", -1, 1));
+		return (ft_err("syntax error near unexpected token `<<'", STX, 1));
 	else if (next->type == TK_APPEND)
-		return (ft_err("syntax error near unexpected token `>>'", -1, 1));
+		return (ft_err("syntax error near unexpected token `>>'", STX, 1));
 	return (0);
 }
