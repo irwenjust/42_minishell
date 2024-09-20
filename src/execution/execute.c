@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 11:44:05 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 17:08:54 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 21:07:40 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	exec_others(char **cmds)
 	stat(path, &path_stat);
 	if (path)
 	{
-		status = path_error(path_stat, path, status, cmds);
+		status = real_exec(path_stat, path, status, cmds);
 		ft_free(path);
 	}
 	else if (ft_strchr(cmds[0], '/'))
@@ -121,7 +121,13 @@ void	execute(t_ast *ast)
 	waitpid(ms()->last_pid, &status, 0);
 	while (waitpid(0, NULL, 0) > 0)
 		continue ;
-	if (WIFEXITED(status))
+	if (WIFSIGNALED(status))
+	{
+		int signal_num = WTERMSIG(status);
+		// printf("sig: %d\n", signal_num);
+		ms()->exit = signal_num + 128;	
+	}
+	else if (WIFEXITED(status))
 		ms()->exit = WEXITSTATUS(status);
 	signal_default();
 }

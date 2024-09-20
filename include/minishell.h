@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 12:56:57 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 17:47:42 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/20 08:28:38 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ void	start_shell(void);
 /*SIGNAL*/
 //Signal
 void	signal_default(void);
-void	signal_child(void);
+// void	signal_child(void);
 void	signal_heredoc(void);
 void	signal_ignore(void);
 
@@ -239,7 +239,7 @@ int		handle_command(char **cmds);
 
 //Handle path
 char	*get_path(char *exe);
-int		path_error(struct stat stat, char *path, int status, char **cmds);
+int		real_exec(struct stat stat, char *path, int status, char **cmds);
 
 /*TOOLS*/
 //For environment

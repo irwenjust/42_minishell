@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 15:32:23 by yzhan             #+#    #+#             */
-/*   Updated: 2024/09/19 17:09:40 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/20 08:28:29 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,20 @@ void	handle_sigint(int signal)
 	}
 }
 
-void	handle_child(int signal)
-{
-	if (signal == SIGINT)
-		ft_putstr_fd("\n", STDERR_FILENO);
-	else if (signal == SIGQUIT)
-		ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
-	(ms()->exit) = 128 + signal;
-}
+// void	handle_child(int sig)
+// {
+// 	// ft_putstr("here\n");
+// 	if (sig == SIGINT)
+// 	{
+// 		ft_putstr_fd("\n", STDERR_FILENO);
+// 		signal(SIGINT, SIG_DFL);  
+//         raise(SIGINT);
+// 	}
+		
+// 	else if (sig == SIGQUIT)
+// 		ft_putstr_fd("Quit: (core dumped)\n", STDERR_FILENO);
+// 	(ms()->exit) = 128 + sig;
+// }
 
 void	handle_heredoc(int signal)
 {

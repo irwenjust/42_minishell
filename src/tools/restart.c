@@ -6,11 +6,19 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:23:09 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 11:14:04 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 20:48:09 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	print_sig()
+{
+	if (ms()->exit == 130)
+		ft_putstr_fd("\n", 2);
+	else if (ms()->exit == 131)
+		ft_putstr_fd("Quit (core dumped)\n", 2);
+}
 
 void	ft_free(void *p)
 {
@@ -33,6 +41,7 @@ void	restart(bool status)
 	matrix_delete(ms()->fds);
 	ast_clear(ms()->ast, ast_delone);
 	ft_lstclear(&ms()->lexer_tk, (void (*)(void *))token_delete);
+	print_sig();
 	(ms()->fds) = NULL;
 	(ms()->ast) = NULL;
 	(ms()->lexer_tk) = NULL;

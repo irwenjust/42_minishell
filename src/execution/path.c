@@ -6,13 +6,13 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 10:29:50 by likong            #+#    #+#             */
-/*   Updated: 2024/09/19 12:22:17 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/19 20:55:34 by likong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	path_error(struct stat stat, char *path, int status, char **cmds)
+int	real_exec(struct stat stat, char *path, int status, char **cmds)
 {
 	if (S_ISDIR(stat.st_mode))
 		status = ft_err(cmds[0], DIRECTORY, FAIL_EXEC);
@@ -21,6 +21,7 @@ int	path_error(struct stat stat, char *path, int status, char **cmds)
 		execve(path, cmds, ms()->envp);
 		if (cmds[0][0] != '$')
 			status = ft_err(cmds[0], PERMISSION, FAIL_EXEC);
+		signal_default();
 	}
 	return (status);
 }
