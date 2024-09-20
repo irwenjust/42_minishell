@@ -45,7 +45,14 @@ void	change_dir(char *path)
 	free(newpwd);
 	chdir(path);
 	free(ms()->cwd);
-	(ms()->cwd) = getcwd(NULL, 4096);
+	(ms()->cwd) = getcwd(NULL, 2048);
+	if (!(ms()->cwd))
+	{
+		ft_err("cd: error retrieving current directory", CD, 1);
+		newpwd = get_env("OLDPWD");
+		(ms()->cwd) = ft_strjoin(newpwd, "/..");
+		free(newpwd);
+	}
 	newpwd = "PWD=";
 	newpwd = ft_strjoin(newpwd, ms()->cwd);
 	update_pwd(&ms()->env_list, newpwd);

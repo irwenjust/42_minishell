@@ -6,7 +6,7 @@
 /*   By: likong <likong@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 15:23:02 by yzhan             #+#    #+#             */
-/*   Updated: 2024/09/18 08:37:05 by likong           ###   ########.fr       */
+/*   Updated: 2024/09/20 09:38:01 by yzhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool	check_quote(void)
 	}
 	if (start_quote)
 	{
-		ft_err("unclosed quotes", -1, 1);
+		ft_err("unclosed quotes", STX, 1);
 		return (false);
 	}
 	return (true);
@@ -50,7 +50,7 @@ bool	check_syntax(void)
 	cmd_nb = 1;
 	token_manager(RESET);
 	if (is_pipe(token_manager(CUR)))
-		return (ft_err("syntax error near unexpected token `|'", -1, 1));
+		return (ft_err("syntax error near unexpected token `|'", STX, 1));
 	while (token_manager(CUR))
 	{
 		next = token_manager(PREVIEW);
@@ -65,37 +65,42 @@ bool	check_syntax(void)
 		token_manager(NEXT);
 	}
 	if (pipe_nb >= cmd_nb)
-		return (ft_err("syntax error near unexpected token `|'", -1, 1));
+		return (ft_err("syntax error near unexpected token `|'", STX, 1));
 	return (true);
 }
 
-t_list *check_empty(t_list *lexer_tk)
+static t_list	*delete_empty_node(t_list *lexer_tk)
 {
-	t_list *head;
-	t_list *tmp;
-	t_list *pre;
-	t_token *current;
-	int i;
+	t_list	*tmp;
 
-	i = 0;
+	tmp = lexer_tk;
+	lexer_tk = lexer_tk->next;
+	ft_lstdelone(tmp, (void *)token_delete);
+	tmp = NULL;
+	return (lexer_tk);
+}
+
+t_list	*check_empty(t_list *lexer_tk)
+{
+	t_list	*head;
+	t_list	*pre;
+	t_token	*current;
+
+	pre = NULL;
 	head = lexer_tk;
 	while (lexer_tk)
 	{
 		current = lexer_tk->content;
 		if (ft_strlen(current->tk) == 0)
 		{
-			tmp = lexer_tk;
-			lexer_tk = lexer_tk->next;
-			if (i == 0)
-				head = lexer_tk;
+			if (!pre)
+				head = lexer_tk->next;
 			else
-				pre->next = lexer_tk;
-			ft_lstdelone(tmp, (void *)token_delete);
-			tmp = NULL;
+				pre->next = lexer_tk->next;
+			lexer_tk = delete_empty_node(lexer_tk);
 		}
 		else
 		{
-			i = 1;
 			pre = lexer_tk;
 			lexer_tk = lexer_tk->next;
 		}

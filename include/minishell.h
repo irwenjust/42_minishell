@@ -101,7 +101,9 @@ typedef enum s_error
 	DUP2,
 	DIRECTORY,
 	COMMAND,
-	HERE_DOC
+	HERE_DOC,
+	STX,
+	CD,
 }	t_error;
 
 /*
@@ -176,13 +178,12 @@ void	start_shell(void);
 /*SIGNAL*/
 //Signal
 void	signal_default(void);
-// void	signal_child(void);
+void	signal_child(void);
 void	signal_heredoc(void);
 void	signal_ignore(void);
 
 //signal handler
 void	handle_sigint(int signal);
-void	handle_child(int signal);
 void	handle_heredoc(int signal);
 
 /*PRE HANDLING*/
