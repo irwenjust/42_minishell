@@ -25,3 +25,5 @@ cd, pwd, exit, export, unset), env should not work.
 Some doubts:   
 1. handle if there have some arguments in pwd   
 2. handle if there don't have any argument in unset    
+
+local variable should be check only
