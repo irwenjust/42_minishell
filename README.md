@@ -1,4 +1,92 @@
-Some commands need handle:   
+# 42_Minishell  
+This project is trying to create our shell terminal similar than bash.  
+The project grade is 100/100.  
+
+## **Authorship**
+
+- [**yingzhan11**](https://github.com/yingzhan11) **- yzhan**  
+- [**irwenjust**](https://github.com/irwenjust) **- likong**  
+
+## **Mandatory part**  
+Here are some of the features our Minishell handles:  
+- A prompt with the current path;
+- A command history;
+- Lexer and parser save in the ast tree;
+- Same format error message with bash;
+- Builtin commands: echo, cd, pwd, export, unset, env and exit;
+- local variable;
+- Multiple redirection/heredoc;
+- Multiple pipe;
+- Environment variable and $ sign;
+- Signal with ctrl+C, ctrl+D and ctrl+\\;
+
+## **Implementation**  
+<table align=center>
+	<thead>
+		<tr>
+			<th>File Name</th>
+			<th>Functionality</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><strong>libft/</strong> </td>
+			<td>Contains standard libft project and some of the added tools function</td>
+		</tr>
+		<tr>
+			<td><strong>srcs/</strong> </td>
+			<td>Contains all the source files</td>
+		</tr>
+		<tr>
+			<td><strong>srcs/builtins/</strong> </td>
+			<td>Contains all the builtin commands</td>
+		</tr>
+		<tr>
+			<td><strong>srcs/execution/</strong> </td>
+			<td>For execution part. Include execution, pipe and redirection</td>
+		</tr>
+		<tr>
+			<td><strong>srcs/pre_handler/</strong> </td>
+			<td>Prehandle the command. Include lexer, token, expander and parser</td>
+		</tr>
+		<tr>
+			<td><strong>srcs/signal/</strong> </td>
+			<td>signal handle for default, child process and here_doc</td>
+		</tr>
+		<tr>
+			<td><strong>srcs/tools/</strong> </td>
+			<td>All of general tool functions</td>
+		</tr>
+		<tr>
+			<td><strong>interface.c</strong> </td>
+			<td>Central Control function/file</td>
+		</tr>
+		<tr>
+			<td><strong>main.c</strong> </td>
+			<td>main and initialize struct</td>
+		</tr>
+	</tbody>
+</table>
+
+## **Compilation**  
+
+To compile this project you should run `make` in the terminal.    
+To run the program needs to follow this:   
+```sh  
+$ ./minishell  
+```
+
+## **Some tips**  
+- We use this tester to check our minishell: https://github.com/LucasKuhn/minishell_tester;
+- Firstly I need to say, that too many things could be discussed and handled. That is also one reason for this readme file update delay(or just I'm lazy);
+- Some details we try to handle:
+  1) check single && double quotes and expand command when prehandle command
+  2) replace the environment variable in echo command (like "echo $HOME"). And, of course with single/&double quotes
+  3) cd command with the same operation as bash if the bash folder doesn't exist
+  4) exit could return correct status value whatever overflow, alpha or multiple arguments (if number > longlong it should same error message as alpha)
+  5) local variables could be saved to wait for export. Also handle some error cases, like first character is number (1a=1), '-' in the name (a-1=1) or empty name (=1)
+  6) also, if all of the commands are local variables, just save it
+  7) correctly handle the redirection. Like different behaviour in (cat <infile1 <infile2 <infile3 >outfile) and (cat <infile1 infile4 <infile2 infile5 <infile3 infile6 \>outfile)
 
 <infile   
 <infile cat > outfile   
