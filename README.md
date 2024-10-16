@@ -78,16 +78,24 @@ $ ./minishell
 
 ## **Some tips**  
 - We use this tester to check our minishell: https://github.com/LucasKuhn/minishell_tester;
-- Firstly I need to say, that too many things could be discussed and handled. That is also one reason for this readme file update delay(or just I'm lazy);
+<!--- Firstly, too many things could be discussed and handled. That is also one reason for this readme file update delay(or just I'm lazy :thinking:);-->
 - Some details we try to handle:
   1) check single && double quotes and expand command when prehandle command
   2) replace the environment variable in echo command (like "echo $HOME"). And, of course with single/&double quotes
   3) cd command with the same operation as bash if the bash folder doesn't exist
-  4) exit could return correct status value whatever overflow, alpha or multiple arguments (if number > longlong it should same error message as alpha)
+  4) exit could return the correct status value whatever overflow, alpha or multiple arguments (if number > longlong it should same error message as alpha)
   5) local variables could be saved to wait for export. Also handle some error cases, like first character is number (1a=1), '-' in the name (a-1=1) or empty name (=1)
   6) also, if all of the commands are local variables, just save it
   7) correctly handle the redirection. Like different behaviour in (cat <infile1 <infile2 <infile3 >outfile) and (cat <infile1 infile4 <infile2 infile5 <infile3 infile6 \>outfile)
-
+  8) the "minishell:" word could show in correct time when the output shows an error message
+  9) the command word and redirection order will not influence commands run (grep abc <infile >outfile == <infile grep \>outfile abc)
+  10) the signal's exit status has been saved
+- We still have not handled some details. If you are interested please try:
+  1) multiple local variables in multiple pipes should do nothing (we will record first local variable and output others as error)
+  2) multiple here_doc in multiple pipes should open->record->close each of here_doc and put content to correct outfile (we will output to all of outfile every time) (cat <<? >outfile1 | cat <<? >outfile2 | cat <<? >outfile3)
+  3) In some cases our exit will not show the "exit" word (just need to add one print, but I forget it before evaluation) and if the first argument is not pure numbers the minishell should exit even there have more arguments, not just show an error message (exit abc 123)
+  4) Probably have more crazy tests cannot pass as we are minishell
+<!--
 <infile   
 <infile cat > outfile   
 
@@ -115,3 +123,4 @@ Some doubts:
 2. handle if there don't have any argument in unset    
 
 local variable should be check only
+-->
